@@ -277,10 +277,10 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="prog-card prog-card-highlight animate-on-scroll delay-3" id="progCommunity">
+            <div className="prog-card animate-on-scroll delay-3" id="progCommunity">
               <div className="prog-card-icon">🌱</div>
               <div className="prog-card-body">
-                <span className="tag" style={{ background: "rgba(255,255,255,0.2)", color: "#fff" }}>Community</span>
+                <span className="tag tag-green">Community</span>
                 <h3>Community Development</h3>
                 <p>Holistic village-level interventions covering health, sanitation, environment, and digital connectivity for rural communities.</p>
                 <ul className="prog-features">
@@ -288,7 +288,7 @@ export default function Home() {
                   <li>✓ Sanitation Drives</li>
                   <li>✓ Digital Villages</li>
                 </ul>
-                <Link to="/programs" className="prog-link prog-link-light" id="learnCommunity">Learn More →</Link>
+                <Link to="/programs" className="prog-link" id="learnCommunity">Learn More →</Link>
               </div>
             </div>
           </div>
