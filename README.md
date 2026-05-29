@@ -23,21 +23,28 @@ The application is built using **React 18**, **Vite**, **Vanilla HSL CSS**, and 
 ```text
 d:\ngo\
 ├── public/                 # Static assets (logos, icons, images)
+│   └── assets/
+│       └── images/         # Logo files, background images, and team photos
 ├── src/
 │   ├── components/         # Reusable UI components
 │   │   ├── BackToTop.jsx   # Dynamic scroll-to-top button
 │   │   ├── Footer.jsx      # Multi-column dynamic footer
-│   │   ├── Navbar.jsx      # Mobile-drawer responsive navbar with theme toggle
-│   │   └── TeamCard.jsx    # Component showcasing key organization members
+│   │   ├── Navbar.jsx      # Mobile-drawer responsive navbar with theme toggle & logo fallback
+│   │   ├── TeamCard.jsx    # Component showcasing organization members (image/emoji support)
+│   │   └── ScrollToTop.jsx # Router listener that scrolls to top, respecting hash anchors
 │   ├── pages/              # Main routing views
-│   │   ├── About.jsx       # Vision, Mission, Values & Transparency info
-│   │   ├── Contact.jsx     # Google maps, Contact form, Volunteer signup
-│   │   ├── Donate.jsx      # Secure Pledge Portal with preset sliders
-│   │   ├── Home.jsx        # Landing page with hero slider & achievements
-│   │   └── Programs.jsx    # Responsive tabs for Education & Skill Development
+│   │   ├── About.jsx       # Vision, Mission, Values & Pioneers team grid
+│   │   ├── AnnualReport.jsx# Interactive Annual Report with Founder's message & metrics
+│   │   ├── Contact.jsx     # Google maps, Ranchi office contacts, and contact forms
+│   │   ├── Donate.jsx      # Secure Pledge Portal & Volunteer application form
+│   │   ├── Home.jsx        # Landing page with hero section & program cards
+│   │   ├── Privacy.jsx     # NGO Privacy Policy compliance statement page
+│   │   ├── Programs.jsx    # 6 detailed scrollable program pillars with quick links
+│   │   └── Terms.jsx       # Terms & Conditions page
 │   ├── styles/
-│   │   └── styles.css      # Core HSL design system & Light/Dark styling
-│   ├── App.jsx             # React routing setup
+│   │   ├── styles.css      # Core HSL design system, page styling & dark theme variables
+│   │   └── home.css        # Homepage specific animations & layouts
+│   ├── App.jsx             # React routing configurations & page layout
 │   └── main.jsx            # React root entry point
 ├── index.html              # HTML shell & SEO meta configuration
 ├── package.json            # Scripts & project dependencies
@@ -147,7 +154,9 @@ Firebase will upload the contents of the `dist/` folder and output your live hos
 
 ## ✨ Features Highlighted
 
-1.  **Sleek Dark Mode Toggle**: Leverages native CSS variables (`--bg-primary`, `--text-primary`, etc.) for smooth transitioning, saving choice preferences locally via `localStorage`.
-2.  **Responsive Routing**: Direct SPA routing via React Router DOM. All direct traffic landing on sub-routes (e.g., `/about`, `/donate`) is securely rewritten to `index.html` by Firebase Hosting.
-3.  **Pledge Portal**: Custom donation selection slider adjusting social & educational impact descriptions on the fly.
-4.  **Optimized Elements**: Fully semantic SEO headings, custom scroll behaviors, and responsive tabs for programs.
+1.  **6-Pillar Scrollable Programs Layout**: The Programs page details all six primary initiatives (Educational Access, Student Mentorship, Holistic Learning, Youth Skilling, Digital Inclusion, and Community Empowerment) as distinct, beautifully animated sections with custom stats.
+2.  **Smooth Anchor / Hash Routing**: Clicking a program link in the footer or home page scrolls the user directly to the correct detailed section on the Programs page.
+3.  **Sleek Dark Mode Toggle**: Leverages native HSL CSS variables for smooth transitioning, saving choice preferences locally via `localStorage`.
+4.  **Tax Exempt Pledge Portal**: Custom donation selection slider adjusting social & educational impact descriptions on the fly, with automated 80G tax receipt notifications.
+5.  **Interactive Annual Report**: Built-in page displaying key stats, executive letters, stories of change, and a download link to the complete financial report.
+6.  **Full legal coverage**: Added dedicated legal compliance pages for **Terms & Conditions** and **Privacy Policy**.
