@@ -178,12 +178,12 @@ export default function Programs() {
       </section>
 
       {/* Program Index Quick Navigator */}
-      <section className="programs-nav-strip bg-white" style={{ 
+      <section className="programs-nav-strip" style={{ 
         position: "sticky", 
         top: "var(--nav-height)", 
         zIndex: 90, 
         borderBottom: "1px solid var(--border)",
-        background: "rgba(255, 255, 255, 0.95)",
+        background: "var(--nav-bg-scrolled)",
         backdropFilter: "blur(12px)",
         padding: "12px 0"
       }}>
