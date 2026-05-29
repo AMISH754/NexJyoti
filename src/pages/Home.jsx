@@ -140,14 +140,14 @@ export default function Home() {
           <div className="hero-text">
             <div className="hero-badge animate-on-scroll">
               <span className="badge-dot"></span>
-              Transforming Lives Since 2018
+              Transforming Lives Since 2021
             </div>
             <h1 className="animate-on-scroll delay-1">
-              Lighting the Path to a<br />
-              <span className="hero-highlight">Brighter Tomorrow</span>
+              Breaking the Cycle of Poverty<br />
+              <span className="hero-highlight">Through Education</span>
             </h1>
             <p className="hero-subtitle animate-on-scroll delay-2">
-              NexJyoti Education Foundation believes every child deserves quality education, 
+              NexJyoti Education Foundation believes every child deserves quality education,
               every youth deserves opportunity, and every community deserves dignity.
             </p>
             <div className="hero-tagline animate-on-scroll delay-3">
@@ -243,7 +243,7 @@ export default function Home() {
                   <li>✓ School Enrollment Drives</li>
                   <li>✓ Scholarship Program</li>
                 </ul>
-                <Link to="/programs?tab=edu" className="prog-link" id="learnEducation">Learn More →</Link>
+                <Link to="/programs#edu-access" className="prog-link" id="learnEducation">Learn More →</Link>
               </div>
             </div>
 
@@ -258,7 +258,7 @@ export default function Home() {
                   <li>✓ Vocational Training</li>
                   <li>✓ Job Placement Support</li>
                 </ul>
-                <Link to="/programs?tab=skill" className="prog-link" id="learnSkill">Learn More →</Link>
+                <Link to="/programs#youth-skilling" className="prog-link" id="learnSkill">Learn More →</Link>
               </div>
             </div>
 
@@ -273,7 +273,7 @@ export default function Home() {
                   <li>✓ Livelihood Training</li>
                   <li>✓ Legal Awareness Camps</li>
                 </ul>
-                <Link to="/programs?tab=women" className="prog-link" id="learnWomen">Learn More →</Link>
+                <Link to="/programs#community-empowerment" className="prog-link" id="learnWomen">Learn More →</Link>
               </div>
             </div>
 
@@ -288,7 +288,7 @@ export default function Home() {
                   <li>✓ Sanitation Drives</li>
                   <li>✓ Digital Villages</li>
                 </ul>
-                <Link to="/programs" className="prog-link" id="learnCommunity">Learn More →</Link>
+                <Link to="/programs#community-empowerment" className="prog-link" id="learnCommunity">Learn More →</Link>
               </div>
             </div>
           </div>
@@ -354,15 +354,15 @@ export default function Home() {
             <div className="divider"></div>
           </div>
 
-          <div 
-            className="testimonial-slider animate-on-scroll" 
-            role="region" 
+          <div
+            className="testimonial-slider animate-on-scroll"
+            role="region"
             aria-label="Testimonial Slider"
             onMouseEnter={stopSlider}
             onMouseLeave={startSlider}
           >
-            <div 
-              className="testimonial-track" 
+            <div
+              className="testimonial-track"
               id="sliderTrack"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
@@ -387,9 +387,9 @@ export default function Home() {
               <button className="slider-btn" id="sliderPrev" aria-label="Previous testimonial" onClick={prevSlide}>‹</button>
               <div className="slider-dots" role="tablist" aria-label="Slide indicators">
                 {testimonials.map((_, i) => (
-                  <button 
-                    className={`slider-dot ${currentSlide === i ? "active" : ""}`} 
-                    aria-label={`Slide ${i + 1}`} 
+                  <button
+                    className={`slider-dot ${currentSlide === i ? "active" : ""}`}
+                    aria-label={`Slide ${i + 1}`}
                     role="tab"
                     key={i}
                     onClick={() => {

@@ -4,38 +4,42 @@ import TeamCard from "../components/TeamCard";
 const teamMembers = [
   {
     id: "teamMember1",
-    name: "Dr. Aniket Sharma",
+    name: "Shivnarayan Kumar",
     role: "Founder & Executive Director",
     emoji: "👨🏽‍💼",
+    imageSrc: "/assets/images/shiv.jpeg",
     gradient: "linear-gradient(135deg, #168e6c, #0d5540)",
     linkedinUrl: "#",
     twitterUrl: "#",
   },
   {
     id: "teamMember2",
-    name: "Meera Krishnan",
-    role: "Director, Digital Education Path",
+    name: "Gagan Mahto",
+    role: "Co-Founder & Director-Community & Human Development",
     emoji: "👩🏽‍💼",
+    imageSrc: "/assets/images/gagan.jpeg",
     gradient: "linear-gradient(135deg, #ef9535, #c86e0f)",
-    linkedinUrl: "#",
+    linkedinUrl: "https://www.linkedin.com/in/gagankrmahto/",
     twitterUrl: "#",
     delay: 1,
   },
   {
     id: "teamMember3",
-    name: "Dr. Rajesh Varma",
-    role: "Chief Technology Advisor",
+    name: "Akash Kumar Dubey",
+    role: "Director- Technology Innovation & Institutional Systems ",
     emoji: "👨🏽‍🔬",
+    imageSrc: "/assets/images/akash.jpeg",
     gradient: "linear-gradient(135deg, #1e88e5, #0d47a1)",
-    linkedinUrl: "#",
+    linkedinUrl: "https://www.linkedin.com/in/akashkumardubey/",
     twitterUrl: "#",
     delay: 2,
   },
   {
     id: "teamMember4",
-    name: "Shreya Deshmukh",
-    role: "Head of Community Partnerships",
+    name: "Ashish Kumar",
+    role: "Director- Academic Innovation & Student Development",
     emoji: "👩🏽‍🎨",
+    imageSrc: "/assets/images/ashish.jpeg",
     gradient: "linear-gradient(135deg, #e040fb, #aa00ff)",
     linkedinUrl: "#",
     twitterUrl: "#",
@@ -69,9 +73,9 @@ export default function About() {
       <section className="about-hero" id="aboutPageHero">
         <div className="container animate-on-scroll">
           <span className="section-subtitle">Our Journey & Purpose</span>
-          <h1>Bringing Light to Grassroots Learning</h1>
+          <h1>Transforming Generations Through Education, Values & Opportunity</h1>
           <p className="lead" style={{ maxWidth: "700px", margin: "0 auto" }}>
-            NexJyoti blends structured digital education with modern vocational skilling to resolve the critical career and education gaps in rural spaces.
+            Empowering underprivileged children through education, values, and opportunity to break generational poverty.
           </p>
         </div>
       </section>
@@ -83,13 +87,16 @@ export default function About() {
             <span className="section-label" style={{ textAlign: "left", display: "block", padding: 0, marginBottom: "12px" }}>
               Our Roots
             </span>
-            <h2 style={{ textAlign: "left", marginTop: "10px" }}>Born from a Simple Promise to Ignite Minds</h2>
+            <h2 style={{ textAlign: "left", marginTop: "10px" }}>From Forgotten Streets to Brighter Futures</h2>
             <div className="divider divider-left"></div>
             <p className="mt-24">
-              NexJyoti Education Foundation started in 2014 when a group of software engineers and social scientists visited rural parts of central India. They witnessed firsthand the massive digital divide. While city schools integrated advanced online modules, rural classrooms lacked even basic electrical connectivity, let alone access to computer resources—leaving brilliant young minds completely cut off from the modern digital economy.
+              NexJyoti Education Foundation began with a simple belief — no child should remain trapped in poverty because of where they were born. Our journey started among ragpicker families and economically marginalized communities, where countless children were growing up without access to quality education, guidance, or opportunity.
             </p>
             <p className="mt-16">
-              We realized that to give these children a fair shot at the future, we must bring the "Jyoti" (light) of digital learning straight to their schools. By installing solar-powered computer units, setting up offline study networks, and providing hands-on training to local teachers, we built self-sustaining models of academic growth.
+              What began as a grassroots effort soon became a mission to transform generations through education, values, and holistic development. Through academic mentorship, preparation for institutions like Jawahar Navodaya Vidyalayas and Netarhat schools, yoga, arts, dance, and Sanskar Varga, we nurture not only capable students but responsible human beings.
+            </p>
+            <p className='mt-16'>
+              Today, NexJyoti is building pathways of hope for children from slum, tribal, and backward communities — empowering them with knowledge, confidence, character, and the opportunity to create a better future for themselves and their generations to come.
             </p>
           </div>
 
@@ -136,36 +143,35 @@ export default function About() {
         <div className="container">
           <div className="section-header text-center animate-on-scroll">
             <span className="section-label">What Guides Us</span>
-            <h2>Our Fundamental Core Values</h2>
+            <h2>Our Core Principles of Transformation</h2>
             <div className="divider"></div>
-            <p className="mt-16">These three foundational pillars shape every project we fund, evaluate, and scale across states.</p>
+            <p className="mt-16">These foundational values drive our mission to break generational poverty and create lasting educational and social impact across communities, states, and future generations.</p>
           </div>
 
           <div className="grid-3" id="valuesGrid">
             {/* Value 1 */}
             <div className="card text-center animate-on-scroll" id="valEcoCard" style={{ padding: "32px" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>💻</div>
-              <h3 style={{ marginBottom: "12px" }}>Digital Equality</h3>
+              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>📚</div>
+              <h3 style={{ marginBottom: "12px" }}>Transformative Education</h3>
               <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>
-                Every student deserves high-quality computer education. We ensure our classes are interactive, modern, and aligned with current industrial career requirements.
+                We believe education is the strongest force for social and economic transformation. By providing foundational learning, mentorship, and preparation for institutions like Jawahar Navodaya Vidyalayas, Netarhat schools, and other centers of excellence, we empower children from marginalized communities to rise beyond poverty and unlock lifelong opportunities.
               </p>
             </div>
 
             {/* Value 2 */}
             <div className="card text-center animate-on-scroll delay-1" id="valTransCard" style={{ padding: "32px" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>💎</div>
-              <h3 style={{ marginBottom: "12px" }}>Radical Transparency</h3>
+              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>🌱</div>
+              <h3 style={{ marginBottom: "12px" }}>Holistic Development & Human Values</h3>
               <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>
-                We share audit sheets, class registration records, and classroom equipment counts openly. Over 88% of all funds flow directly to local projects.
-              </p>
+                True progress begins with character. Alongside academics, we nurture confidence, discipline, creativity, leadership, and compassion through yoga, arts, dance, personality development, and Sanskar Varga — shaping not only successful students, but responsible and value-driven human beings.              </p>
             </div>
 
             {/* Value 3 */}
             <div className="card text-center animate-on-scroll delay-2" id="valEmpCard" style={{ padding: "32px" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>🤝</div>
-              <h3 style={{ marginBottom: "12px" }}>Community Empowerment</h3>
+              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>🌍</div>
+              <h3 style={{ marginBottom: "12px" }}>Scalable Community Impact</h3>
               <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>
-                We do not enforce external frameworks. Our programs are designed, managed, and sustained in collaboration with rural Gram Panchayats and local guilds.
+                What began as a grassroots effort among ragpickers in Ranchi has transformed into a scalable model that now operates across multiple states. By empowering local communities to take ownership of education and development initiatives, we create sustainable change that multiplies with every new center we open.
               </p>
             </div>
           </div>
@@ -177,10 +183,10 @@ export default function About() {
         <div className="container">
           <div className="section-header text-center animate-on-scroll">
             <span className="section-label">Our Pioneers</span>
-            <h2>A Collective Force for Change</h2>
+            <h2>Driven by Purpose and United for Generational Change.</h2>
             <div className="divider"></div>
             <p className="mt-16" style={{ maxWidth: "800px", margin: "0 auto", fontSize: "1.05rem", lineHeight: 1.8, color: "var(--text-body)" }}>
-              Our team is the driving force behind our impactful initiatives. Comprising dedicated individuals who share a common passion for education and social change, our team works tirelessly to turn our mission and vision into reality. Each member brings unique skills, experiences, and perspectives, contributing to the diverse tapestry of our organization. Together, we are united by a singular purpose: to create lasting change in the lives of children facing adversity. Meet the faces behind NexJyoti, a collective force committed to breaking barriers and fostering a brighter future for every child.
+              Behind NexJyoti Education Foundation is a dedicated team of educators, mentors, professionals, and social changemakers united by one mission — to break the cycle of generational poverty through education, values, and opportunity. Every member works towards empowering underserved children with knowledge, confidence, character, and hope to create lasting change in their families and communities.Together, we are building more than educational programs — we are nurturing responsible, compassionate, and empowered future generations capable of transforming society at scale.
             </p>
           </div>
 
@@ -200,16 +206,16 @@ export default function About() {
               <span className="section-label" style={{ textAlign: "left", display: "block", padding: 0, marginBottom: "12px" }}>
                 Financial Responsibility
               </span>
-              <h2 style={{ textAlign: "left", marginTop: "10px" }}>Trust Built on Meticulous Accountability</h2>
+              <h2 style={{ textAlign: "left", marginTop: "10px" }}>Accountability Rooted in Trust & Transparency</h2>
               <div className="divider divider-left"></div>
               <p className="mt-24">
-                We take pride in our robust audit mechanisms. We are certified under Section 80G and 12A of the Income Tax Act. Our accounts are audited annually by certified independent firms, and our allocation reports are shared in open access formats with all supporters.
+                NexJyoti Education Foundation is committed to transparency, accountability, and ethical governance in every aspect of its work. We strive to ensure that the majority of our resources directly support educational access, holistic child development, community initiatives, and long-term social transformation programs.
               </p>
               <p className="mt-16">
-                Over 88% of your donations fund direct classroom and vocational training assets (computer units, networking tools, textbooks, solar panels). 7% covers essential operational supervision, and 5% is allocated for fundraising efforts.
+                Through responsible financial practices and sustainable organizational systems, we aim to build an institution that creates enduring impact across generations and communities.
               </p>
               <div style={{ marginTop: "2rem" }}>
-                <a href="#" className="btn btn-primary" id="btnDownloadReport">
+                <a href="/assets/documents/annual-report-2025.pdf" className="btn btn-primary" id="btnDownloadReport" download>
                   Download Annual Report 2025 (PDF)
                 </a>
               </div>

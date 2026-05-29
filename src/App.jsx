@@ -13,6 +13,9 @@ import About from "./pages/About";
 import Programs from "./pages/Programs";
 import Donate from "./pages/Donate";
 import Contact from "./pages/Contact";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import AnnualReport from "./pages/AnnualReport";
 
 // Global Stylesheet Imports
 import "./styles/styles.css";
@@ -30,6 +33,9 @@ export default function App() {
           <Route path="/programs" element={<Programs />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/annual-report" element={<AnnualReport />} />
         </Routes>
       </main>
       <Footer />

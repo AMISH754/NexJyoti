@@ -986,17 +986,24 @@ footer {
   margin-bottom: 20px;
 }
 
-.team-img-wrapper div {
+.team-img-wrapper div,
+.team-img-wrapper img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform var(--transition);
+}
+
+.team-img-wrapper div {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
-  transition: transform var(--transition);
 }
 
-.team-card:hover .team-img-wrapper div {
+.team-card:hover .team-img-wrapper div,
+.team-card:hover .team-img-wrapper img {
   transform: scale(1.08);
 }
 

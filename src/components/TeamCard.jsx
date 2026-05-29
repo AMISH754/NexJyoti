@@ -6,6 +6,7 @@ export default function TeamCard({
   role,
   emoji,
   imageSrc,
+  image,
   gradient = "linear-gradient(135deg, var(--primary), var(--primary-light))",
   linkedinUrl = "#",
   twitterUrl = "#",
@@ -13,15 +14,15 @@ export default function TeamCard({
 }) {
   const delayClass = delay ? ` delay-${delay}` : "";
   const cardClassName = `team-card animate-on-scroll${delayClass}`;
+  const finalImage = imageSrc || image;
 
   return (
     <div className={cardClassName} id={id}>
       <div className="team-img-wrapper">
-        {imageSrc ? (
+        {finalImage ? (
           <img
-            src={imageSrc}
+            src={finalImage}
             alt={name}
-            style={{ width: "100%", height: "280px", objectFit: "cover" }}
           />
         ) : (
           <div

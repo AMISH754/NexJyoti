@@ -7,10 +7,10 @@ export default function Footer() {
       <div className="container">
         <div className="footer-top">
           <div className="footer-brand">
-            <img 
-              src="/assets/images/logo-fullname.jpeg" 
-              onError={(e) => { e.target.src = "/assets/images/logo.jpg"; }} 
-              alt="NexJyoti Education Foundation" 
+            <img
+              src="/assets/images/logo-fullname.jpeg"
+              onError={(e) => { e.target.src = "/assets/images/logo.jpg"; }}
+              alt="NexJyoti Education Foundation"
             />
             <p>
               NexJyoti Education Foundation works to bring quality education and opportunity to every underprivileged child and youth across India.
@@ -42,11 +42,12 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Programs</h4>
             <ul>
-              <li><Link to="/programs?tab=edu">→ Children's Education</Link></li>
-              <li><Link to="/programs?tab=skill">→ Youth Skill Development</Link></li>
-              <li><Link to="/programs?tab=women">→ Women Empowerment</Link></li>
-              <li><Link to="/programs">→ Community Development</Link></li>
-              <li><Link to="/programs">→ Digital Literacy</Link></li>
+              <li><Link to="/programs#edu-access">→ Educational Access & Excellence</Link></li>
+              <li><Link to="/programs#mentorship">→ Student Mentorship & Talent Development</Link></li>
+              <li><Link to="/programs#holistic-edu">→ Holistic Learning & Value Education</Link></li>
+              <li><Link to="/programs#youth-skilling">→ Youth Skilling & Career Readiness</Link></li>
+              <li><Link to="/programs#digital-literacy">→ Digital Inclusion & Literacy</Link></li>
+              <li><Link to="/programs#community-empowerment">→ Community & Women Empowerment</Link></li>
             </ul>
           </div>
 
@@ -54,19 +55,19 @@ export default function Footer() {
             <h4>Contact Us</h4>
             <div className="footer-contact-item">
               <span className="icon">📍</span>
-              <span>NexJyoti Complex, 2nd Floor, Vasant Kunj Sector C, New Delhi - 110070</span>
+              <span>Regd. Office: Irgu Toli Road , Raja Hata Lane , Kishore Ganj , Ranchi , Jharkhand, India - 834001</span>
             </div>
             <div className="footer-contact-item">
               <span className="icon">📞</span>
-              <span>+91 (11) 4567 8900</span>
+              <span>Contact : (+91) 9572570256 </span>
             </div>
             <div className="footer-contact-item">
               <span className="icon">✉️</span>
-              <span>connect@nexjyoti.org</span>
+              <span> E-mail : info@nexjyoti.org  </span>
             </div>
             <div className="footer-contact-item">
               <span className="icon">🕐</span>
-              <span>Mon–Fri: 9:30 AM – 6:00 PM</span>
+              <span>Dedicated to Community Impact, Every Day</span>
             </div>
           </div>
         </div>
@@ -77,9 +78,9 @@ export default function Footer() {
           <div className="footer-bottom">
             <span>© 2024 NexJyoti Education Foundation. All rights reserved.</span>
             <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", justifyContent: "center" }}>
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Use</a>
-              <a href="#">Annual Report</a>
+              <Link to="/privacy">Privacy Policy</Link>
+              <Link to="/terms">Terms & Condition</Link>
+              <Link to="/annual-report">Annual Report</Link>
             </div>
           </div>
         </div>

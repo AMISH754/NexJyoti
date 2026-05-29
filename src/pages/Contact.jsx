@@ -58,7 +58,7 @@ export default function Contact() {
                 <div className="contact-icon-wrapper">📍</div>
                 <div className="contact-details">
                   <h4>Office Location</h4>
-                  <p style={{ margin: 0, fontSize: "0.95rem" }}>NexJyoti Complex, 2nd Floor, Vasant Kunj Sector C, New Delhi - 110070</p>
+                  <p style={{ margin: 0, fontSize: "0.95rem" }}> Regd. Office: Irgu Toli Road , Raja Hata Lane , Kishore Ganj , Ranchi , Jharkhand, India - 834001   </p>
                 </div>
               </div>
 
@@ -67,9 +67,9 @@ export default function Contact() {
                 <div className="contact-icon-wrapper">✉</div>
                 <div className="contact-details">
                   <h4>General Inquiries</h4>
-                  <p style={{ margin: 0, fontSize: "0.95rem" }}>connect@nexjyoti.org</p>
+                  <p style={{ margin: 0, fontSize: "0.95rem" }}> info@nexjyoti.org</p>
                   <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                    For partnerships: <strong>partner@nexjyoti.org</strong>
+                    For partnerships: <strong> info@nexjyoti.org</strong>
                   </p>
                 </div>
               </div>
@@ -79,8 +79,8 @@ export default function Contact() {
                 <div className="contact-icon-wrapper">📞</div>
                 <div className="contact-details">
                   <h4>Telephone Hotline</h4>
-                  <p style={{ margin: 0, fontSize: "0.95rem" }}>+91 (11) 4567 8900</p>
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>Mon to Fri, 9:30 AM to 6:00 PM IST</p>
+                  <p style={{ margin: 0, fontSize: "0.95rem" }}>+91 9572570256</p>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>Dedicated to Community Impact, Every Day</p>
                 </div>
               </div>
             </div>

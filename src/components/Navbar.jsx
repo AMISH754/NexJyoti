@@ -49,7 +49,7 @@ export default function Navbar() {
       <nav className={`navbar ${scrolled ? "scrolled" : ""}`} id="navbar" role="navigation" aria-label="Main Navigation">
         <div className="container">
           <Link to="/" className="nav-logo" aria-label="NexJyoti Home" onClick={closeMenu}>
-            <img src="/assets/images/logo.jpg" alt="NexJyoti Education Foundation Logo" />
+            <img src="/assets/images/logo-fullname.jpeg" onError={(e) => { e.target.src = "/assets/images/logo.jpg"; }} alt="NexJyoti Education Foundation Logo" />
           </Link>
           <ul className="nav-menu" role="list">
             <li>
