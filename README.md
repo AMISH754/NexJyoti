@@ -1,6 +1,6 @@
 # 🌅 NexJyoti Education Foundation Website
 
-**🔗 Live Demo**: [https://nexjyoti-f92e5.web.app](https://nexjyoti-f92e5.web.app)
+**🔗 Live Demo**: [https://nexjyoti.org](https://nexjyoti.org)
 
 Welcome to the official repository for the **NexJyoti Education Foundation** web application. This is a high-performance, responsive Single Page Application (SPA) designed to empower communities, promote educational transparency, and facilitate secure donations.
 
