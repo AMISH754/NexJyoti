@@ -151,7 +151,7 @@ export default function Donate() {
             <div className="card" style={{ backgroundColor: "var(--primary-glow)", border: "1px solid rgba(59, 130, 246, 0.2)", padding: "24px" }}>
               <h4 style={{ color: "var(--primary)", marginBottom: "0.5rem", fontWeight: 700 }}>Alternative Modes of Support</h4>
               <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6, color: "var(--text-body)" }}>
-                If you prefer bank wire transfer or contributing hardware (laptops, solar units) directly, please connect with us at <strong>finance@nexjyoti.org</strong> or via phone at <strong>+91 (11) 4567 8900</strong>.
+                If you prefer bank wire transfer or contributing hardware (laptops, solar units) directly, please connect with us at <strong>admin@nexjyoti.org</strong> or via phone at <strong> (+91) 9572570256</strong>.
               </p>
             </div>
           </div>
@@ -318,7 +318,7 @@ export default function Donate() {
             <div className="card" style={{ padding: "1.5rem", display: "flex", alignItems: "center", gap: "1rem", marginTop: "2rem", borderLeft: "4px solid var(--primary)" }}>
               <div style={{ fontSize: "2.5rem" }}>🤝</div>
               <div>
-                <h4 style={{ margin: 0, color: "var(--primary-dark)" }}>2,500+ Active Members</h4>
+                <h4 style={{ margin: 0, color: "var(--primary-dark)" }}>250+ Active Members</h4>
                 <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>Join a highly driven, warm national network of changemakers!</p>
               </div>
             </div>
