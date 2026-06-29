@@ -102,11 +102,11 @@ export default function About() {
 
           <div className="why-visual animate-on-scroll delay-2">
             <div className="why-img-wrap">
-              <img src="/assets/images/why-us.jpg" alt="Students learning at NexJyoti center" style={{ height: "360px" }} />
+              <img src="/assets/images/why-us2.jpg" alt="Students learning at NexJyoti center" style={{ height: "360px" }} />
               <div className="why-badge-float">
                 <span>💡</span>
                 <div>
-                  <strong>Est. 2014</strong>
+                  <strong>Est. 2021</strong>
                   <small>Over a Decade of Impact</small>
                 </div>
               </div>

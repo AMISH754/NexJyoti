@@ -56,7 +56,7 @@ export default function Programs() {
       ],
       ctaText: "Sponsor a Child's Education",
       ctaLink: "/donate",
-      statNum: "12,000+",
+      statNum: "1000+",
       statLabel: "Children Educated",
       statDesc: "Students provided with foundational academic support and learning toolkits.",
       gradient: "linear-gradient(135deg, #168e6c, #0d5540)",
@@ -178,22 +178,22 @@ export default function Programs() {
       </section>
 
       {/* Program Index Quick Navigator */}
-      <section className="programs-nav-strip" style={{ 
-        position: "sticky", 
-        top: "var(--nav-height)", 
-        zIndex: 90, 
+      <section className="programs-nav-strip" style={{
+        position: "sticky",
+        top: "var(--nav-height)",
+        zIndex: 90,
         borderBottom: "1px solid var(--border)",
         background: "var(--nav-bg-scrolled)",
         backdropFilter: "blur(12px)",
         padding: "12px 0"
       }}>
         <div className="container">
-          <ul style={{ 
-            display: "flex", 
-            justifyContent: "center", 
-            gap: "16px", 
-            listStyle: "none", 
-            padding: 0, 
+          <ul style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "16px",
+            listStyle: "none",
+            padding: 0,
             margin: 0,
             overflowX: "auto",
             whiteSpace: "nowrap",
@@ -201,7 +201,7 @@ export default function Programs() {
           }} className="programs-quick-nav">
             {programsData.map((prog) => (
               <li key={prog.id}>
-                <button 
+                <button
                   onClick={() => handleNavClick(prog.id)}
                   style={{
                     border: "none",
@@ -235,19 +235,19 @@ export default function Programs() {
 
       {/* Detailed Program Sections */}
       {programsData.map((prog, idx) => (
-        <section 
-          className={`section ${prog.bgColor}`} 
-          id={prog.id} 
+        <section
+          className={`section ${prog.bgColor}`}
+          id={prog.id}
           key={prog.id}
-          style={{ 
-            padding: "80px 0", 
+          style={{
+            padding: "80px 0",
             borderBottom: idx < programsData.length - 1 ? "1px solid var(--border)" : "none",
             scrollMarginTop: "calc(var(--nav-height) + 60px)"
           }}
         >
           <div className="container">
             <div className="story-grid" style={{ alignItems: "center" }}>
-              
+
               {/* Left Column: Details (alternate layouts can be visually interesting, but standard story-grid handles stack nicely on mobile) */}
               <div className="animate-on-scroll">
                 <span className="section-label" style={{ textAlign: "left", display: "block", padding: 0 }}>
@@ -257,7 +257,7 @@ export default function Programs() {
                   {prog.icon} {prog.title}
                 </h2>
                 <div className="divider divider-left" style={{ marginBottom: "2rem" }}></div>
-                
+
                 <p style={{ fontSize: "1.05rem", lineHeight: 1.7, color: "var(--text-body)" }}>
                   {prog.desc}
                 </p>
@@ -278,18 +278,18 @@ export default function Programs() {
 
               {/* Right Column: Dynamic Statistics Card */}
               <div className="animate-on-scroll delay-1" style={{ display: "flex", justifyContent: "center" }}>
-                <div className="card" style={{ 
-                  width: "100%", 
-                  maxWidth: "380px", 
-                  borderRadius: "var(--radius-lg)", 
-                  overflow: "hidden", 
-                  boxShadow: "var(--shadow-lg)" 
+                <div className="card" style={{
+                  width: "100%",
+                  maxWidth: "380px",
+                  borderRadius: "var(--radius-lg)",
+                  overflow: "hidden",
+                  boxShadow: "var(--shadow-lg)"
                 }}>
-                  <div style={{ 
-                    background: prog.gradient, 
-                    padding: "40px 30px", 
-                    color: "white", 
-                    textAlign: "center" 
+                  <div style={{
+                    background: prog.gradient,
+                    padding: "40px 30px",
+                    color: "white",
+                    textAlign: "center"
                   }}>
                     <span style={{ fontSize: "3.5rem", display: "block", marginBottom: "10px" }}>{prog.icon}</span>
                     <h3 style={{ fontSize: "3rem", fontWeight: 800, color: "white", margin: 0, lineHeight: 1 }}>

@@ -352,6 +352,7 @@ body.dark .prog-card-highlight {
   width: 100%;
   border-radius: var(--radius-xl);
   object-fit: cover;
+  object-position: top;
   height: 440px;
   box-shadow: var(--shadow-lg);
 }

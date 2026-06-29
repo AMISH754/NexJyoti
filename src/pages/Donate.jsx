@@ -257,7 +257,7 @@ export default function Donate() {
         <div className="container story-grid">
           <div className="why-visual animate-on-scroll">
             <div className="why-img-wrap">
-              <img src="/assets/images/why-us.jpg" alt="Children studying in a classroom" className="left-img" style={{ height: "440px" }} />
+              <img src="/assets/images/why-us3.png" alt="Children studying in a classroom" className="left-img" style={{ height: "440px" }} />
             </div>
           </div>
 

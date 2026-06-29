@@ -163,16 +163,16 @@ export default function Home() {
           <div className="hero-visual animate-on-scroll delay-2">
             <div className="hero-card-stack">
               <div className="hero-stat-card hc1">
-                <span className="hc-num">12,000+</span>
+                <span className="hc-num">1000+</span>
                 <span className="hc-lbl">Children Educated</span>
               </div>
               <div className="hero-stat-card hc2">
-                <span className="hc-num">₹2.4 Cr</span>
-                <span className="hc-lbl">Scholarships Given</span>
+                <span className="hc-num">100+</span>
+                <span className="hc-lbl">Girls Empowered</span>
               </div>
               <div className="hero-stat-card hc3">
-                <span className="hc-num">98%</span>
-                <span className="hc-lbl">Success Rate</span>
+                <span className="hc-num">4+</span>
+                <span className="hc-lbl">Centers</span>
               </div>
             </div>
           </div>
@@ -188,20 +188,20 @@ export default function Home() {
         <div className="container">
           <div className="stats-grid">
             <div className="stat-block animate-on-scroll">
-              <CountUp target={12000} suffix="+" trigger={statsVisible} />
-              <span className="stat-label">Children Educated</span>
+              <CountUp target={1000} suffix="+" trigger={statsVisible} />
+              <span className="stat-label">Student Educated</span>
             </div>
             <div className="stat-block animate-on-scroll delay-1">
-              <CountUp target={3500} suffix="+" trigger={statsVisible} />
-              <span className="stat-label">Youth Skilled</span>
+              <CountUp target={10} suffix="+" trigger={statsVisible} />
+              <span className="stat-label">Excursion and science education trips</span>
             </div>
             <div className="stat-block animate-on-scroll delay-2">
-              <CountUp target={240} suffix="+" trigger={statsVisible} />
-              <span className="stat-label">Villages Reached</span>
+              <CountUp target={4} suffix="+" trigger={statsVisible} />
+              <span className="stat-label">Centers</span>
             </div>
             <div className="stat-block animate-on-scroll delay-3">
-              <CountUp target={850} suffix="+" trigger={statsVisible} />
-              <span className="stat-label">Women Empowered</span>
+              <CountUp target={100} suffix="+" trigger={statsVisible} />
+              <span className="stat-label">Girls Empowered</span>
             </div>
           </div>
         </div>
@@ -301,12 +301,11 @@ export default function Home() {
           <div className="why-grid">
             <div className="why-visual animate-on-scroll">
               <div className="why-img-wrap">
-                <img src="/assets/images/why-us.jpg" alt="Students learning at NexJyoti center" />
+                <img src="/assets/images/why-us.png" alt="Students learning at NexJyoti center" />
                 <div className="why-badge-float">
                   <span>🏆</span>
                   <div>
-                    <strong>Award Winning</strong>
-                    <small>NGO of the Year 2024</small>
+                    <strong>Est. 2021</strong>
                   </div>
                 </div>
               </div>
@@ -335,7 +334,7 @@ export default function Home() {
                   <div className="wf-icon">💎</div>
                   <div>
                     <h4>Full Transparency</h4>
-                    <p>80G registered, FCRA compliant. Annual reports published openly.</p>
+                    <p>80G registered. Annual reports published openly.</p>
                   </div>
                 </div>
               </div>
