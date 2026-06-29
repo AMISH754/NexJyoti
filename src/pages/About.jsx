@@ -117,7 +117,7 @@ export default function About() {
 
       {/* Mission & Vision Section (Detailed React Port) */}
       <section className="section bg-off-white" id="missionVisionSection">
-        <div class="container">
+        <div className="container">
           <div className="about-card-container">
             {/* Mission Card */}
             <div className="about-detailed-card animate-on-scroll">
