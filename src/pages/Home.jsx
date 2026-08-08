@@ -419,20 +419,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PARTNERS STRIP ── */}
-      <section className="partners-section section-sm bg-white" aria-label="Our Partners">
-        <div className="container">
-          <p className="partners-title text-center text-muted animate-on-scroll">Trusted by Donors & Partners Across India</p>
-          <div className="partners-logos animate-on-scroll">
-            <div className="partner-logo">🏦 SBI Foundation</div>
-            <div className="partner-logo">🏛️ CSR India</div>
-            <div className="partner-logo">🌍 UNICEF</div>
-            <div className="partner-logo">📘 Teach For India</div>
-            <div className="partner-logo">🤝 GiveIndia</div>
-            <div className="partner-logo">🇮🇳 NITI Aayog</div>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }

@@ -220,24 +220,6 @@ export default function About() {
                 </a>
               </div>
             </div>
-
-            <div className="transparency-visual animate-on-scroll delay-1" style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "1.5rem" }}>
-              <div className="card" style={{ padding: "1.5rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
-                <div style={{ fontSize: "2.5rem" }}>📊</div>
-                <div>
-                  <h4 style={{ margin: 0, color: "var(--primary-dark)" }}>CRISIL Rated A+</h4>
-                  <p style={{ margin: 0, fontSize: "0.875rem" }}>Top rating for overall non-profit execution integrity & financial control.</p>
-                </div>
-              </div>
-
-              <div className="card" style={{ padding: "1.5rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
-                <div style={{ fontSize: "2.5rem" }}>📜</div>
-                <div>
-                  <h4 style={{ margin: 0, color: "var(--primary-dark)" }}>GuideStar Platinum Seal</h4>
-                  <p style={{ margin: 0, fontSize: "0.875rem" }}>Premium rank for transparency and extensive results disclosure.</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
