@@ -170,7 +170,7 @@ export default function Contact() {
           <div className="map-card" id="googleMapCard">
             <iframe
               className="map-iframe"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14649.734400960086!2d85.2992202321978!3d23.372526262876086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f4e10045c0a9d9%3A0xd201025cb4701d4b!2sSPARK%20Education!5e0!3m2!1sen!2sin!4v1782673588177!5m2!1sen!2sin" allowFullScreen=""
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3662.4360749858615!2d85.30707867409942!3d23.372436678930057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f4e1bd4de34185%3A0x91780ad8637bce40!2sNexJyoti%20Education%20Foundation!5e0!3m2!1sen!2sin!4v1786177410593!5m2!1sen!2sin" allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="NexJyoti Delhi Headquarters Map Location"
