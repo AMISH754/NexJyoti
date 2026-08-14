@@ -107,7 +107,7 @@ export default function About() {
                 <span>💡</span>
                 <div>
                   <strong>Est. 2021</strong>
-                  <small>Over a Decade of Impact</small>
+                  <small>Transforming Lives Every Day</small>
                 </div>
               </div>
             </div>

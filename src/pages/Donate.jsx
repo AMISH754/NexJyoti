@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function Donate() {
   // Donation states
@@ -8,8 +10,10 @@ export default function Donate() {
   const [donationSuccess, setDonationSuccess] = useState(false);
 
   // Volunteer states
-  const [volInfo, setVolInfo] = useState({ name: "", email: "", role: "", message: "" });
+  const [volInfo, setVolInfo] = useState({ name: "", email: "", role: "", message: "", botField: "" });
   const [volSuccess, setVolSuccess] = useState(false);
+  const [volLoading, setVolLoading] = useState(false);
+  const [volLoadTime] = useState(Date.now());
 
   useEffect(() => {
     // Scroll animations observer
@@ -95,9 +99,34 @@ export default function Donate() {
   };
 
   // Submit Volunteer Signup
-  const handleVolunteerSubmit = (e) => {
+  const handleVolunteerSubmit = async (e) => {
     e.preventDefault();
-    setVolSuccess(true);
+
+    // 🤖 Anti-Bot Protection:
+    // 1. Honeypot check: If invisible botField is filled, silently ignore
+    // 2. Speed check: If filled in less than 700ms (automated script), ignore
+    if (volInfo.botField || (Date.now() - volLoadTime < 700)) {
+      setVolSuccess(true);
+      return;
+    }
+
+    setVolLoading(true);
+    try {
+      await addDoc(collection(db, "volunteers"), {
+        name: volInfo.name.trim(),
+        email: volInfo.email.trim(),
+        role: volInfo.role,
+        message: volInfo.message ? volInfo.message.trim() : "",
+        createdAt: new Date().toISOString(),
+        status: "pending",
+      });
+      setVolSuccess(true);
+    } catch (err) {
+      console.error("Error saving volunteer application:", err);
+      setVolSuccess(true);
+    } finally {
+      setVolLoading(false);
+    }
   };
 
   return (
@@ -341,6 +370,20 @@ export default function Donate() {
               <form onSubmit={handleVolunteerSubmit}>
                 <h3 style={{ marginBottom: "1.5rem", color: "var(--primary-dark)" }}>Volunteer Sign-Up</h3>
 
+                {/* 🍯 Invisible Honeypot Spam Trap */}
+                <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
+                  <label htmlFor="vol_website_hp">Leave this field blank</label>
+                  <input
+                    type="text"
+                    id="vol_website_hp"
+                    name="vol_website_hp"
+                    tabIndex="-1"
+                    autoComplete="off"
+                    value={volInfo.botField}
+                    onChange={(e) => setVolInfo({ ...volInfo, botField: e.target.value })}
+                  />
+                </div>
+
                 <div className="form-group">
                   <label className="form-label" htmlFor="vol-name">Full Name</label>
                   <input
@@ -403,8 +446,8 @@ export default function Donate() {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-secondary w-full" id="btnSubmitVolunteer" style={{ justifyContent: "center", width: "100%" }}>
-                  Submit Volunteer Application
+                <button type="submit" className="btn btn-secondary w-full" id="btnSubmitVolunteer" disabled={volLoading} style={{ justifyContent: "center", width: "100%", opacity: volLoading ? 0.7 : 1 }}>
+                  {volLoading ? "Submitting Application..." : "Submit Volunteer Application"}
                 </button>
               </form>
             )}

@@ -39,14 +39,20 @@ export default function TeamCard({
             {emoji || "👤"}
           </div>
         )}
-        <div className="team-socials">
-          <a href={linkedinUrl} className="team-social-icon" target="_blank" rel="noopener noreferrer">
-            IN
-          </a>
-          <a href={twitterUrl} className="team-social-icon" target="_blank" rel="noopener noreferrer">
-            TW
-          </a>
-        </div>
+        {(linkedinUrl && linkedinUrl !== "#") || (twitterUrl && twitterUrl !== "#") ? (
+          <div className="team-socials">
+            {linkedinUrl && linkedinUrl !== "#" && (
+              <a href={linkedinUrl} className="team-social-icon" target="_blank" rel="noopener noreferrer" aria-label={`${name}'s LinkedIn`}>
+                IN
+              </a>
+            )}
+            {twitterUrl && twitterUrl !== "#" && (
+              <a href={twitterUrl} className="team-social-icon" target="_blank" rel="noopener noreferrer" aria-label={`${name}'s Twitter`}>
+                TW
+              </a>
+            )}
+          </div>
+        ) : null}
       </div>
       <h3>{name}</h3>
       <p>{role}</p>

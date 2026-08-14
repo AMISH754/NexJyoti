@@ -1,0 +1,24 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Employees: Public can read to verify credentials; only authenticated admins can write
+    match /employees/{employeeId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // 2. Contact Inquiries: Anyone can submit a message; only authenticated admins can view/delete
+    match /contacts/{contactId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // 3. Volunteers: Anyone can submit an application; only authenticated admins can view/delete
+    match /volunteers/{volunteerId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+  }
+}

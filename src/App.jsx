@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // Shared Layout Components
 import Navbar from "./components/Navbar";
@@ -16,12 +16,35 @@ import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import AnnualReport from "./pages/AnnualReport";
+import Verify from "./pages/Verify";
+import NotFound from "./pages/NotFound";
+
+// Admin Pages
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // Global Stylesheet Imports
 import "./styles/styles.css";
 import "./styles/home.css";
 
 export default function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  // Admin routes render without Navbar/Footer
+  if (isAdminRoute) {
+    return (
+      <>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </>
+    );
+  }
+
   return (
     <>
       <ScrollToTop />
@@ -36,6 +59,9 @@ export default function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/annual-report" element={<AnnualReport />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/verify/:employeeId" element={<Verify />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />

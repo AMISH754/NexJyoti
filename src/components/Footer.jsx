@@ -16,7 +16,7 @@ export default function Footer() {
               NexJyoti Education Foundation works to bring quality education and opportunity to every underprivileged child and youth across India.
               <br />
               <br />
-              Registered NGO | 80G & 12A Certified
+              Registered NGO
             </p>
             <div className="footer-social">
               <a href="#" className="social-icon" aria-label="Facebook">f</a>
@@ -78,9 +78,11 @@ export default function Footer() {
           <div className="footer-bottom">
             <span>© {new Date().getFullYear()} NexJyoti Education Foundation. All rights reserved.</span>
             <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", justifyContent: "center" }}>
+              <Link to="/verify">Verify ID</Link>
               <Link to="/privacy">Privacy Policy</Link>
               <Link to="/terms">Terms & Condition</Link>
               <Link to="/annual-report">Annual Report</Link>
+              <Link to="/admin" >Admin</Link>
             </div>
           </div>
         </div>

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "", botField: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadTime] = useState(Date.now());
 
   useEffect(() => {
     // Scroll animations observer
@@ -23,9 +27,34 @@ export default function Contact() {
     return () => scrollObserver.disconnect();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    // 🤖 Anti-Bot Protection:
+    // 1. Honeypot check: If invisible botField is filled, silently ignore
+    // 2. Speed check: If filled in less than 700ms (automated script), ignore
+    if (formData.botField || (Date.now() - loadTime < 700)) {
+      setSubmitted(true);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await addDoc(collection(db, "contacts"), {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        createdAt: new Date().toISOString(),
+        status: "unread",
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Error submitting contact inquiry:", err);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -103,6 +132,20 @@ export default function Contact() {
               <form onSubmit={handleSubmit}>
                 <h3 style={{ marginBottom: "1.5rem", color: "var(--primary-dark)" }}>Send an Inquiry</h3>
 
+                {/* 🍯 Invisible Honeypot Spam Trap (Bots will fill this, humans won't) */}
+                <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
+                  <label htmlFor="website_hp">Leave this field blank</label>
+                  <input
+                    type="text"
+                    id="website_hp"
+                    name="website_hp"
+                    tabIndex="-1"
+                    autoComplete="off"
+                    value={formData.botField}
+                    onChange={(e) => setFormData({ ...formData, botField: e.target.value })}
+                  />
+                </div>
+
                 <div className="form-group">
                   <label className="form-label" htmlFor="contactName">Your Name</label>
                   <input
@@ -155,8 +198,8 @@ export default function Contact() {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-primary w-full" id="btnSubmitInquiry" style={{ justifyContent: "center", width: "100%" }}>
-                  Send Message
+                <button type="submit" className="btn btn-primary w-full" id="btnSubmitInquiry" disabled={loading} style={{ justifyContent: "center", width: "100%", opacity: loading ? 0.7 : 1 }}>
+                  {loading ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}

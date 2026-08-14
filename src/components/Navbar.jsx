@@ -79,7 +79,7 @@ export default function Navbar() {
             </li>
           </ul>
           <Link to="/donate" className="btn btn-green nav-cta" id="navDonateBtn" onClick={closeMenu}>
-            Donate Now ❤️
+            Donate Now
           </Link>
           <button className="theme-toggle-btn" onClick={toggleTheme} aria-label="Toggle theme">
             {isDarkMode ? (
