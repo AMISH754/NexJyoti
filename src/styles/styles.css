@@ -847,7 +847,7 @@ footer {
 /* ── Back to Top ── */
 .back-to-top {
   position: fixed;
-  bottom: 32px;
+  bottom: 85px;
   right: 32px;
   width: 48px;
   height: 48px;
@@ -896,7 +896,7 @@ footer {
   .footer-top { grid-template-columns: 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
 
-  .back-to-top { bottom: 20px; right: 20px; }
+  .back-to-top { bottom: 75px; right: 20px; }
 }
 
 @media (max-width: 480px) {

@@ -54,6 +54,7 @@ const INITIAL = {
   previousAssociationDesc: "", heardFrom: "", referralName: "",
   decl1: false, decl2: false, decl3: false, decl4: false, decl5: false,
   mediaConsent: "",
+  website_hp: "",
 };
 
 /* ── Shared UI ── */
@@ -111,6 +112,20 @@ const NavButtons = ({ onBack, onNext, nextLabel = "Continue →", disabled }) =>
 function StepPersonal({ data, errors, onChange, onNext }) {
   return (
     <div className="reg-section animate-reg-in">
+      {/* 🍯 Invisible Honeypot Spam Trap (Bots will fill this, humans won't) */}
+      <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden", pointerEvents: "none" }} aria-hidden="true">
+        <label htmlFor="mem-website-hp">Leave this field blank</label>
+        <input
+          type="text"
+          id="mem-website-hp"
+          name="website_hp"
+          tabIndex="-1"
+          autoComplete="off"
+          value={data.website_hp || ""}
+          onChange={onChange}
+        />
+      </div>
+
       <div className="reg-pathway-badge reg-pathway-member">Member Registration</div>
       <SectionHeader label="Step 1 of 5 — Personal Information" title="Your Personal Details"
         desc="Please provide your basic information. This helps us understand who you are and how to reach you." />
@@ -268,6 +283,20 @@ function StepDeclaration({ data, errors, onChange, onSubmit, submitting, submitE
   const hasAnyDeclError = DECLARATIONS.some(d => errors[d.name]);
   return (
     <div className="reg-section animate-reg-in">
+      {/* 🍯 Invisible Honeypot Spam Trap */}
+      <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden", pointerEvents: "none" }} aria-hidden="true">
+        <label htmlFor="mem-website-hp-decl">Leave this field blank</label>
+        <input
+          type="text"
+          id="mem-website-hp-decl"
+          name="website_hp"
+          tabIndex="-1"
+          autoComplete="off"
+          value={data.website_hp || ""}
+          onChange={onChange}
+        />
+      </div>
+
       <div className="reg-pathway-badge reg-pathway-member">Member Registration</div>
       <SectionHeader label="Step 5 of 5 — Declaration & Consent"
         title="Before You Submit"
@@ -327,6 +356,7 @@ export default function MemberRegister() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [loadTime] = useState(Date.now());
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -388,10 +418,18 @@ export default function MemberRegister() {
 
   const handleSubmit = async () => {
     if (!validateDeclaration()) return;
+
+    // 🤖 Anti-Bot Honeypot & Timestamp Check
+    if (data.website_hp || (Date.now() - loadTime < 1000)) {
+      go(S.SUCCESS);
+      return;
+    }
+
     setSubmitting(true); setSubmitError("");
     try {
+      const { website_hp, ...cleanData } = data;
       await addDoc(collection(db, "registrations"), {
-        ...data, type: "member", status: "pending", submittedAt: new Date().toISOString(),
+        ...cleanData, type: "member", status: "pending", submittedAt: new Date().toISOString(),
       });
       go(S.SUCCESS);
     } catch (err) {
