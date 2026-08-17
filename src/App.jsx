@@ -18,6 +18,9 @@ import Privacy from "./pages/Privacy";
 import AnnualReport from "./pages/AnnualReport";
 import Verify from "./pages/Verify";
 import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
+import VolunteerRegister from "./pages/VolunteerRegister";
+import MemberRegister from "./pages/MemberRegister";
 
 // Admin Pages
 import AdminLogin from "./pages/AdminLogin";
@@ -61,6 +64,9 @@ export default function App() {
           <Route path="/annual-report" element={<AnnualReport />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/verify/:employeeId" element={<Verify />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/volunteer-register" element={<VolunteerRegister />} />
+          <Route path="/member-register" element={<MemberRegister />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

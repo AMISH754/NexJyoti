@@ -20,5 +20,11 @@ service cloud.firestore {
       allow create: if true;
       allow read, update, delete: if request.auth != null;
     }
+
+    // 4. Registrations: Anyone can submit via /register page; only authenticated admins can view/delete
+    match /registrations/{registrationId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
   }
 }
