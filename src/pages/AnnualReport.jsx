@@ -139,7 +139,6 @@ export default function AnnualReport() {
             
             {/* Left Col: Mission */}
             <div className="card animate-on-scroll" style={{ padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: "4px solid var(--primary)" }}>
-              <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>📖</div>
               <h3 style={{ fontSize: "1.5rem", color: "var(--primary-dark)", marginBottom: "12px" }}>Our Mission</h3>
               <p style={{ fontSize: "1.05rem", lineHeight: 1.7, margin: 0 }}>
                 To empower underserved children and communities through education, values, holistic
@@ -155,12 +154,12 @@ export default function AnnualReport() {
               <div className="divider divider-left" style={{ marginBottom: "1.5rem" }}></div>
               <ul style={{ display: "grid", gap: "12px", padding: 0, listStyle: "none" }}>
                 {[
-                  { icon: "📚", text: "Foundational Education & Academic Mentorship" },
-                  { icon: "🎓", text: "Competitive Exam Preparation & Talent Development" },
-                  { icon: "🧘", text: "Holistic Child Development & Sanskar Varga" },
-                  { icon: "💻", text: "Digital Literacy & Technology Access" },
-                  { icon: "🛠️", text: "Youth Skill Development & Career Guidance" },
-                  { icon: "👩", text: "Community & Women Empowerment" }
+                  { text: "Foundational Education & Academic Mentorship" },
+                  { text: "Competitive Exam Preparation & Talent Development" },
+                  { text: "Holistic Child Development & Sanskar Varga" },
+                  { text: "Digital Literacy & Technology Access" },
+                  { text: "Youth Skill Development & Career Guidance" },
+                  { text: "Community & Women Empowerment" }
                 ].map((item, idx) => (
                   <li key={idx} style={{ 
                     display: "flex", 
@@ -173,7 +172,7 @@ export default function AnnualReport() {
                     fontWeight: 600,
                     color: "var(--primary-dark)"
                   }}>
-                    <span>{item.icon}</span> {item.text}
+                    <span>•</span> {item.text}
                   </li>
                 ))}
               </ul>
@@ -195,15 +194,14 @@ export default function AnnualReport() {
 
           <div className="grid-3" style={{ marginBottom: "40px" }}>
             {[
-              { num: "12,000+", label: "Students Supported", desc: "Through core educational and local literacy drives.", icon: "📚", color: "var(--primary)" },
-              { num: "500+", label: "Children Mentored", desc: "Prepared for Jawahar Navodaya & Netarhat school admissions.", icon: "🎓", color: "var(--gold)" },
-              { num: "300+", label: "Community Outreach Programs", desc: "Outreach, health checkups, and child rights campaigns.", icon: "📣", color: "var(--green)" },
-              { num: "1,200+", label: "Holistic Sessions", desc: "Yoga, arts, dance, character building, and Sanskar Varga.", icon: "🧘", color: "var(--gold)" },
-              { num: "2,500+", label: "Volunteers Engaged", desc: "Highly driven mentors and educators across states.", icon: "👥", color: "var(--primary)" },
-              { num: "25+", label: "Collaborative Partnerships", desc: "With state departments, corporate CSRs, and local guilds.", icon: "🏢", color: "var(--green)" }
+              { num: "12,000+", label: "Students Supported", desc: "Through core educational and local literacy drives.", color: "var(--primary)" },
+              { num: "500+", label: "Children Mentored", desc: "Prepared for Jawahar Navodaya & Netarhat school admissions.", color: "var(--gold)" },
+              { num: "300+", label: "Community Outreach Programs", desc: "Outreach, health checkups, and child rights campaigns.", color: "var(--green)" },
+              { num: "1,200+", label: "Holistic Sessions", desc: "Yoga, arts, dance, character building, and Sanskar Varga.", color: "var(--gold)" },
+              { num: "2,500+", label: "Volunteers Engaged", desc: "Highly driven mentors and educators across states.", color: "var(--primary)" },
+              { num: "25+", label: "Collaborative Partnerships", desc: "With state departments, corporate CSRs, and local guilds.", color: "var(--green)" }
             ].map((stat, idx) => (
               <div key={idx} className="card animate-on-scroll" style={{ padding: "28px", textAlign: "center" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: "12px" }}>{stat.icon}</div>
                 <span className="stat-number" style={{ color: stat.color, fontSize: "2.5rem" }}>{stat.num}</span>
                 <h4 style={{ margin: "8px 0 4px", fontSize: "1.05rem", color: "var(--primary-dark)" }}>{stat.label}</h4>
                 <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>{stat.desc}</p>
@@ -236,7 +234,6 @@ export default function AnnualReport() {
                   "Coming from a family of ragpickers, school was a distant dream for Rohan. He joined our community center in Ranchi, where he was provided with basic numeracy training and rigorous academic guidance. With constant mentoring, Rohan cleared the admission test for a local state residential center. Today, he is reading, drawing, and dreaming of becoming a science teacher."
                 </p>
                 <div style={{ marginTop: "16px", borderTop: "1px solid var(--border)", paddingTop: "12px", display: "flex", alignItems: "center", gap: "10px" }}>
-                  <div style={{ fontSize: "1.2rem" }}>🧑🏽‍🎓</div>
                   <div>
                     <strong style={{ fontSize: "0.88rem", display: "block" }}>Rohan M.</strong>
                     <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Class 6 Student, Ranchi Center</span>
@@ -256,7 +253,6 @@ export default function AnnualReport() {
                   "Kriti, a shy girl from a tribal village, struggled with low self-esteem and stage fright. Through our daily Sanskar Varga sessions combining public speaking, value education, and yoga, she found her voice. She recently represented her district in a regional debate championship, winning second place. Kriti is now a youth peer mentor, guiding younger girls in her community."
                 </p>
                 <div style={{ marginTop: "16px", borderTop: "1px solid var(--border)", paddingTop: "12px", display: "flex", alignItems: "center", gap: "10px" }}>
-                  <div style={{ fontSize: "1.2rem" }}>👩🏽‍🎓</div>
                   <div>
                     <strong style={{ fontSize: "0.88rem", display: "block" }}>Kriti K.</strong>
                     <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Debater & Youth Mentor, Kishore Ganj</span>
@@ -321,7 +317,6 @@ export default function AnnualReport() {
             color: "white",
             textAlign: "center"
           }}>
-            <div style={{ fontSize: "3.5rem", marginBottom: "16px" }}>📄</div>
             <h3 style={{ color: "white", fontSize: "1.6rem", marginBottom: "10px" }}>Download Full Annual Report</h3>
             <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.98rem", maxWidth: "500px", margin: "0 auto 24px" }}>
               Get detailed insights into our financial reports, audit balances, classroom expenditures, and complete student tracking data.
@@ -332,7 +327,7 @@ export default function AnnualReport() {
               download
               style={{ display: "inline-flex", justifyContent: "center" }}
             >
-              📥 Download PDF Report
+              Download PDF Report
             </a>
           </div>
         </div>

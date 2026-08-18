@@ -33,10 +33,11 @@ export default function TeamCard({
               alignItems: "center",
               justifyContent: "center",
               color: "white",
-              fontSize: "4rem",
+              fontSize: "2.5rem",
+              fontWeight: "bold",
             }}
           >
-            {emoji || "👤"}
+            {name ? name.charAt(0) : "N"}
           </div>
         )}
         {(linkedinUrl && linkedinUrl !== "#") || (twitterUrl && twitterUrl !== "#") ? (

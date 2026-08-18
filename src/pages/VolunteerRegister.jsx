@@ -119,7 +119,7 @@ const NavButtons = ({ onBack, onNext, nextLabel = "Continue →", disabled }) =>
 function StepPersonal({ data, errors, onChange, onNext }) {
   return (
     <div className="reg-section animate-reg-in">
-      {/* 🍯 Invisible Honeypot Spam Trap (Bots will fill this, humans won't) */}
+      {/* Invisible Honeypot Spam Trap */}
       <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden", pointerEvents: "none" }} aria-hidden="true">
         <label htmlFor="vol-website-hp">Leave this field blank</label>
         <input
@@ -300,7 +300,7 @@ function StepDeclaration({ data, errors, onChange, onSubmit, submitting, submitE
   const hasAnyDeclError = DECLARATIONS.some(d => errors[d.name]);
   return (
     <div className="reg-section animate-reg-in">
-      {/* 🍯 Invisible Honeypot Spam Trap */}
+      {/* Invisible Honeypot Spam Trap */}
       <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden", pointerEvents: "none" }} aria-hidden="true">
         <label htmlFor="vol-website-hp-decl">Leave this field blank</label>
         <input
@@ -342,7 +342,8 @@ function StepDeclaration({ data, errors, onChange, onSubmit, submitting, submitE
 
       <div className="reg-nav-buttons">
         <button type="button" className="reg-btn-back" onClick={onBack}>← Back</button>
-        <button type="button" id="vol-submit-btn" className="reg-btn-submit" onClick={onSubmit} disabled={submitting}>
+        <button type="button" id="vol-submit-btn" className="reg-btn-submit reg-btn-submit-blue"
+          onClick={onSubmit} disabled={submitting}>
           {submitting ? <><span className="reg-spinner" /> Submitting...</> : "Submit Volunteer Registration"}
         </button>
       </div>
@@ -355,10 +356,10 @@ function SuccessScreen() {
   return (
     <div className="reg-success animate-reg-in" aria-live="polite">
       <div className="reg-success-icon-wrap"><span className="reg-success-check">✓</span></div>
-      <h2>Thank You for Your Interest!</h2>
+      <h2>Thank You for Registering!</h2>
       <p>Your volunteer registration has been received successfully.</p>
-      <p>Our team will review your submission and contact you regarding the next step, where applicable.</p>
-      <p>We appreciate your willingness to contribute your time, skills and experience towards creating meaningful educational opportunities.</p>
+      <p>Our team will review your submission and contact you regarding relevant volunteering opportunities.</p>
+      <p>We look forward to working together to make a difference.</p>
       <div className="reg-success-org">— NexJyoti Education Foundation</div>
       <Link to="/" className="reg-btn-home" id="vol-home-btn">← Return to Home</Link>
     </div>
@@ -408,11 +409,17 @@ export default function VolunteerRegister() {
     const e = {};
     if (!data.volunteerMotivation.trim()) e.volunteerMotivation = "Please share your motivation.";
     if (!data.volunteerAreas.length) e.volunteerAreas = "Please select at least one area.";
-    if (!data.volunteerMode) e.volunteerMode = "Please select your preferred mode.";
-    if (!data.volunteerAvailability.length) e.volunteerAvailability = "Please select your availability.";
+    if (!data.volunteerMode) e.volunteerMode = "Please select a preferred mode.";
     if (!data.volunteerTimeCommitment) e.volunteerTimeCommitment = "Please select your time commitment.";
-    if (!data.hasPreviousVolunteering) e.hasPreviousVolunteering = "Please answer this question.";
     setErrors(e); return Object.keys(e).length === 0;
+  };
+
+  const validateExperience = () => {
+    if (!data.hasPreviousVolunteering) {
+      setErrors({ hasPreviousVolunteering: "Please answer this question." });
+      return false;
+    }
+    return true;
   };
 
   const validateConnection = () => {
@@ -427,17 +434,18 @@ export default function VolunteerRegister() {
   };
 
   const next_S1 = () => { if (validatePersonal()) go(S.PROFILE); };
-  const next_S2 = () => {
-    if (validateProfile())
-      go(data.hasPreviousVolunteering === "Yes" ? S.EXPERIENCE : S.CONNECTION);
+  const next_S2 = () => { if (validateProfile()) go(S.EXPERIENCE); };
+  const next_S3 = () => {
+    if (validateExperience())
+      go(data.hasPreviousVolunteering === "Yes" ? S.EXP_DETAILS : S.CONNECTION);
   };
-  const next_S3 = () => go(S.CONNECTION);
+  const next_S3b = () => go(S.CONNECTION);
   const next_S4 = () => { if (validateConnection()) go(S.DECLARATION); };
 
   const handleSubmit = async () => {
     if (!validateDeclaration()) return;
 
-    // 🤖 Anti-Bot Honeypot & Timestamp Check
+    // Anti-Bot Honeypot & Timestamp Check
     if (data.website_hp || (Date.now() - loadTime < 1000)) {
       go(S.SUCCESS);
       return;

@@ -46,7 +46,6 @@ export default function Programs() {
       id: "edu-access",
       badge: "Pillar 1 — Academic Foundations",
       title: "Educational Access & Excellence",
-      icon: "📚",
       desc: "Quality primary and secondary education should not be a privilege. We establish free study support centers and run intensive school enrollment drives to bring children from slum, tribal, and marginalized communities into active classrooms.",
       points: [
         "Free tuition support for school students (Class 1–10)",
@@ -66,7 +65,6 @@ export default function Programs() {
       id: "mentorship",
       badge: "Pillar 2 — Excellence & Opportunity",
       title: "Student Mentorship & Talent Development",
-      icon: "🎓",
       desc: "We actively identify talented students from underprivileged backgrounds and prepare them for admissions to top residential schools like Jawahar Navodaya Vidyalayas, Netarhat, and other centers of excellence.",
       points: [
         "Rigorous entrance exam preparation & mocks",
@@ -86,7 +84,6 @@ export default function Programs() {
       id: "holistic-edu",
       badge: "Pillar 3 — Character & Wellness",
       title: "Holistic Learning & Value Education",
-      icon: "🧘",
       desc: "True education builds both capability and character. Through our Sanskar Varga sessions, we nurture values, self-discipline, and confidence in children, preparing them to be responsible citizens.",
       points: [
         "Sanskar Varga (value education & ethical lessons)",
@@ -106,7 +103,6 @@ export default function Programs() {
       id: "youth-skilling",
       badge: "Pillar 4 — Career Pathways",
       title: "Youth Skilling & Career Readiness",
-      icon: "🛠️",
       desc: "We bridge the gap between formal education and real-world employment. Our specialized vocational training equips young adults with professional skills, helping them secure sustainable jobs.",
       points: [
         "Web development, coding, and basic software skills",
@@ -126,7 +122,6 @@ export default function Programs() {
       id: "digital-literacy",
       badge: "Pillar 5 — Technology Access",
       title: "Digital Inclusion & Literacy",
-      icon: "💻",
       desc: "To survive in the modern economy, digital literacy is essential. We install solar-powered computer labs in rural government schools, giving children access to advanced digital tools.",
       points: [
         "Solar-powered computer configurations in rural areas",
@@ -146,7 +141,6 @@ export default function Programs() {
       id: "community-empowerment",
       badge: "Pillar 6 — Sustainable Livelihoods",
       title: "Community & Women Empowerment",
-      icon: "🌱",
       desc: "We foster financial independence and leadership at the grassroots level. By training women's self-help groups in sustainable skills, we create self-sustaining village economies.",
       points: [
         "Organic farming inputs and local processing workshops",
@@ -225,7 +219,7 @@ export default function Programs() {
                     e.target.style.color = "var(--text-dark)";
                   }}
                 >
-                  {prog.icon} {prog.title.split(" & ")[0]}
+                  {prog.title.split(" & ")[0]}
                 </button>
               </li>
             ))}
@@ -254,7 +248,7 @@ export default function Programs() {
                   {prog.badge}
                 </span>
                 <h2 style={{ textAlign: "left", marginTop: "10px", fontSize: "2rem", color: "var(--primary-dark)" }}>
-                  {prog.icon} {prog.title}
+                  {prog.title}
                 </h2>
                 <div className="divider divider-left" style={{ marginBottom: "2rem" }}></div>
 
@@ -291,7 +285,6 @@ export default function Programs() {
                     color: "white",
                     textAlign: "center"
                   }}>
-                    <span style={{ fontSize: "3.5rem", display: "block", marginBottom: "10px" }}>{prog.icon}</span>
                     <h3 style={{ fontSize: "3rem", fontWeight: 800, color: "white", margin: 0, lineHeight: 1 }}>
                       {prog.statNum}
                     </h3>
@@ -321,7 +314,7 @@ export default function Programs() {
             <p>Whether you want to sponsor a digital lab, fund vocational classes, or volunteer your talent, your support creates generational change.</p>
           </div>
           <div className="cta-actions">
-            <Link to="/donate" className="btn btn-primary btn-lg" id="ctaDonate">Support Programs ❤️</Link>
+            <Link to="/donate" className="btn btn-primary btn-lg" id="ctaDonate">Support Programs</Link>
             <Link to="/contact" className="btn btn-outline btn-lg" id="ctaContact">Get in Touch</Link>
           </div>
         </div>

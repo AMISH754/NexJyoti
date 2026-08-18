@@ -256,8 +256,9 @@
 }
 
 .reg-error::before {
-  content: '⚠';
-  font-size: 0.75rem;
+  content: '!';
+  font-weight: bold;
+  font-size: 0.8rem;
 }
 
 /* ── Input Styles ── */

@@ -102,7 +102,7 @@ export default function Donate() {
   const handleVolunteerSubmit = async (e) => {
     e.preventDefault();
 
-    // 🤖 Anti-Bot Protection:
+    // Anti-Bot Protection:
     // 1. Honeypot check: If invisible botField is filled, silently ignore
     // 2. Speed check: If filled in less than 700ms (automated script), ignore
     if (volInfo.botField || (Date.now() - volLoadTime < 700)) {
@@ -189,7 +189,6 @@ export default function Donate() {
           <div className="donate-form-card animate-on-scroll delay-1" id="donationCard">
             {donationSuccess ? (
               <div className="alert alert-success" style={{ padding: "48px 24px", textAlign: "center", borderRadius: "var(--radius-lg)" }}>
-                <div style={{ fontSize: "4rem", marginBottom: "20px" }}>💖</div>
                 <h3 style={{ color: "#065f46", marginBottom: "12px", fontWeight: 700 }}>Pledge Received!</h3>
                 <p style={{ fontSize: "1.05rem", lineHeight: 1.6, marginBottom: "24px" }}>
                   Thank you, <strong>{donorInfo.name}</strong>, for your generous support of <strong>₹{parseInt(customAmount).toLocaleString("en-IN")}</strong>.
@@ -275,6 +274,9 @@ export default function Donate() {
                 <button type="submit" className="btn btn-primary w-full" id="btnSubmitDonation" style={{ justifyContent: "center", width: "100%" }}>
                   Securely Proceed to Payment
                 </button>
+                <p style={{ textAlign: "center", fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "12px" }}>
+                  Tax Exemption under 80G included with every transaction.
+                </p>
               </form>
             )}
           </div>
@@ -345,7 +347,6 @@ export default function Donate() {
             </p>
 
             <div className="card" style={{ padding: "1.5rem", display: "flex", alignItems: "center", gap: "1rem", marginTop: "2rem", borderLeft: "4px solid var(--primary)" }}>
-              <div style={{ fontSize: "2.5rem" }}>🤝</div>
               <div>
                 <h4 style={{ margin: 0, color: "var(--primary-dark)" }}>250+ Active Members</h4>
                 <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>Join a highly driven, warm national network of changemakers!</p>
@@ -357,7 +358,6 @@ export default function Donate() {
           <div className="card form-card animate-on-scroll delay-1" id="volunteerFormCard">
             {volSuccess ? (
               <div className="alert alert-success" style={{ padding: "32px 16px", textAlign: "center", borderRadius: "var(--radius-md)" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "16px" }}>🤝</div>
                 <h4 style={{ color: "#065f46", marginBottom: "8px", fontWeight: 700 }}>Application Submitted!</h4>
                 <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
                   Thank you for applying, <strong>{volInfo.name}</strong>. Our volunteer coordinator will reach out to you at <strong>{volInfo.email}</strong> to schedule an onboarding call soon.
@@ -370,7 +370,7 @@ export default function Donate() {
               <form onSubmit={handleVolunteerSubmit}>
                 <h3 style={{ marginBottom: "1.5rem", color: "var(--primary-dark)" }}>Volunteer Sign-Up</h3>
 
-                {/* 🍯 Invisible Honeypot Spam Trap */}
+                {/* Invisible Honeypot Spam Trap */}
                 <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
                   <label htmlFor="vol_website_hp">Leave this field blank</label>
                   <input
@@ -427,10 +427,10 @@ export default function Donate() {
                     }}
                   >
                     <option value="" disabled>Select an area</option>
-                    <option value="teaching">📚 Teaching (Computer Skills)</option>
-                    <option value="mentoring">⚙ Vocational Career Mentoring</option>
-                    <option value="healthcare">🩺 Health Camps Coordination</option>
-                    <option value="pr">📣 Public Relations & Writing</option>
+                    <option value="teaching">Teaching (Computer Skills)</option>
+                    <option value="mentoring">Vocational Career Mentoring</option>
+                    <option value="healthcare">Health Camps Coordination</option>
+                    <option value="pr">Public Relations & Writing</option>
                   </select>
                 </div>
 

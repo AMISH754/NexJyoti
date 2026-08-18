@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import emailjs from "@emailjs/browser";
 import { useNavigate, Link } from "react-router-dom";
 import {
   collection,
@@ -38,8 +39,14 @@ export default function AdminDashboard() {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [alert, setAlert] = useState(null);
-  const [deleteConfirm, setDeleteConfirm] = useState(null); // { type: 'employee'|'contact'|'volunteer'|'registration', id, title }
-  const [viewRegistration, setViewRegistration] = useState(null); // full registration object for detail modal
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [viewRegistration, setViewRegistration] = useState(null);
+  const [sendingEmail, setSendingEmail] = useState(false);
+
+  // Init EmailJS
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  }, []);
 
   // Firebase Auth state listener
   useEffect(() => {
@@ -162,9 +169,44 @@ export default function AdminDashboard() {
     showAlert("info", `Auto-generated ID Card (${autoId}) for ${reg.fullName}. Review and save!`);
   };
 
+  /* ── EmailJS auto-sender ── */
+  const sendEmail = async (reg, decision) => {
+    const typeName = reg.type === "volunteer" ? "Volunteer" : "Member";
+    const areas =
+      (reg.memberAreas?.join(", ") || reg.volunteerAreas?.join(", ") || "").trim();
+
+    const templateId = decision === "accepted"
+      ? import.meta.env.VITE_EMAILJS_ACCEPTANCE_TEMPLATE_ID
+      : import.meta.env.VITE_EMAILJS_REJECTION_TEMPLATE_ID;
+
+    const templateParams = {
+      to_name: reg.fullName,
+      email: reg.email,
+      type: typeName,
+      areas_line: areas
+        ? `We look forward to having you contribute in the area(s) of: ${areas}.`
+        : `We look forward to having you contribute to our mission.`,
+    };
+
+    setSendingEmail(true);
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        templateId,
+        templateParams
+      );
+      showAlert("success", `Mail Sent Successfully to ${reg.email}`);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      showAlert("error", `Mail Not Sent: ${err?.text || err?.message || "Failed to send email. Check EmailJS configuration."}`);
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
   const showAlert = (type, message) => {
     setAlert({ type, message });
-    setTimeout(() => setAlert(null), 4000);
+    setTimeout(() => setAlert(null), 5000);
   };
 
   const handleChange = (e) => {
@@ -272,7 +314,27 @@ export default function AdminDashboard() {
 
   const activeCount = employees.filter((e) => e.status === "Active").length;
 
-  if (loading && employees.length === 0 && contacts.length === 0 && volunteers.length === 0 && registrations.length === 0) {
+  const volunteerList = [
+    ...registrations.filter((r) => r.type === "volunteer"),
+    ...volunteers.map((v) => ({
+      ...v,
+      fullName: v.name,
+      submittedAt: v.createdAt,
+      type: "volunteer",
+      volunteerAreas: v.role ? [v.role] : [],
+      volunteerMotivation: v.message,
+      status: v.status || "pending",
+    })),
+  ].sort((a, b) => new Date(b.submittedAt || b.createdAt || 0) - new Date(a.submittedAt || a.createdAt || 0));
+
+  const memberList = registrations
+    .filter((r) => r.type === "member")
+    .sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+
+  const pendingVolunteers = volunteerList.filter((v) => (v.status || "pending") === "pending").length;
+  const pendingMembers = memberList.filter((m) => (m.status || "pending") === "pending").length;
+
+  if (loading && employees.length === 0 && contacts.length === 0 && registrations.length === 0) {
     return (
       <div className="admin-loading-screen">
         <div className="admin-spinner"></div>
@@ -311,8 +373,18 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      {/* Floating Toast Notification (always on top of modals & background) */}
+      {alert && (
+        <div className="admin-toast-container">
+          <div className={`admin-toast admin-toast-${alert.type}`}>
+            <span>{alert.message}</span>
+            <button className="admin-toast-close" onClick={() => setAlert(null)}>✕</button>
+          </div>
+        </div>
+      )}
+
       <div className="admin-content">
-        {/* Alert */}
+        {/* Inline Alert */}
         {alert && (
           <div
             className={`admin-alert ${alert.type === "error" ? "admin-alert-error" : "admin-alert-success"
@@ -347,18 +419,20 @@ export default function AdminDashboard() {
             style={{ cursor: "pointer", borderColor: activeTab === "volunteers" ? "var(--primary)" : "" }}
             onClick={() => setActiveTab("volunteers")}
           >
-            <div className="stat-number">{volunteers.length}</div>
-            <div className="stat-label">Volunteer Applications</div>
+            <div className="stat-number">{volunteerList.length}</div>
+            <div className="stat-label">
+              Volunteers ({pendingVolunteers} Pending)
+            </div>
           </div>
 
           <div
             className="admin-stat-card"
-            style={{ cursor: "pointer", borderColor: activeTab === "registrations" ? "var(--primary)" : "" }}
-            onClick={() => setActiveTab("registrations")}
+            style={{ cursor: "pointer", borderColor: activeTab === "members" ? "var(--primary)" : "" }}
+            onClick={() => setActiveTab("members")}
           >
-            <div className="stat-number">{registrations.length}</div>
+            <div className="stat-number">{memberList.length}</div>
             <div className="stat-label">
-              Registrations ({registrations.filter(r => r.status === "pending").length} Pending)
+              Members ({pendingMembers} Pending)
             </div>
           </div>
         </div>
@@ -384,14 +458,14 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab("volunteers")}
           >
             <span>Volunteers</span>
-            <span className="admin-tab-badge">{volunteers.length}</span>
+            <span className="admin-tab-badge">{volunteerList.length}</span>
           </button>
           <button
-            className={`admin-tab-btn ${activeTab === "registrations" ? "active" : ""}`}
-            onClick={() => setActiveTab("registrations")}
+            className={`admin-tab-btn ${activeTab === "members" ? "active" : ""}`}
+            onClick={() => setActiveTab("members")}
           >
-            <span>Registrations</span>
-            <span className="admin-tab-badge">{registrations.length}</span>
+            <span>Members</span>
+            <span className="admin-tab-badge">{memberList.length}</span>
           </button>
         </div>
 
@@ -584,15 +658,15 @@ export default function AdminDashboard() {
               <div>
                 <h3>Volunteer Applications</h3>
                 <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                  Applications submitted from the Get Involved / Donate page.
+                  Submissions from the Volunteer Registration &amp; Get Involved page.
                 </span>
               </div>
             </div>
             <div className="admin-panel-body">
-              {volunteers.length === 0 ? (
+              {volunteerList.length === 0 ? (
                 <div className="admin-empty-state">
                   <h4>No volunteer applications yet</h4>
-                  <p>Applications submitted on the Get Involved page will appear here.</p>
+                  <p>Applications submitted on the Volunteer Registration page will appear here.</p>
                 </div>
               ) : (
                 <div className="admin-table-wrapper">
@@ -601,45 +675,86 @@ export default function AdminDashboard() {
                       <tr>
                         <th>Date</th>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>Impact Area</th>
-                        <th>Motivation / Experience</th>
+                        <th>Email / Phone</th>
+                        <th>Location</th>
+                        <th>Areas of Interest</th>
+                        <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {volunteers.map((v) => (
+                      {volunteerList.map((v) => (
                         <tr key={v._docId}>
                           <td style={{ whiteSpace: "nowrap", fontSize: "0.85rem" }}>
-                            {formatDate(v.createdAt)}
+                            {formatDate(v.submittedAt || v.createdAt)}
                           </td>
-                          <td className="emp-name">{v.name}</td>
+                          <td className="emp-name">{v.fullName || v.name}</td>
                           <td>
-                            <a href={`mailto:${v.email}`} style={{ color: "var(--primary)", fontWeight: 600 }}>
-                              {v.email}
-                            </a>
+                            <div>
+                              <a href={`mailto:${v.email}`} style={{ color: "var(--primary)", fontWeight: 600 }}>
+                                {v.email}
+                              </a>
+                              {v.mobile && <div style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>{v.mobile}</div>}
+                            </div>
+                          </td>
+                          <td style={{ fontSize: "0.9rem" }}>{v.location || "—"}</td>
+                          <td style={{ fontSize: "0.88rem", maxWidth: "240px" }}>
+                            {v.volunteerAreas?.join(", ") || v.role || "—"}
                           </td>
                           <td>
-                            <span className="status-badge status-active">
-                              {v.role}
+                            <span
+                              className={`status-badge ${(v.status || "pending") === "accepted"
+                                  ? "status-active"
+                                  : (v.status || "pending") === "rejected"
+                                    ? "status-inactive"
+                                    : ""
+                                }`}
+                              style={(v.status || "pending") === "pending" ? {
+                                background: "rgba(245,158,11,0.1)",
+                                color: "#D97706",
+                                border: "none",
+                              } : {}}
+                            >
+                              <span className="status-dot" />
+                              {v.status || "pending"}
                             </span>
                           </td>
-                          <td style={{ maxWidth: "300px", lineHeight: 1.5 }}>
-                            {v.message || "—"}
-                          </td>
                           <td>
-                            <button
-                              onClick={() =>
-                                setDeleteConfirm({
-                                  type: "volunteer",
-                                  id: v._docId,
-                                  title: `Application of ${v.name}`,
-                                })
-                              }
-                              className="admin-btn admin-btn-danger admin-btn-sm"
-                            >
-                              Delete
-                            </button>
+                            <div className="actions-cell">
+                              <button
+                                onClick={() => handleConvertToEmployee(v)}
+                                className="admin-btn admin-btn-sm"
+                                style={{
+                                  background: "transparent",
+                                  color: "#D97706",
+                                  borderColor: "#D97706",
+                                  borderWidth: "1.5px",
+                                  borderStyle: "solid",
+                                }}
+                                title="Generate ID Card & Add to Official Records"
+                              >
+                                Generate ID
+                              </button>
+                              <button
+                                onClick={() => setViewRegistration(v)}
+                                className="admin-btn admin-btn-edit admin-btn-sm"
+                                title="View full details"
+                              >
+                                View
+                              </button>
+                              <button
+                                onClick={() =>
+                                  setDeleteConfirm({
+                                    type: v.submittedAt ? "registration" : "volunteer",
+                                    id: v._docId,
+                                    title: `Volunteer application of ${v.fullName || v.name}`,
+                                  })
+                                }
+                                className="admin-btn admin-btn-danger admin-btn-sm"
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -651,22 +766,22 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* TAB 4: REGISTRATIONS */}
-        {activeTab === "registrations" && (
+        {/* TAB 4: MEMBERS */}
+        {activeTab === "members" && (
           <div className="admin-panel">
             <div className="admin-panel-header">
               <div>
-                <h3>Volunteer &amp; Member Registrations</h3>
+                <h3>Member Registrations</h3>
                 <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                  Submissions from the /register page on the website.
+                  Submissions from the Member Registration page.
                 </span>
               </div>
             </div>
             <div className="admin-panel-body">
-              {registrations.length === 0 ? (
+              {memberList.length === 0 ? (
                 <div className="admin-empty-state">
-                  <h4>No registrations yet</h4>
-                  <p>Submissions from the Join Us page will appear here.</p>
+                  <h4>No member registrations yet</h4>
+                  <p>Submissions from the Member Registration page will appear here.</p>
                 </div>
               ) : (
                 <div className="admin-table-wrapper">
@@ -675,77 +790,68 @@ export default function AdminDashboard() {
                       <tr>
                         <th>Date</th>
                         <th>Name</th>
-                        <th>Type</th>
                         <th>Email / Phone</th>
                         <th>Location</th>
+                        <th>Contribution Areas</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {registrations.map((r) => (
-                        <tr key={r._docId}>
+                      {memberList.map((m) => (
+                        <tr key={m._docId}>
                           <td style={{ whiteSpace: "nowrap", fontSize: "0.85rem" }}>
-                            {formatDate(r.submittedAt)}
+                            {formatDate(m.submittedAt)}
                           </td>
-                          <td className="emp-name">{r.fullName}</td>
-                          <td>
-                            <span
-                              className="status-badge"
-                              style={{
-                                background: r.type === "volunteer"
-                                  ? "rgba(14,141,230,0.12)"
-                                  : "rgba(217,119,6,0.12)",
-                                color: r.type === "volunteer" ? "#0E8DE6" : "#D97706",
-                                border: "none",
-                              }}
-                            >
-                              {r.type === "volunteer" ? "Volunteer" : "Member"}
-                            </span>
-                          </td>
+                          <td className="emp-name">{m.fullName}</td>
                           <td>
                             <div>
-                              <a href={`mailto:${r.email}`} style={{ color: "var(--primary)", fontWeight: 600 }}>
-                                {r.email}
+                              <a href={`mailto:${m.email}`} style={{ color: "var(--primary)", fontWeight: 600 }}>
+                                {m.email}
                               </a>
-                              <div style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>{r.mobile}</div>
+                              <div style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>{m.mobile}</div>
                             </div>
                           </td>
-                          <td style={{ fontSize: "0.9rem" }}>{r.location || "—"}</td>
+                          <td style={{ fontSize: "0.9rem" }}>{m.location || "—"}</td>
+                          <td style={{ fontSize: "0.88rem", maxWidth: "240px" }}>
+                            {m.memberAreas?.join(", ") || "—"}
+                          </td>
                           <td>
                             <span
-                              className={`status-badge ${r.status === "accepted"
+                              className={`status-badge ${m.status === "accepted"
                                   ? "status-active"
-                                  : r.status === "rejected"
+                                  : m.status === "rejected"
                                     ? "status-inactive"
                                     : ""
                                 }`}
-                              style={r.status === "pending" ? {
+                              style={m.status === "pending" ? {
                                 background: "rgba(245,158,11,0.1)",
                                 color: "#D97706",
                                 border: "none",
                               } : {}}
                             >
                               <span className="status-dot" />
-                              {r.status || "pending"}
+                              {m.status || "pending"}
                             </span>
                           </td>
                           <td>
                             <div className="actions-cell">
                               <button
-                                onClick={() => handleConvertToEmployee(r)}
+                                onClick={() => handleConvertToEmployee(m)}
                                 className="admin-btn admin-btn-sm"
                                 style={{
-                                  background: "linear-gradient(135deg, #7c3aed, #9333ea)",
-                                  color: "#fff",
-                                  borderColor: "#7c3aed",
+                                  background: "transparent",
+                                  color: "#D97706",
+                                  borderColor: "#D97706",
+                                  borderWidth: "1.5px",
+                                  borderStyle: "solid",
                                 }}
                                 title="Generate ID Card & Add to Official Records"
                               >
                                 Generate ID
                               </button>
                               <button
-                                onClick={() => setViewRegistration(r)}
+                                onClick={() => setViewRegistration(m)}
                                 className="admin-btn admin-btn-edit admin-btn-sm"
                                 title="View full details"
                               >
@@ -755,8 +861,8 @@ export default function AdminDashboard() {
                                 onClick={() =>
                                   setDeleteConfirm({
                                     type: "registration",
-                                    id: r._docId,
-                                    title: `Registration of ${r.fullName}`,
+                                    id: m._docId,
+                                    title: `Member registration of ${m.fullName}`,
                                   })
                                 }
                                 className="admin-btn admin-btn-danger admin-btn-sm"
@@ -920,7 +1026,15 @@ export default function AdminDashboard() {
               <button className="admin-modal-close" onClick={() => setViewRegistration(null)}>✕</button>
             </div>
             <div className="admin-modal-body">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "20px" }}>
+              {alert && (
+                <div
+                  className={`admin-alert ${alert.type === "error" ? "admin-alert-error" : "admin-alert-success"}`}
+                  style={{ marginBottom: "16px" }}
+                >
+                  {alert.message}
+                </div>
+              )}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "10px", marginBottom: "20px" }}>
                 {[
                   ["Type", viewRegistration.type === "volunteer" ? "Volunteer" : "Member"],
                   ["Status", viewRegistration.status || "pending"],
@@ -1049,9 +1163,11 @@ export default function AdminDashboard() {
                   <button
                     className="admin-btn admin-btn-sm"
                     style={{
-                      background: "linear-gradient(135deg, #7c3aed, #9333ea)",
-                      color: "#fff",
-                      borderColor: "#7c3aed",
+                      background: "transparent",
+                      color: "#D97706",
+                      borderColor: "#D97706",
+                      borderWidth: "1.5px",
+                      borderStyle: "solid",
                       display: "inline-flex",
                       alignItems: "center",
                       gap: "5px",
@@ -1060,19 +1176,57 @@ export default function AdminDashboard() {
                   >
                     Generate ID Card &amp; Add Record
                   </button>
+
+                  {/* Accept + auto email */}
                   <button
                     className="admin-btn admin-btn-sm"
-                    style={{ background: "#10B981", color: "#fff", borderColor: "#10B981" }}
-                    onClick={() => handleUpdateRegistrationStatus(viewRegistration._docId, "accepted")}
+                    style={{
+                      background: "transparent",
+                      color: "#10B981",
+                      borderColor: "#10B981",
+                      borderWidth: "1.5px",
+                      borderStyle: "solid",
+                    }}
+                    disabled={sendingEmail}
+                    onClick={async () => {
+                      await handleUpdateRegistrationStatus(viewRegistration._docId, "accepted");
+                      await sendEmail(viewRegistration, "accepted");
+                    }}
+                    title="Mark as Accepted & send acceptance email automatically"
                   >
-                    Accept
+                    {sendingEmail ? "Sending..." : "Accept & Mail"}
                   </button>
+
+                  {/* Reject + auto email */}
                   <button
                     className="admin-btn admin-btn-danger admin-btn-sm"
-                    onClick={() => handleUpdateRegistrationStatus(viewRegistration._docId, "rejected")}
+                    disabled={sendingEmail}
+                    onClick={async () => {
+                      await handleUpdateRegistrationStatus(viewRegistration._docId, "rejected");
+                      await sendEmail(viewRegistration, "rejected");
+                    }}
+                    title="Mark as Rejected & send rejection email automatically"
                   >
-                    Reject
+                    {sendingEmail ? "Sending..." : "Reject & Mail"}
                   </button>
+
+                  {/* Resend mail only */}
+                  <button
+                    className="admin-btn admin-btn-sm"
+                    style={{
+                      background: "transparent",
+                      color: "#3B82F6",
+                      borderColor: "#3B82F6",
+                      borderWidth: "1.5px",
+                      borderStyle: "solid",
+                    }}
+                    disabled={sendingEmail}
+                    onClick={() => sendEmail(viewRegistration, viewRegistration.status === "rejected" ? "rejected" : "accepted")}
+                    title="Resend email without changing status"
+                  >
+                    {sendingEmail ? "Sending..." : "Resend Mail"}
+                  </button>
+
                   <button
                     className="admin-btn admin-btn-outline admin-btn-sm"
                     onClick={() => handleUpdateRegistrationStatus(viewRegistration._docId, "pending")}

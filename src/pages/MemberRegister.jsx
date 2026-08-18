@@ -112,7 +112,7 @@ const NavButtons = ({ onBack, onNext, nextLabel = "Continue →", disabled }) =>
 function StepPersonal({ data, errors, onChange, onNext }) {
   return (
     <div className="reg-section animate-reg-in">
-      {/* 🍯 Invisible Honeypot Spam Trap (Bots will fill this, humans won't) */}
+      {/* Invisible Honeypot Spam Trap */}
       <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden", pointerEvents: "none" }} aria-hidden="true">
         <label htmlFor="mem-website-hp">Leave this field blank</label>
         <input
@@ -283,7 +283,7 @@ function StepDeclaration({ data, errors, onChange, onSubmit, submitting, submitE
   const hasAnyDeclError = DECLARATIONS.some(d => errors[d.name]);
   return (
     <div className="reg-section animate-reg-in">
-      {/* 🍯 Invisible Honeypot Spam Trap */}
+      {/* Invisible Honeypot Spam Trap */}
       <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden", pointerEvents: "none" }} aria-hidden="true">
         <label htmlFor="mem-website-hp-decl">Leave this field blank</label>
         <input
@@ -419,7 +419,7 @@ export default function MemberRegister() {
   const handleSubmit = async () => {
     if (!validateDeclaration()) return;
 
-    // 🤖 Anti-Bot Honeypot & Timestamp Check
+    // Anti-Bot Honeypot & Timestamp Check
     if (data.website_hp || (Date.now() - loadTime < 1000)) {
       go(S.SUCCESS);
       return;

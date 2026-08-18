@@ -211,7 +211,6 @@ export default function Home() {
       <section className="mission-strip section-sm bg-off-white">
         <div className="container">
           <div className="mission-inner animate-on-scroll">
-            <div className="mission-icon">📖</div>
             <div className="mission-text">
               <h3>Our Mission</h3>
               <p>To provide inclusive, quality education and skill development opportunities to underprivileged children and youth, enabling them to lead dignified and self-reliant lives.</p>
@@ -233,7 +232,6 @@ export default function Home() {
 
           <div className="programs-grid">
             <div className="prog-card animate-on-scroll" id="progEducation">
-              <div className="prog-card-icon">📚</div>
               <div className="prog-card-body">
                 <span className="tag tag-blue">Education</span>
                 <h3>Children's Education</h3>
@@ -248,7 +246,6 @@ export default function Home() {
             </div>
 
             <div className="prog-card animate-on-scroll delay-1" id="progSkill">
-              <div className="prog-card-icon">🛠️</div>
               <div className="prog-card-body">
                 <span className="tag tag-gold">Skilling</span>
                 <h3>Youth Skill Development</h3>
@@ -263,7 +260,6 @@ export default function Home() {
             </div>
 
             <div className="prog-card animate-on-scroll delay-2" id="progWomen">
-              <div className="prog-card-icon">👩</div>
               <div className="prog-card-body">
                 <span className="tag tag-purple">Women</span>
                 <h3>Women Empowerment</h3>
@@ -278,7 +274,6 @@ export default function Home() {
             </div>
 
             <div className="prog-card animate-on-scroll delay-3" id="progCommunity">
-              <div className="prog-card-icon">🌱</div>
               <div className="prog-card-body">
                 <span className="tag tag-green">Community</span>
                 <h3>Community Development</h3>
@@ -303,7 +298,6 @@ export default function Home() {
               <div className="why-img-wrap">
                 <img src="/assets/images/why-us.png" alt="Students learning at NexJyoti center" />
                 <div className="why-badge-float">
-                  <span>🏆</span>
                   <div>
                     <strong>Est. 2021</strong>
                   </div>
@@ -317,21 +311,18 @@ export default function Home() {
               <p className="mt-16">At NexJyoti, we believe in long-term, sustainable impact. Our data-driven approach ensures every rupee donated creates measurable change in real lives.</p>
               <div className="why-features mt-32">
                 <div className="why-feature">
-                  <div className="wf-icon">🎯</div>
                   <div>
                     <h4>Data-Driven Impact</h4>
                     <p>Every program is evaluated using rigorous metrics and third-party audits.</p>
                   </div>
                 </div>
                 <div className="why-feature">
-                  <div className="wf-icon">🤝</div>
                   <div>
                     <h4>Community-First Approach</h4>
                     <p>We work with communities, not just for them — local ownership drives our success.</p>
                   </div>
                 </div>
                 <div className="why-feature">
-                  <div className="wf-icon">💎</div>
                   <div>
                     <h4>Full Transparency</h4>
                     <p>80G registered. Annual reports published openly.</p>
@@ -413,7 +404,7 @@ export default function Home() {
             <p>As little as ₹500 can provide a child with an entire month of quality education. Be their Jyoti.</p>
           </div>
           <div className="cta-actions">
-            <Link to="/donate" className="btn btn-primary btn-lg" id="ctaDonate">Donate Now ❤️</Link>
+            <Link to="/donate" className="btn btn-primary btn-lg" id="ctaDonate">Donate Now</Link>
             <Link to="/donate#volunteer" className="btn btn-outline btn-lg" id="ctaVolunteer">Volunteer With Us</Link>
           </div>
         </div>

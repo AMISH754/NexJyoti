@@ -108,7 +108,6 @@ export default function Verify() {
         }}
       >
         <div className="card text-center" style={{ padding: "3.5rem 2rem", maxWidth: "560px" }}>
-          <div style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>❌</div>
           <h2 style={{ color: "var(--text-dark)", marginBottom: "1rem" }}>Connection Error</h2>
           <p style={{ color: "var(--text-muted)", marginBottom: "2rem", lineHeight: 1.6 }}>
             Unable to connect to the verification server. Please check your internet connection or try again later.
@@ -134,7 +133,21 @@ export default function Verify() {
       >
         <div className="container" style={{ maxWidth: "560px" }}>
           <div className="card" style={{ padding: "3rem 2.5rem", textAlign: "center", boxShadow: "var(--shadow-lg)" }}>
-            <div style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>🪪</div>
+            <img
+              src="/assets/images/logo.jpg"
+              alt="NexJyoti Logo"
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                margin: "0 auto 12px",
+                display: "block",
+                boxShadow: "var(--shadow-md)",
+              }}
+              onError={(e) => {
+                e.target.style.display = "none";
+              }}
+            />
             <span className="section-label" style={{ marginBottom: "8px" }}>Public Registry</span>
             <h1 style={{ fontSize: "1.8rem", color: "var(--text-dark)", marginBottom: "10px" }}>
               Official ID Verification
@@ -156,7 +169,7 @@ export default function Verify() {
                 />
               </div>
               <button type="submit" className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }}>
-                🔍 Verify Credential
+                Verify Credential
               </button>
             </form>
 
@@ -198,11 +211,30 @@ export default function Verify() {
               style={{
                 background: "var(--hero-bg)",
                 color: "white",
-                padding: "1.8rem 1.5rem",
+                padding: "2rem 1.5rem",
                 textAlign: "center",
                 position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
+              <img
+                src="/assets/images/logo.jpg"
+                alt="NexJyoti Logo"
+                style={{
+                  width: "56px",
+                  height: "56px",
+                  borderRadius: "50%",
+                  backgroundColor: "#ffffff",
+                  padding: "2px",
+                  marginBottom: "10px",
+                  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.25)",
+                }}
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
               <span
                 style={{
                   display: "inline-block",
@@ -216,10 +248,10 @@ export default function Verify() {
               >
                 Authenticated Record
               </span>
-              <h2 style={{ color: "white", margin: 0, fontSize: "1.5rem", fontWeight: "700" }}>
+              <h2 style={{ color: "#ffffff", margin: 0, fontSize: "1.5rem", fontWeight: "700" }}>
                 Official ID Verification
               </h2>
-              <p style={{ margin: "4px 0 0", fontSize: "0.9rem", opacity: 0.9 }}>
+              <p style={{ margin: "6px 0 0", fontSize: "0.95rem", color: "#ffffff", fontWeight: "600", letterSpacing: "0.3px" }}>
                 NexJyoti Education Foundation
               </p>
             </div>
@@ -437,11 +469,11 @@ export default function Verify() {
               {/* Action Buttons */}
               <div style={{ marginTop: "2rem", display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
                 <Link to="/verify" className="btn btn-outline-blue btn-sm">
-                  🔍 Search Another ID
+                  Search Another ID
                 </Link>
                 {isAdmin && (
                   <Link to="/admin/dashboard" className="btn btn-primary btn-sm">
-                    ⚙️ Admin Dashboard
+                    Admin Dashboard
                   </Link>
                 )}
               </div>
@@ -449,7 +481,6 @@ export default function Verify() {
           </div>
         ) : (
           <div className="card text-center" style={{ padding: "4rem 2rem", boxShadow: "var(--shadow-lg)" }}>
-            <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>⚠️</div>
             <h2 style={{ color: "var(--text-dark)", marginBottom: "1rem" }}>Verification Failed</h2>
             <p style={{ color: "var(--text-muted)", marginBottom: "2rem", lineHeight: 1.6 }}>
               The Employee ID <strong style={{ color: "var(--primary)" }}>{employeeId}</strong> could not be found in our official registry.

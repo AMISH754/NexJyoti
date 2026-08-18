@@ -6,7 +6,6 @@ const teamMembers = [
     id: "teamMember1",
     name: "Shivnarayan Kumar",
     role: "Founder & Executive Director",
-    emoji: "👨🏽‍💼",
     imageSrc: "/assets/images/shiv.jpeg",
     gradient: "linear-gradient(135deg, #168e6c, #0d5540)",
     linkedinUrl: "#",
@@ -16,7 +15,6 @@ const teamMembers = [
     id: "teamMember2",
     name: "Gagan Mahto",
     role: "Co-Founder & Director-Community & Human Development",
-    emoji: "👩🏽‍💼",
     imageSrc: "/assets/images/gagan.jpeg",
     gradient: "linear-gradient(135deg, #ef9535, #c86e0f)",
     linkedinUrl: "https://www.linkedin.com/in/gagankrmahto/",
@@ -27,7 +25,6 @@ const teamMembers = [
     id: "teamMember3",
     name: "Akash Kumar Dubey",
     role: "Director- Technology Innovation & Institutional Systems ",
-    emoji: "👨🏽‍🔬",
     imageSrc: "/assets/images/akash.jpeg",
     gradient: "linear-gradient(135deg, #1e88e5, #0d47a1)",
     linkedinUrl: "https://www.linkedin.com/in/akashkumardubey/",
@@ -38,7 +35,6 @@ const teamMembers = [
     id: "teamMember4",
     name: "Ashish Kumar",
     role: "Director- Academic Innovation & Student Development",
-    emoji: "👩🏽‍🎨",
     imageSrc: "/assets/images/ashish.jpeg",
     gradient: "linear-gradient(135deg, #e040fb, #aa00ff)",
     linkedinUrl: "#",
@@ -104,7 +100,6 @@ export default function About() {
             <div className="why-img-wrap">
               <img src="/assets/images/why-us2.jpg" alt="Students learning at NexJyoti center" style={{ height: "360px" }} />
               <div className="why-badge-float">
-                <span>💡</span>
                 <div>
                   <strong>Est. 2021</strong>
                   <small>Transforming Lives Every Day</small>
@@ -151,7 +146,6 @@ export default function About() {
           <div className="grid-3" id="valuesGrid">
             {/* Value 1 */}
             <div className="card text-center animate-on-scroll" id="valEcoCard" style={{ padding: "32px" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>📚</div>
               <h3 style={{ marginBottom: "12px" }}>Transformative Education</h3>
               <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>
                 We believe education is the strongest force for social and economic transformation. By providing foundational learning, mentorship, and preparation for institutions like Jawahar Navodaya Vidyalayas, Netarhat schools, and other centers of excellence, we empower children from marginalized communities to rise beyond poverty and unlock lifelong opportunities.
@@ -160,7 +154,6 @@ export default function About() {
 
             {/* Value 2 */}
             <div className="card text-center animate-on-scroll delay-1" id="valTransCard" style={{ padding: "32px" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>🌱</div>
               <h3 style={{ marginBottom: "12px" }}>Holistic Development & Human Values</h3>
               <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>
                 True progress begins with character. Alongside academics, we nurture confidence, discipline, creativity, leadership, and compassion through yoga, arts, dance, personality development, and Sanskar Varga — shaping not only successful students, but responsible and value-driven human beings.              </p>
@@ -168,7 +161,6 @@ export default function About() {
 
             {/* Value 3 */}
             <div className="card text-center animate-on-scroll delay-2" id="valEmpCard" style={{ padding: "32px" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "1.5rem" }}>🌍</div>
               <h3 style={{ marginBottom: "12px" }}>Scalable Community Impact</h3>
               <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>
                 What began as a grassroots effort among ragpickers in Ranchi has transformed into a scalable model that now operates across multiple states. By empowering local communities to take ownership of education and development initiatives, we create sustainable change that multiplies with every new center we open.

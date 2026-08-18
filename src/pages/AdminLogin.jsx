@@ -70,7 +70,7 @@ export default function AdminLogin() {
 
         {error && (
           <div className="admin-alert admin-alert-error">
-            <span>⚠️</span> {error}
+            {error}
           </div>
         )}
 
@@ -112,7 +112,7 @@ export default function AdminLogin() {
                   <span className="admin-spinner"></span> Authenticating...
                 </>
               ) : (
-                <>🔐 Login to Dashboard</>
+                <>Login to Dashboard</>
               )}
             </button>
           </div>

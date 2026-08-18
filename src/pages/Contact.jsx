@@ -30,7 +30,7 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🤖 Anti-Bot Protection:
+    // Anti-Bot Protection:
     // 1. Honeypot check: If invisible botField is filled, silently ignore
     // 2. Speed check: If filled in less than 700ms (automated script), ignore
     if (formData.botField || (Date.now() - loadTime < 700)) {
@@ -84,7 +84,6 @@ export default function Contact() {
             <div className="contact-info-list" id="contactInfoList">
               {/* Address Card */}
               <div className="contact-item-card" id="contactAddress">
-                <div className="contact-icon-wrapper">📍</div>
                 <div className="contact-details">
                   <h4>Office Location</h4>
                   <p style={{ margin: 0, fontSize: "0.95rem" }}> Regd. Office: Irgu Toli Road , Raja Hata Lane , Kishore Ganj , Ranchi , Jharkhand, India - 834001   </p>
@@ -93,7 +92,6 @@ export default function Contact() {
 
               {/* Email Card */}
               <div className="contact-item-card" id="contactEmail">
-                <div className="contact-icon-wrapper">✉</div>
                 <div className="contact-details">
                   <h4>General Inquiries</h4>
                   <p style={{ margin: 0, fontSize: "0.95rem" }}> info@nexjyoti.org</p>
@@ -105,7 +103,6 @@ export default function Contact() {
 
               {/* Phone Card */}
               <div className="contact-item-card" id="contactPhone">
-                <div className="contact-icon-wrapper">📞</div>
                 <div className="contact-details">
                   <h4>Telephone Hotline</h4>
                   <p style={{ margin: 0, fontSize: "0.95rem" }}>+91 9572570256</p>
@@ -119,7 +116,6 @@ export default function Contact() {
           <div className="card form-card animate-on-scroll delay-1" id="inquiryFormCard">
             {submitted ? (
               <div className="alert alert-success" id="formSuccess" style={{ padding: "24px", textAlign: "center", borderRadius: "var(--radius-md)" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: "12px" }}>✉️</div>
                 <h4 style={{ color: "#065f46", marginBottom: "8px", fontWeight: 700 }}>Message Sent Successfully!</h4>
                 <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
                   Thank you, <strong>{formData.name}</strong>, for reaching out. A representative from NexJyoti will get back to you at <strong>{formData.email}</strong> within 24-48 business hours.
@@ -132,7 +128,7 @@ export default function Contact() {
               <form onSubmit={handleSubmit}>
                 <h3 style={{ marginBottom: "1.5rem", color: "var(--primary-dark)" }}>Send an Inquiry</h3>
 
-                {/* 🍯 Invisible Honeypot Spam Trap (Bots will fill this, humans won't) */}
+                {/* Invisible Honeypot Spam Trap */}
                 <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
                   <label htmlFor="website_hp">Leave this field blank</label>
                   <input
