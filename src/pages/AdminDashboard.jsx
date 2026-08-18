@@ -17,6 +17,7 @@ import "../styles/admin.css";
 
 const EMPTY_FORM = {
   name: "",
+  email: "",
   employeeId: "",
   designation: "",
   department: "",
@@ -156,6 +157,7 @@ export default function AdminDashboard() {
 
     setForm({
       name: reg.fullName || "",
+      email: reg.email || "",
       employeeId: autoId,
       designation: autoDesignation,
       department: autoDept,
@@ -223,6 +225,7 @@ export default function AdminDashboard() {
   const openEditForm = (emp) => {
     setForm({
       name: emp.name || "",
+      email: emp.email || "",
       employeeId: emp.employeeId || "",
       designation: emp.designation || "",
       department: emp.department || "",
@@ -527,7 +530,14 @@ export default function AdminDashboard() {
                               }}
                             />
                           </td>
-                          <td className="emp-name">{emp.name}</td>
+                          <td className="emp-name">
+                            <div>{emp.name}</div>
+                            {emp.email && (
+                              <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 400 }}>
+                                {emp.email}
+                              </div>
+                            )}
+                          </td>
                           <td className="emp-id">{emp.employeeId}</td>
                           <td>{emp.designation}</td>
                           <td>{emp.department}</td>
@@ -598,7 +608,7 @@ export default function AdminDashboard() {
               {contacts.length === 0 ? (
                 <div className="admin-empty-state">
                   <h4>No contact inquiries yet</h4>
-                  <p>Inquiries submitted on the Contact page will appear here.</p>
+                  <p>Inquiries submitted via the Contact Us page will appear here.</p>
                 </div>
               ) : (
                 <div className="admin-table-wrapper">
@@ -607,10 +617,10 @@ export default function AdminDashboard() {
                       <tr>
                         <th>Date</th>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Contact Info</th>
                         <th>Subject</th>
                         <th>Message</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -621,19 +631,22 @@ export default function AdminDashboard() {
                           </td>
                           <td className="emp-name">{c.name}</td>
                           <td>
-                            <a href={`mailto:${c.email}`} style={{ color: "var(--primary)", fontWeight: 600 }}>
-                              {c.email}
-                            </a>
+                            <div>
+                              <a href={`mailto:${c.email}`} style={{ color: "var(--primary)", fontWeight: 600 }}>
+                                {c.email}
+                              </a>
+                              <div style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>{c.phone || "—"}</div>
+                            </div>
                           </td>
-                          <td style={{ fontWeight: 600 }}>{c.subject}</td>
-                          <td style={{ maxWidth: "300px", lineHeight: 1.5 }}>{c.message}</td>
+                          <td style={{ fontWeight: 600, color: "var(--text-dark)" }}>{c.subject || "General Inquiry"}</td>
+                          <td style={{ fontSize: "0.88rem", maxWidth: "300px" }}>{c.message}</td>
                           <td>
                             <button
                               onClick={() =>
                                 setDeleteConfirm({
                                   type: "contact",
                                   id: c._docId,
-                                  title: `Message from ${c.name}`,
+                                  title: `Inquiry from ${c.name}`,
                                 })
                               }
                               className="admin-btn admin-btn-danger admin-btn-sm"
@@ -658,7 +671,7 @@ export default function AdminDashboard() {
               <div>
                 <h3>Volunteer Applications</h3>
                 <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                  Submissions from the Volunteer Registration &amp; Get Involved page.
+                  Review volunteer submissions, send acceptance/rejection emails, or generate staff IDs.
                 </span>
               </div>
             </div>
@@ -666,7 +679,7 @@ export default function AdminDashboard() {
               {volunteerList.length === 0 ? (
                 <div className="admin-empty-state">
                   <h4>No volunteer applications yet</h4>
-                  <p>Applications submitted on the Volunteer Registration page will appear here.</p>
+                  <p>Applications from the Volunteer Registration page will appear here.</p>
                 </div>
               ) : (
                 <div className="admin-table-wrapper">
@@ -675,11 +688,11 @@ export default function AdminDashboard() {
                       <tr>
                         <th>Date</th>
                         <th>Name</th>
-                        <th>Email / Phone</th>
+                        <th>Contact</th>
                         <th>Location</th>
-                        <th>Areas of Interest</th>
+                        <th>Interests</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -688,28 +701,28 @@ export default function AdminDashboard() {
                           <td style={{ whiteSpace: "nowrap", fontSize: "0.85rem" }}>
                             {formatDate(v.submittedAt || v.createdAt)}
                           </td>
-                          <td className="emp-name">{v.fullName || v.name}</td>
+                          <td className="emp-name">{v.fullName}</td>
                           <td>
                             <div>
                               <a href={`mailto:${v.email}`} style={{ color: "var(--primary)", fontWeight: 600 }}>
                                 {v.email}
                               </a>
-                              {v.mobile && <div style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>{v.mobile}</div>}
+                              <div style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>{v.mobile || v.phone || "—"}</div>
                             </div>
                           </td>
                           <td style={{ fontSize: "0.9rem" }}>{v.location || "—"}</td>
                           <td style={{ fontSize: "0.88rem", maxWidth: "240px" }}>
-                            {v.volunteerAreas?.join(", ") || v.role || "—"}
+                            {v.volunteerAreas?.join(", ") || "—"}
                           </td>
                           <td>
                             <span
-                              className={`status-badge ${(v.status || "pending") === "accepted"
+                              className={`status-badge ${v.status === "accepted"
                                   ? "status-active"
-                                  : (v.status || "pending") === "rejected"
+                                  : v.status === "rejected"
                                     ? "status-inactive"
                                     : ""
                                 }`}
-                              style={(v.status || "pending") === "pending" ? {
+                              style={v.status === "pending" ? {
                                 background: "rgba(245,158,11,0.1)",
                                 color: "#D97706",
                                 border: "none",
@@ -745,9 +758,9 @@ export default function AdminDashboard() {
                               <button
                                 onClick={() =>
                                   setDeleteConfirm({
-                                    type: v.submittedAt ? "registration" : "volunteer",
+                                    type: v.type === "volunteer" && !v.submittedAt ? "volunteer" : "registration",
                                     id: v._docId,
-                                    title: `Volunteer application of ${v.fullName || v.name}`,
+                                    title: `Volunteer application of ${v.fullName}`,
                                   })
                                 }
                                 className="admin-btn admin-btn-danger admin-btn-sm"
@@ -771,17 +784,17 @@ export default function AdminDashboard() {
           <div className="admin-panel">
             <div className="admin-panel-header">
               <div>
-                <h3>Member Registrations</h3>
+                <h3>Membership Applications</h3>
                 <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                  Submissions from the Member Registration page.
+                  Review executive member applications, send emails, or generate staff IDs.
                 </span>
               </div>
             </div>
             <div className="admin-panel-body">
               {memberList.length === 0 ? (
                 <div className="admin-empty-state">
-                  <h4>No member registrations yet</h4>
-                  <p>Submissions from the Member Registration page will appear here.</p>
+                  <h4>No membership applications yet</h4>
+                  <p>Applications from the Member Registration page will appear here.</p>
                 </div>
               ) : (
                 <div className="admin-table-wrapper">
@@ -790,11 +803,11 @@ export default function AdminDashboard() {
                       <tr>
                         <th>Date</th>
                         <th>Name</th>
-                        <th>Email / Phone</th>
+                        <th>Contact</th>
                         <th>Location</th>
-                        <th>Contribution Areas</th>
+                        <th>Areas</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -905,6 +918,17 @@ export default function AdminDashboard() {
                       value={form.name}
                       onChange={handleChange}
                       required
+                    />
+                  </div>
+                  <div className="admin-field">
+                    <label htmlFor="emp-email">Email Address</label>
+                    <input
+                      id="emp-email"
+                      type="email"
+                      name="email"
+                      placeholder="e.g. rahul@nexjyoti.org"
+                      value={form.email || ""}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="admin-field">

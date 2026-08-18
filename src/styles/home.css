@@ -519,20 +519,110 @@ body.dark .prog-card-highlight {
   transform: scale(1.08);
 }
 
-.slider-dots { display: flex; gap: 8px; }
+/* ── Testimonial Tabs ── */
+.testi-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.testi-tab-btn {
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.testi-tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.testi-tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+.testi-tab-badge {
+  background: rgba(255, 255, 255, 0.25);
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.testi-tab-btn:not(.active) .testi-tab-badge {
+  background: var(--off-white);
+  color: var(--text-muted);
+}
+
+.testi-linkedin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(14, 141, 230, 0.1);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--transition);
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.testi-linkedin:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.slider-dots { 
+  display: flex; 
+  gap: 6px; 
+  max-width: 320px; 
+  overflow-x: auto; 
+  padding: 4px 0;
+  scrollbar-width: none;
+}
+.slider-dots::-webkit-scrollbar { display: none; }
+
+.slider-counter {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  min-width: 44px;
+  text-align: center;
+}
 
 .slider-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   border: none;
   background: var(--border);
   cursor: pointer;
   transition: all var(--transition);
+  flex-shrink: 0;
 }
 .slider-dot.active {
   background: var(--primary);
-  width: 28px;
+  width: 22px;
   border-radius: 5px;
 }
 

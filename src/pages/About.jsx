@@ -5,10 +5,10 @@ const teamMembers = [
   {
     id: "teamMember1",
     name: "Shivnarayan Kumar",
-    role: "Founder & Executive Director",
+    role: "Founder, Chairman & Executive Director",
     imageSrc: "/assets/images/shiv.jpeg",
     gradient: "linear-gradient(135deg, #168e6c, #0d5540)",
-    linkedinUrl: "#",
+    linkedinUrl: "https://www.linkedin.com/in/physicswithsn/",
     twitterUrl: "#",
   },
   {
@@ -37,7 +37,7 @@ const teamMembers = [
     role: "Director- Academic Innovation & Student Development",
     imageSrc: "/assets/images/ashish.jpeg",
     gradient: "linear-gradient(135deg, #e040fb, #aa00ff)",
-    linkedinUrl: "#",
+    linkedinUrl: "https://www.linkedin.com/in/ashish-kumar-9ba64521b/",
     twitterUrl: "#",
     delay: 3,
   },

@@ -371,6 +371,30 @@ export default function Verify() {
                   </div>
                 </div>
 
+                {employee.email && (
+                  <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "0.8rem" }}>
+                    <small
+                      style={{
+                        color: "var(--text-muted)",
+                        fontSize: "0.75rem",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Email Address
+                    </small>
+                    <div style={{ fontSize: "1.05rem", color: "var(--text-dark)", marginTop: "4px", fontWeight: "500" }}>
+                      <a
+                        href={`mailto:${employee.email}`}
+                        style={{ color: "var(--primary)", textDecoration: "none", fontWeight: "600" }}
+                      >
+                        {employee.email}
+                      </a>
+                    </div>
+                  </div>
+                )}
+
                 <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "0.8rem" }}>
                   <small
                     style={{
