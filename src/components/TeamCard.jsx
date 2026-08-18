@@ -4,7 +4,6 @@ export default function TeamCard({
   id,
   name,
   role,
-  emoji,
   imageSrc,
   image,
   gradient = "linear-gradient(135deg, var(--primary), var(--primary-light))",

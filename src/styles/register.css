@@ -125,11 +125,6 @@
   margin-top: 12px;
 }
 
-/* ── Section ── */
-.reg-section {
-  /* Sections rendered one at a time */
-}
-
 .animate-reg-in {
   animation: regFadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -1063,12 +1058,7 @@ select.reg-input {
   box-shadow: 0 8px 30px var(--gold-glow) !important;
 }
 
-/* ── Member pathway badge gold ── */
-.reg-pathway-member {
-  background: rgba(217,119,6,0.1);
-  color: var(--gold-dark);
-  border: 1px solid rgba(217,119,6,0.25);
-}
+
 
 @media (max-width: 700px) {
   .reg-landing-cards {

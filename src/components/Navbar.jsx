@@ -116,9 +116,6 @@ export default function Navbar() {
         <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
           Contact
         </NavLink>
-        <NavLink to="/register" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
-          Join Us
-        </NavLink>
         <div className="nav-drawer-actions">
           <Link to="/register" className="btn btn-outline-blue btn-sm" onClick={closeMenu}>
             Join Us

@@ -8,8 +8,6 @@ import {
   updateDoc,
   deleteDoc,
   doc,
-  orderBy,
-  query,
 } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { db, auth } from "../firebase";
