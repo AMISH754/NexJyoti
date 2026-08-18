@@ -441,18 +441,6 @@ body.dark .prog-card-highlight {
   position: relative;
 }
 
-.testi-quote {
-  font-family: 'Outfit', sans-serif;
-  font-size: 6rem;
-  color: var(--gold-light);
-  opacity: 0.35;
-  line-height: 0.5;
-  margin-bottom: 20px;
-  position: absolute;
-  top: 28px;
-  left: 40px;
-}
-
 .testi-text {
   font-size: 1.05rem;
   color: var(--text-body);

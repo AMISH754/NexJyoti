@@ -2,18 +2,19 @@
 
 **🔗 Live Demo**: [https://nexjyoti.org](https://nexjyoti.org)
 
-Welcome to the official repository for the **NexJyoti Education Foundation** web application. This is a high-performance, responsive Single Page Application (SPA) designed to empower communities, promote educational transparency, and facilitate secure donations.
+Welcome to the official repository for the **NexJyoti Education Foundation** web application. This is a high-performance, responsive Single Page Application (SPA) designed to empower communities, promote educational transparency, manage official staff credentials, and facilitate secure donations.
 
-The application is built using **React 18**, **Vite**, **Vanilla HSL CSS**, and is set up to host on **Firebase Hosting**.
+The application is built using **React 18**, **Vite**, **Firebase (Auth & Firestore)**, **EmailJS**, and **Vanilla HSL CSS**, hosted seamlessly on **Firebase Hosting**.
 
 ---
 
 ## 🛠️ Tech Stack & Architecture
 
-*   **Core**: [React 18](https://react.dev/)
+*   **Frontend**: [React 18](https://react.dev/) + [Vite 5](https://vitejs.dev/)
 *   **Routing**: [React Router DOM 6](https://reactrouter.com/)
-*   **Build Tool**: [Vite 5](https://vitejs.dev/)
-*   **Styles**: Premium Vanilla CSS using CSS Variables (HSL) supporting a dynamic **Light/Dark Mode**.
+*   **Backend & Database**: [Firebase Firestore](https://firebase.google.com/docs/firestore) + [Firebase Authentication](https://firebase.google.com/docs/auth)
+*   **Email Automation**: [EmailJS](https://www.emailjs.com/) for automated acceptance/rejection applicant notices
+*   **Styling**: Modern Vanilla CSS with HSL design tokens, responsive CSS grid/flexbox, and dynamic **Light/Dark Mode**.
 *   **Deployment**: [Firebase Hosting](https://firebase.google.com/docs/hosting)
 
 ---
@@ -22,141 +23,147 @@ The application is built using **React 18**, **Vite**, **Vanilla HSL CSS**, and 
 
 ```text
 d:\ngo\
-├── public/                 # Static assets (logos, icons, images)
+├── public/                 # Static assets (logos, icons, images, documents)
 │   └── assets/
-│       └── images/         # Logo files, background images, and team photos
+│       ├── images/         # Logo files, background images, and team photos
+│       └── documents/      # Annual reports and PDF publications
 ├── src/
 │   ├── components/         # Reusable UI components
 │   │   ├── BackToTop.jsx   # Dynamic scroll-to-top button
-│   │   ├── Footer.jsx      # Multi-column dynamic footer
-│   │   ├── Navbar.jsx      # Mobile-drawer responsive navbar with theme toggle & logo fallback
-│   │   ├── TeamCard.jsx    # Component showcasing organization members (image/emoji support)
+│   │   ├── Footer.jsx      # Multi-column dynamic footer with quick links & verify link
+│   │   ├── Navbar.jsx      # Mobile-drawer responsive navbar with theme toggle
+│   │   ├── TeamCard.jsx    # Component showcasing organization members & social links
 │   │   └── ScrollToTop.jsx # Router listener that scrolls to top, respecting hash anchors
 │   ├── pages/              # Main routing views
-│   │   ├── About.jsx       # Vision, Mission, Values & Pioneers team grid
+│   │   ├── About.jsx       # Vision, Mission, Core Principles & Pioneers team grid
+│   │   ├── AdminDashboard.jsx # Admin management portal (Staff, Inquiries, Volunteers, Members)
+│   │   ├── AdminLogin.jsx  # Secure Firebase Auth login for foundation administrators
 │   │   ├── AnnualReport.jsx# Interactive Annual Report with Founder's message & metrics
-│   │   ├── Contact.jsx     # Google maps, Ranchi office contacts, and contact forms
-│   │   ├── Donate.jsx      # Secure Pledge Portal & Volunteer application form
-│   │   ├── Home.jsx        # Landing page with hero section & program cards
-│   │   ├── Privacy.jsx     # NGO Privacy Policy compliance statement page
-│   │   ├── Programs.jsx    # 6 detailed scrollable program pillars with quick links
-│   │   └── Terms.jsx       # Terms & Conditions page
+│   │   ├── Contact.jsx     # Contact inquiry form & office details
+│   │   ├── Donate.jsx      # Secure Pledge Portal & Donation options
+│   │   ├── Home.jsx        # Landing page with interactive tabbed testimonials & programs
+│   │   ├── MemberRegister.jsx    # Executive Member Application Portal
+│   │   ├── NotFound.jsx    # 404 Error page
+│   │   ├── Privacy.jsx     # NGO Privacy Policy compliance statement
+│   │   ├── Programs.jsx    # 6 detailed scrollable program pillars
+│   │   ├── Register.jsx    # Get Involved registration landing page
+│   │   ├── Terms.jsx       # Terms & Conditions compliance page
+│   │   ├── Verify.jsx      # Public Official ID Verification Portal & Credential Cards
+│   │   └── VolunteerRegister.jsx # Volunteer Application Portal
 │   ├── styles/
-│   │   ├── styles.css      # Core HSL design system, page styling & dark theme variables
-│   │   └── home.css        # Homepage specific animations & layouts
+│   │   ├── admin.css       # Admin dashboard & management portal styles
+│   │   ├── home.css        # Homepage animations, hero & testimonial sliders
+│   │   └── styles.css      # Core HSL design system & global components
+│   ├── firebase.js         # Firebase initialization (Auth & Firestore)
 │   ├── App.jsx             # React routing configurations & page layout
 │   └── main.jsx            # React root entry point
 ├── index.html              # HTML shell & SEO meta configuration
 ├── package.json            # Scripts & project dependencies
 ├── firebase.json           # Firebase Hosting configuration (Rewrites all paths to index.html)
-└── .firebaserc             # Firebase active project mappings (nexjyoti-f92e5)
+└── .firebaserc             # Firebase active project mappings
 ```
+
+---
+
+## ✨ Key Features
+
+1.  **Tabbed Voices of NexJyoti Testimonials**:
+    *   **Leadership Perspectives (10 Leaders)**: Features reflections and LinkedIn integrations for the Leadership Council.
+    *   **Voices of Our Volunteers (12 Volunteers)**: Dedicated volunteer recognition quotes and stories of impact with responsive slider navigation.
+2.  **Public Credential & ID Verification Portal (`/verify`)**:
+    *   Search and authenticate official staff/volunteer IDs (e.g. `NXJY-FD-001`, `NXJY-VL-001`).
+    *   Generates official digital verification credential cards with photo, designation, department, email, and digital seal.
+3.  **Comprehensive Admin Portal (`/admin/dashboard`)**:
+    *   **Staff Registry**: Add, edit, and delete staff records with instant live reflection on verification cards.
+    *   **Inquiries Inbox**: Manage and view inquiries submitted via the Contact page.
+    *   **Volunteer & Member Management**: Review applications, send automated EmailJS acceptance/rejection emails, or convert applicants directly into official staff with auto-generated IDs.
+4.  **Volunteer & Executive Member Registration Portals**:
+    *   Multi-field detailed application forms with area selection, motivation, skills, and mode preferences stored in Firestore.
+5.  **6-Pillar Scrollable Programs Layout**:
+    *   Detailed coverage of Children's Education, Youth Skilling, Women Empowerment, and Community Development initiatives.
+6.  **Sleek Dark / Light Theme Toggle**:
+    *   Native HSL CSS variables for seamless theme switching with persistence in `localStorage`.
+7.  **Interactive Annual Report**:
+    *   Transparent metrics, financial accountability breakdowns, and downloadable PDF report.
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these step-by-step instructions to get a copy of the project running on your local machine and deploy it to the web.
-
 ### 📋 Prerequisites
-
-Before you start, make sure you have the following installed on your machine:
-*   [Node.js](https://nodejs.org/) (LTS version is recommended)
+*   [Node.js](https://nodejs.org/) (v18+ recommended)
 *   [Git](https://git-scm.com/)
 
 ---
 
 ### 📥 1. Installation
 
-1.  **Clone the repository** (replace with your repository URL):
+1.  **Clone the repository**:
     ```bash
     git clone https://github.com/your-username/nexjyoti-ngo.git
-    ```
-
-2.  **Navigate into the project directory**:
-    ```bash
     cd nexjyoti-ngo
     ```
 
-3.  **Install the required package dependencies**:
+2.  **Install dependencies**:
     ```bash
     npm install
     ```
-    *This command reads the dependencies listed in `package.json` (such as `react`, `react-router-dom`, `vite`) and installs them into the `node_modules` directory.*
+
+3.  **Configure Environment Variables**:
+    Create a `.env` file in the project root with your Firebase and EmailJS credentials:
+    ```env
+    VITE_FIREBASE_API_KEY=your_firebase_api_key
+    VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+    VITE_FIREBASE_PROJECT_ID=your_project_id
+    VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+    VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+    VITE_FIREBASE_APP_ID=your_app_id
+
+    VITE_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+    VITE_EMAILJS_SERVICE_ID=your_emailjs_service_id
+    VITE_EMAILJS_ACCEPTANCE_TEMPLATE_ID=your_acceptance_template_id
+    VITE_EMAILJS_REJECTION_TEMPLATE_ID=your_rejection_template_id
+    ```
 
 ---
 
 ### 💻 2. Running Locally for Development
 
-To launch the local development server with Hot Module Replacement (HMR):
-
+Launch the local development server:
 ```bash
 npm run dev
 ```
-
-*   By default, the server will start at `http://localhost:5173` (or the next available port).
-*   Open that URL in your browser to view the app and test animations, dark/light theme switching, and routing instantly.
+Open `http://localhost:5173` in your browser.
 
 ---
 
-### 🏗️ 3. Production Build & Local Preview
+### 🏗️ 3. Production Build & Preview
 
-To build the project into static files optimized for deployment, and preview that production-ready build locally:
+```bash
+# Build production bundle
+npm run build
 
-1.  **Build the application**:
-    ```bash
-    npm run build
-    ```
-    *This compiles the React code and bundles it into a highly-optimized, minified output inside the `dist/` directory.*
-
-2.  **Preview the production build**:
-    ```bash
-    npm run preview
-    ```
-    *This spins up a local server to test the actual build in the `dist/` folder, ensuring everything loads correctly before launching.*
+# Preview build locally
+npm run preview
+```
 
 ---
 
 ## ☁️ Deploying to Firebase Hosting
 
-This project is pre-configured to host on Firebase under the project ID `nexjyoti-f92e5`.
-
-### Step 1: Install Firebase CLI
-Install the Firebase command-line interface tools globally:
 ```bash
-npm install -g firebase-tools
-```
-
-### Step 2: Log in to Firebase
-Authenticate your command line with your Google Account:
-```bash
+# Login to Firebase
 firebase login
+
+# Build project
+npm run build
+
+# Deploy to Firebase Hosting
+firebase deploy
 ```
-*A browser window will open. Allow permission for the Firebase CLI to connect.*
-
-### Step 3: Test and Deploy
-
-1.  **Verify the Build**:
-    Always ensure you have run a fresh build so the latest changes are copied into the `dist/` folder:
-    ```bash
-    npm run build
-    ```
-
-2.  **Deploy to Hosting**:
-    Run the deployment command:
-    ```bash
-    firebase deploy
-    ```
-
-Firebase will upload the contents of the `dist/` folder and output your live hosting URL (e.g., `https://nexjyoti-f92e5.web.app`).
 
 ---
 
-## ✨ Features Highlighted
+## 📄 License & Attribution
 
-1.  **6-Pillar Scrollable Programs Layout**: The Programs page details all six primary initiatives (Educational Access, Student Mentorship, Holistic Learning, Youth Skilling, Digital Inclusion, and Community Empowerment) as distinct, beautifully animated sections with custom stats.
-2.  **Smooth Anchor / Hash Routing**: Clicking a program link in the footer or home page scrolls the user directly to the correct detailed section on the Programs page.
-3.  **Sleek Dark Mode Toggle**: Leverages native HSL CSS variables for smooth transitioning, saving choice preferences locally via `localStorage`.
-4.  **Tax Exempt Pledge Portal**: Custom donation selection slider adjusting social & educational impact descriptions on the fly, with automated 80G tax receipt notifications.
-5.  **Interactive Annual Report**: Built-in page displaying key stats, executive letters, stories of change, and a download link to the complete financial report.
-6.  **Full legal coverage**: Added dedicated legal compliance pages for **Terms & Conditions** and **Privacy Policy**.
+© 2021–Present **NexJyoti Education Foundation**. All rights reserved. Registered under Section 8 of the Companies Act, 2013 with 80G & 12A tax exemption certifications.

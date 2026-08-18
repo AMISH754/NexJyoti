@@ -507,8 +507,7 @@ export default function Home() {
               {currentTestimonials.map((testi, i) => (
                 <div className="testimonial-slide" key={`${activeTab}-${i}`}>
                   <div className="testi-card">
-                    <div className="testi-quote">“</div>
-                    <p className="testi-text">“{testi.quote}”</p>
+                    <p className="testi-text">{testi.quote}</p>
                     <div className="testi-author">
                       <div className="testi-avatar">{testi.avatar}</div>
                       <div>
