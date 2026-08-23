@@ -33,6 +33,7 @@ export default function Footer() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/programs">Our Programs</Link></li>
+              <li><Link to="/gallery">Photo Gallery</Link></li>
               <li><Link to="/donate">Donate</Link></li>
               <li><Link to="/donate#volunteer">Volunteer</Link></li>
               <li><Link to="/contact">Contact Us</Link></li>

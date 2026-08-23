@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import VolunteerRegister from "./pages/VolunteerRegister";
 import MemberRegister from "./pages/MemberRegister";
+import Gallery from "./pages/Gallery";
 
 // Admin Pages
 import AdminLogin from "./pages/AdminLogin";
@@ -67,6 +68,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/volunteer-register" element={<VolunteerRegister />} />
           <Route path="/member-register" element={<MemberRegister />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

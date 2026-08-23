@@ -68,6 +68,11 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/gallery" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
+                Gallery
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/donate" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
                 Get Involved
               </NavLink>
@@ -110,12 +115,16 @@ export default function Navbar() {
         <NavLink to="/programs" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
           Programs
         </NavLink>
+        <NavLink to="/gallery" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
+          Gallery
+        </NavLink>
         <NavLink to="/donate" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
           Get Involved
         </NavLink>
         <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
           Contact
         </NavLink>
+
         <div className="nav-drawer-actions">
           <Link to="/register" className="btn btn-outline-blue btn-sm" onClick={closeMenu}>
             Join Us

@@ -26,5 +26,11 @@ service cloud.firestore {
       allow create: if true;
       allow read, update, delete: if request.auth != null;
     }
+
+    // 5. Gallery: Public can read to view website gallery; authenticated admins can create/update/delete
+    match /gallery/{itemId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
   }
 }

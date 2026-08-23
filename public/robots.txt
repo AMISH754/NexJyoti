@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/*
 
-Sitemap: https://nexjyoti-f92e5.web.app/sitemap.xml
+Sitemap: https://nexjyoti.org/sitemap.xml

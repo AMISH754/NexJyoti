@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { db, auth } from "../firebase";
+import { uploadToCloudinary } from "../utils/cloudinary";
 import "../styles/admin.css";
 
 const EMPTY_FORM = {
@@ -24,23 +25,40 @@ const EMPTY_FORM = {
   photoUrl: "",
 };
 
+const EMPTY_GALLERY_FORM = {
+  eventName: "",
+  category: "Education & Learning",
+  date: new Date().toISOString().split("T")[0],
+  description: "",
+  imageUrl: "",
+};
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("employees"); // 'employees' | 'contacts' | 'volunteers' | 'registrations'
+  const [activeTab, setActiveTab] = useState("employees"); // 'employees' | 'contacts' | 'volunteers' | 'registrations' | 'gallery'
   const [employees, setEmployees] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [volunteers, setVolunteers] = useState([]);
   const [registrations, setRegistrations] = useState([]);
+  const [galleryItems, setGalleryItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
+  const [galleryForm, setGalleryForm] = useState({ ...EMPTY_GALLERY_FORM });
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [uploadingGallery, setUploadingGallery] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ ...EMPTY_FORM });
+  const [empImageFile, setEmpImageFile] = useState(null);
+  const [empImagePreview, setEmpImagePreview] = useState("");
   const [alert, setAlert] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [viewRegistration, setViewRegistration] = useState(null);
   const [sendingEmail, setSendingEmail] = useState(false);
+
 
   // Init EmailJS
   useEffect(() => {
@@ -69,12 +87,41 @@ export default function AdminDashboard() {
   const fetchAllData = async () => {
     try {
       setLoading(true);
-      await Promise.all([fetchEmployees(), fetchContacts(), fetchVolunteers(), fetchRegistrations()]);
+      await Promise.all([
+        fetchEmployees(),
+        fetchContacts(),
+        fetchVolunteers(),
+        fetchRegistrations(),
+        fetchGallery(),
+      ]);
     } catch (err) {
       console.error("Error fetching dashboard data:", err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchGallery = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "gallery"));
+      const data = querySnapshot.docs.map((docSnap) => ({
+        _docId: docSnap.id,
+        ...docSnap.data(),
+      }));
+      data.sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));
+      setGalleryItems(data);
+    } catch (err) {
+      console.error("Failed to fetch gallery items:", err);
+    }
+  };
+
+  const extractEmployeeNumber = (empId = "") => {
+    const str = String(empId || "").trim();
+    const match = str.match(/(\d+)$/);
+    if (match) return parseInt(match[1], 10);
+    const allNums = str.match(/\d+/g);
+    if (allNums && allNums.length > 0) return parseInt(allNums[allNums.length - 1], 10);
+    return 0;
   };
 
   const fetchEmployees = async () => {
@@ -84,11 +131,23 @@ export default function AdminDashboard() {
         _docId: docSnap.id,
         ...docSnap.data(),
       }));
+
+      // Sort serial-wise by Employee ID number (e.g. 0001 -> 0024)
+      data.sort((a, b) => {
+        const numA = extractEmployeeNumber(a.employeeId);
+        const numB = extractEmployeeNumber(b.employeeId);
+        if (numA !== numB) {
+          return numA - numB;
+        }
+        return (a.employeeId || "").localeCompare(b.employeeId || "", undefined, { numeric: true });
+      });
+
       setEmployees(data);
     } catch (err) {
       console.error("Failed to fetch employees:", err);
     }
   };
+
 
   const fetchContacts = async () => {
     try {
@@ -211,11 +270,14 @@ export default function AdminDashboard() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Store raw value — convert only at save/display time
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const openAddForm = () => {
     setForm({ ...EMPTY_FORM });
+    setEmpImageFile(null);
+    setEmpImagePreview("");
     setEditingId(null);
     setShowForm(true);
   };
@@ -231,6 +293,8 @@ export default function AdminDashboard() {
       status: emp.status || "Active",
       photoUrl: emp.photoUrl || "",
     });
+    setEmpImageFile(null);
+    setEmpImagePreview(emp.photoUrl || "");
     setEditingId(emp._docId);
     setShowForm(true);
   };
@@ -238,7 +302,32 @@ export default function AdminDashboard() {
   const closeForm = () => {
     setShowForm(false);
     setEditingId(null);
+    setEmpImageFile(null);
+    setEmpImagePreview("");
     setForm({ ...EMPTY_FORM });
+  };
+
+  const handleEmpImageFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      showAlert("error", "Please select a valid image file (JPEG, PNG, WEBP, etc.)");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      showAlert("error", "Image size exceeds 5MB limit. Please choose a smaller image.");
+      return;
+    }
+
+    setEmpImageFile(file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setEmpImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e) => {
@@ -246,8 +335,24 @@ export default function AdminDashboard() {
     setSaving(true);
 
     try {
+      let finalPhotoUrl = form.photoUrl ? form.photoUrl.trim() : "";
+
+      // If user selected a local image file, upload it to Cloudinary
+      if (empImageFile) {
+        try {
+          const uploadResult = await uploadToCloudinary(empImageFile, "nexjyoti_employees");
+          finalPhotoUrl = uploadResult.url;
+        } catch (uploadErr) {
+          console.error("Cloudinary employee photo upload error:", uploadErr);
+          showAlert("error", "Photo upload failed: " + (uploadErr.message || "Failed to upload photo to Cloudinary"));
+          setSaving(false);
+          return;
+        }
+      }
+
       const employeeData = {
         ...form,
+        photoUrl: finalPhotoUrl,
         employeeId: form.employeeId.trim().toUpperCase(),
         lastUpdated: new Date().toISOString(),
       };
@@ -270,6 +375,106 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleGalleryChange = (e) => {
+    const { name, value } = e.target;
+    // Store raw value — convert only at save/display time
+    setGalleryForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate type
+    if (!file.type.startsWith("image/")) {
+      showAlert("error", "Please select a valid image file (JPEG, PNG, WEBP, etc.)");
+      return;
+    }
+
+    // Validate size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      showAlert("error", "Image size exceeds 5MB limit. Please choose a smaller image.");
+      return;
+    }
+
+    setSelectedImageFile(file);
+
+    // Create local preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeSelectedFile = () => {
+    setSelectedImageFile(null);
+    setImagePreview("");
+  };
+
+  const openGalleryModal = () => {
+    setGalleryForm({ ...EMPTY_GALLERY_FORM });
+    setSelectedImageFile(null);
+    setImagePreview("");
+    setShowGalleryModal(true);
+  };
+
+  const closeGalleryModal = () => {
+    setShowGalleryModal(false);
+    setGalleryForm({ ...EMPTY_GALLERY_FORM });
+    setSelectedImageFile(null);
+    setImagePreview("");
+    setUploadingGallery(false);
+  };
+
+  const handleGallerySubmit = async (e) => {
+    e.preventDefault();
+
+    if (!galleryForm.eventName.trim()) {
+      showAlert("error", "Please enter the Event Name.");
+      return;
+    }
+
+    if (!selectedImageFile && !galleryForm.imageUrl) {
+      showAlert("error", "Please select a photo or provide an image URL.");
+      return;
+    }
+
+    setUploadingGallery(true);
+
+    try {
+      let finalImageUrl = galleryForm.imageUrl ? galleryForm.imageUrl.trim() : "";
+      let publicId = "";
+
+      // Upload file to Cloudinary if a local file was selected
+      if (selectedImageFile) {
+        const uploadResult = await uploadToCloudinary(selectedImageFile, "nexjyoti_gallery");
+        finalImageUrl = uploadResult.url;
+        publicId = uploadResult.publicId;
+      }
+
+      const eventData = {
+        eventName: galleryForm.eventName.trim(),
+        category: galleryForm.category || "Education & Learning",
+        date: galleryForm.date || new Date().toISOString().split("T")[0],
+        description: galleryForm.description.trim(),
+        imageUrl: finalImageUrl,
+        publicId: publicId,
+        createdAt: new Date().toISOString(),
+      };
+
+      await addDoc(collection(db, "gallery"), eventData);
+      showAlert("success", `Event photo "${galleryForm.eventName}" uploaded and published to gallery!`);
+      closeGalleryModal();
+      await fetchGallery();
+    } catch (err) {
+      console.error("Gallery upload error:", err);
+      showAlert("error", "Upload failed: " + (err.message || "Failed to upload photo"));
+    } finally {
+      setUploadingGallery(false);
+    }
+  };
+
   const handleGenericDelete = async () => {
     if (!deleteConfirm) return;
 
@@ -279,6 +484,7 @@ export default function AdminDashboard() {
       if (type === "contact") collectionName = "contacts";
       if (type === "volunteer") collectionName = "volunteers";
       if (type === "registration") collectionName = "registrations";
+      if (type === "gallery") collectionName = "gallery";
 
       await deleteDoc(doc(db, collectionName, id));
       showAlert("success", `Item "${title}" deleted successfully.`);
@@ -288,10 +494,12 @@ export default function AdminDashboard() {
       if (type === "contact") await fetchContacts();
       if (type === "volunteer") await fetchVolunteers();
       if (type === "registration") await fetchRegistrations();
+      if (type === "gallery") await fetchGallery();
     } catch (err) {
       showAlert("error", "Failed to delete: " + err.message);
     }
   };
+
 
   const handleLogout = async () => {
     try {
@@ -436,6 +644,17 @@ export default function AdminDashboard() {
               Members ({pendingMembers} Pending)
             </div>
           </div>
+
+          <div
+            className="admin-stat-card"
+            style={{ cursor: "pointer", borderColor: activeTab === "gallery" ? "var(--primary)" : "" }}
+            onClick={() => setActiveTab("gallery")}
+          >
+            <div className="stat-number">{galleryItems.length}</div>
+            <div className="stat-label">
+              Gallery Photos &amp; Events
+            </div>
+          </div>
         </div>
 
         {/* Navigation Tabs (Sleek Segmented Pill Bar) */}
@@ -468,7 +687,16 @@ export default function AdminDashboard() {
             <span>Members</span>
             <span className="admin-tab-badge">{memberList.length}</span>
           </button>
+          <button
+            className={`admin-tab-btn ${activeTab === "gallery" ? "active" : ""}`}
+            onClick={() => setActiveTab("gallery")}
+          >
+            <span>Events &amp; Gallery</span>
+            <span className="admin-tab-badge">{galleryItems.length}</span>
+          </button>
+
         </div>
+
 
         {/* TAB 1: EMPLOYEES */}
         {activeTab === "employees" && (
@@ -543,8 +771,8 @@ export default function AdminDashboard() {
                           <td>
                             <span
                               className={`status-badge ${emp.status === "Active"
-                                  ? "status-active"
-                                  : "status-inactive"
+                                ? "status-active"
+                                : "status-inactive"
                                 }`}
                             >
                               <span className="status-dot"></span>
@@ -715,10 +943,10 @@ export default function AdminDashboard() {
                           <td>
                             <span
                               className={`status-badge ${v.status === "accepted"
-                                  ? "status-active"
-                                  : v.status === "rejected"
-                                    ? "status-inactive"
-                                    : ""
+                                ? "status-active"
+                                : v.status === "rejected"
+                                  ? "status-inactive"
+                                  : ""
                                 }`}
                               style={v.status === "pending" ? {
                                 background: "rgba(245,158,11,0.1)",
@@ -830,10 +1058,10 @@ export default function AdminDashboard() {
                           <td>
                             <span
                               className={`status-badge ${m.status === "accepted"
-                                  ? "status-active"
-                                  : m.status === "rejected"
-                                    ? "status-inactive"
-                                    : ""
+                                ? "status-active"
+                                : m.status === "rejected"
+                                  ? "status-inactive"
+                                  : ""
                                 }`}
                               style={m.status === "pending" ? {
                                 background: "rgba(245,158,11,0.1)",
@@ -891,10 +1119,266 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
+
+        {/* TAB 5: GALLERY & EVENTS */}
+        {activeTab === "gallery" && (
+          <div className="admin-panel">
+            <div className="admin-panel-header">
+              <div>
+                <h3>Events &amp; Photo Gallery</h3>
+                <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                  Photos uploaded here are hosted on Cloudinary and instantly displayed in the website Gallery with the event name.
+                </span>
+              </div>
+              <button
+                onClick={openGalleryModal}
+                className="admin-btn admin-btn-gold admin-btn-sm"
+              >
+                + Upload Event Photo
+              </button>
+            </div>
+            <div className="admin-panel-body">
+              {galleryItems.length === 0 ? (
+                <div className="admin-empty-state">
+                  <h4>No event photos uploaded yet</h4>
+                  <p>Click "Upload Event Photo" above to add your first event picture to the public gallery.</p>
+                </div>
+              ) : (
+                <div className="admin-gallery-grid">
+                  {galleryItems.map((item) => (
+                    <div key={item._docId} className="admin-gallery-card">
+                      <div className="admin-gallery-img-wrap">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.eventName}
+                          className="admin-gallery-img"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.src = "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&auto=format&fit=crop&q=80";
+                          }}
+                        />
+                        <span className="admin-gallery-cat-badge">
+                          {item.category || "Event"}
+                        </span>
+                      </div>
+                      <div className="admin-gallery-body">
+                        <h4 className="admin-gallery-title">{item.eventName}</h4>
+                        <div className="admin-gallery-date">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "4px" }}>
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                          </svg>
+                          {formatDate(item.date || item.createdAt)}
+                        </div>
+                        {item.description && (
+                          <p className="admin-gallery-desc">{item.description}</p>
+                        )}
+                        <div className="admin-gallery-footer">
+                          <a
+                            href={item.imageUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="admin-btn admin-btn-outline admin-btn-sm"
+                            style={{ padding: "4px 10px", fontSize: "0.75rem", textDecoration: "none" }}
+                          >
+                            View Full Photo
+                          </a>
+                          <button
+                            onClick={() =>
+                              setDeleteConfirm({
+                                type: "gallery",
+                                id: item._docId,
+                                title: item.eventName || "Event Photo",
+                              })
+                            }
+                            className="admin-btn admin-btn-danger admin-btn-sm"
+                            style={{ padding: "4px 10px", fontSize: "0.75rem" }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Gallery Upload Modal */}
+      {showGalleryModal && (
+        <div className="admin-modal-overlay" onClick={closeGalleryModal}>
+          <div
+            className="admin-modal"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: "560px", maxHeight: "90vh", overflowY: "auto" }}
+          >
+            <div className="admin-modal-header">
+              <h3>Upload Event Photo to Gallery</h3>
+              <button className="admin-modal-close" onClick={closeGalleryModal}>
+                ✕
+              </button>
+            </div>
+            <div className="admin-modal-body">
+              <form onSubmit={handleGallerySubmit}>
+                <div className="admin-field">
+                  <label htmlFor="gal-event-name">Event Name / Title *</label>
+                  <input
+                    id="gal-event-name"
+                    type="text"
+                    name="eventName"
+                    placeholder="e.g. Free Health Checkup Camp 2025"
+                    value={galleryForm.eventName}
+                    onChange={handleGalleryChange}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="admin-field">
+                    <label htmlFor="gal-category">Category *</label>
+                    <select
+                      id="gal-category"
+                      name="category"
+                      value={galleryForm.category}
+                      onChange={handleGalleryChange}
+                    >
+                      <option value="Education & Learning">Education &amp; Learning</option>
+                      <option value="Health & Wellness">Health &amp; Wellness</option>
+                      <option value="Youth Skilling">Youth Skilling</option>
+                      <option value="Community Outreach">Community Outreach</option>
+                      <option value="Celebrations & Festivals">Celebrations &amp; Festivals</option>
+                      <option value="Workshops & Seminars">Workshops &amp; Seminars</option>
+                      <option value="Other">Other Events</option>
+                    </select>
+                  </div>
+
+                  <div className="admin-field">
+                    <label htmlFor="gal-date">Event Date *</label>
+                    <input
+                      id="gal-date"
+                      type="date"
+                      name="date"
+                      value={galleryForm.date}
+                      onChange={handleGalleryChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="admin-field">
+                  <label htmlFor="gal-desc">Event Caption / Description (Optional)</label>
+                  <textarea
+                    id="gal-desc"
+                    name="description"
+                    rows={2}
+                    placeholder="Brief highlight of the event (e.g. Provided free dental and eye checkups to 300+ students)"
+                    value={galleryForm.description}
+                    onChange={handleGalleryChange}
+                  />
+                </div>
+
+                {/* File Upload Dropzone */}
+                <div className="admin-field">
+                  <label>Select Event Photo *</label>
+                  <div className="admin-dropzone">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="gal-file-input"
+                      style={{ display: "none" }}
+                      onChange={handleImageFileSelect}
+                    />
+                    <label
+                      htmlFor="gal-file-input"
+                      style={{ cursor: "pointer", display: "block", marginBottom: 0 }}
+                    >
+                      <div style={{ marginBottom: "0.5rem", color: "var(--primary)" }}>
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="17 8 12 3 7 8" />
+                          <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                      </div>
+                      <span style={{ fontWeight: 600, color: "var(--primary)" }}>
+                        Click to select photo from device
+                      </span>
+                      <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                        Supports JPG, PNG, WebP (Max 10MB) • Uploaded securely to Cloudinary
+                      </p>
+                    </label>
+
+
+                    {imagePreview && (
+                      <div style={{ marginTop: "1rem" }}>
+                        <img
+                          src={imagePreview}
+                          alt="Selected Preview"
+                          className="admin-dropzone-preview"
+                        />
+                        <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                          Selected: {selectedImageFile?.name} ({(selectedImageFile?.size / 1024 / 1024).toFixed(2)} MB)
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Fallback Image URL */}
+                <div className="admin-field">
+                  <label htmlFor="gal-url" style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
+                    Or paste an external Image URL / Google Drive Link (Optional)
+                  </label>
+                  <input
+                    id="gal-url"
+                    type="text"
+                    name="imageUrl"
+                    placeholder="Paste Google Drive link or direct image URL"
+                    value={galleryForm.imageUrl}
+                    onChange={handleGalleryChange}
+                  />
+                  <small style={{ fontSize: "0.75rem", color: "#0E8DE6", marginTop: "4px", display: "block" }}>
+                    Google Drive links are automatically converted
+                  </small>
+                </div>
+
+                <div className="admin-form-actions">
+                  <button
+                    type="button"
+                    onClick={closeGalleryModal}
+                    className="admin-btn admin-btn-outline admin-btn-sm"
+                    disabled={uploadingGallery}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="admin-btn admin-btn-primary admin-btn-sm"
+                    disabled={uploadingGallery || (!selectedImageFile && !galleryForm.imageUrl)}
+                    style={{ width: "auto" }}
+                  >
+                    {uploadingGallery ? (
+                      <>
+                        <span className="admin-spinner"></span> Uploading to Cloudinary...
+                      </>
+                    ) : (
+                      "Publish to Gallery"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Add/Edit Modal */}
       {showForm && (
+
         <div className="admin-modal-overlay" onClick={closeForm}>
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
             <div className="admin-modal-header">
@@ -989,13 +1473,72 @@ export default function AdminDashboard() {
                       <option value="Inactive">Inactive</option>
                     </select>
                   </div>
+                  {/* Employee Photo Upload Dropzone */}
                   <div className="admin-field full-width">
-                    <label htmlFor="emp-photo">Photo URL (Optional)</label>
+                    <label>Employee Photo</label>
+                    <div className="admin-dropzone" style={{ padding: "1.25rem", textAlign: "center", border: "2px dashed var(--border)", borderRadius: "var(--radius-md)", background: "rgba(14, 141, 230, 0.03)" }}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="emp-file-input"
+                        style={{ display: "none" }}
+                        onChange={handleEmpImageFileSelect}
+                      />
+                      <label
+                        htmlFor="emp-file-input"
+                        style={{ cursor: "pointer", display: "block", marginBottom: 0 }}
+                      >
+                        <div style={{ marginBottom: "0.4rem", color: "var(--primary)" }}>
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                          </svg>
+                        </div>
+                        <span style={{ fontWeight: 600, color: "var(--primary)", fontSize: "0.9rem" }}>
+                          {empImagePreview ? "Click to Change / Choose New Photo" : "Click to Upload Photo File from Device"}
+                        </span>
+                        <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "4px", margin: 0 }}>
+                          Supports JPG, PNG, WebP (Max 5MB) • Uploads directly &amp; securely to Cloudinary
+                        </p>
+                      </label>
+
+                      {empImagePreview && (
+                        <div style={{ marginTop: "0.9rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "14px" }}>
+                          <img
+                            src={empImagePreview}
+                            alt="Employee Preview"
+                            style={{
+                              width: "60px",
+                              height: "60px",
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                              border: "2px solid var(--primary)",
+                              boxShadow: "var(--shadow-sm)",
+                            }}
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                            }}
+                          />
+                          {empImageFile && (
+                            <span style={{ fontSize: "0.78rem", color: "var(--text-dark)", fontWeight: 500 }}>
+                              {empImageFile.name} ({(empImageFile.size / 1024 / 1024).toFixed(2)} MB)
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="admin-field full-width">
+                    <label htmlFor="emp-photo" style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
+                      Or direct Image URL / Cloudinary Link (Optional)
+                    </label>
                     <input
                       id="emp-photo"
                       type="url"
                       name="photoUrl"
-                      placeholder="https://example.com/photo.jpg (Cloudinary or public URL)"
+                      placeholder="https://res.cloudinary.com/... or direct image link"
                       value={form.photoUrl}
                       onChange={handleChange}
                     />
