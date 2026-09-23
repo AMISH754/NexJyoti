@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import SEOHead from "../components/SEOHead";
 
 export default function Privacy() {
   useEffect(() => {
@@ -22,6 +23,12 @@ export default function Privacy() {
 
   return (
     <div>
+      <SEOHead
+        title="Privacy Policy — NexJyoti Education Foundation"
+        description="NexJyoti Education Foundation's privacy policy. Learn how we collect, use, and protect your personal information when you interact with our website and services."
+        path="/privacy"
+      />
+
       {/* Hero Header */}
       <section className="about-hero" id="privacyHero">
         <div className="container animate-on-scroll">

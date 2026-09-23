@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+import SEOHead from "../components/SEOHead";
 
 export default function Programs() {
   const { hash } = useLocation();
@@ -160,6 +161,12 @@ export default function Programs() {
 
   return (
     <div>
+      <SEOHead
+        title="Our Programs — Education, Skilling & Women Empowerment | NexJyoti"
+        description="Explore NexJyoti's four core programs: free children's education, youth skill development, women empowerment, and holistic community development in rural Jharkhand, India."
+        path="/programs"
+      />
+
       {/* Hero Section */}
       <section className="about-hero" id="programsHero">
         <div className="container animate-on-scroll">

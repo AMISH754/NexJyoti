@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import SEOHead from "../components/SEOHead";
 import TeamCard from "../components/TeamCard";
 
 const teamMembers = [
@@ -65,6 +66,12 @@ export default function About() {
 
   return (
     <div>
+      <SEOHead
+        title="About NexJyoti — Our Mission, Vision & Team"
+        description="Learn about NexJyoti Education Foundation's mission to break the cycle of poverty through education. Founded in 2021 in Jharkhand, India. Meet our dedicated leadership team."
+        path="/about"
+      />
+
       {/* About Page Hero */}
       <section className="about-hero" id="aboutPageHero">
         <div className="container animate-on-scroll">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import SEOHead from "../components/SEOHead";
 
 export default function Verify() {
   const { employeeId } = useParams();
@@ -121,70 +122,83 @@ export default function Verify() {
   // If no employeeId parameter is given: Show Search UI
   if (!employeeId) {
     return (
-      <div
-        style={{
-          minHeight: "80vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "2.5rem 1.5rem",
-          backgroundColor: "var(--off-white)",
-        }}
-      >
-        <div className="container" style={{ maxWidth: "560px" }}>
-          <div className="card" style={{ padding: "3rem 2.5rem", textAlign: "center", boxShadow: "var(--shadow-lg)" }}>
-            <img
-              src="/assets/images/logo.jpg"
-              alt="NexJyoti Logo"
-              style={{
-                width: "60px",
-                height: "60px",
-                borderRadius: "50%",
-                margin: "0 auto 12px",
-                display: "block",
-                boxShadow: "var(--shadow-md)",
-              }}
-              onError={(e) => {
-                e.target.style.display = "none";
-              }}
-            />
-            <span className="section-label" style={{ marginBottom: "8px" }}>Public Registry</span>
-            <h1 style={{ fontSize: "1.8rem", color: "var(--text-dark)", marginBottom: "10px" }}>
-              Official ID Verification
-            </h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginBottom: "2rem", lineHeight: 1.6 }}>
-              Enter the official Employee or Volunteer ID to verify authentic credentials issued by NexJyoti Education Foundation.
-            </p>
-
-            <form onSubmit={handleSearch}>
-              <div className="form-group" style={{ marginBottom: "1.5rem" }}>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="E.g., NXJY-FD-001"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  style={{ textAlign: "center", fontSize: "1.1rem", textTransform: "uppercase", letterSpacing: "1px", fontWeight: "600" }}
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }}>
-                Verify Credential
-              </button>
-            </form>
-
-            <div style={{ marginTop: "2rem", borderTop: "1px solid var(--border)", paddingTop: "1.5rem" }}>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: 0 }}>
-                Need assistance? Contact us at <a href="mailto:info@nexjyoti.org" style={{ color: "var(--primary)", fontWeight: 600 }}>info@nexjyoti.org</a>
+      <>
+        <SEOHead
+          title="Credential Verification — NexJyoti Education Foundation"
+          description="Verify authentic employee, member, or volunteer credentials issued by NexJyoti Education Foundation via our official public registry."
+          path="/verify"
+        />
+        <div
+          style={{
+            minHeight: "80vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "2.5rem 1.5rem",
+            backgroundColor: "var(--off-white)",
+          }}
+        >
+          <div className="container" style={{ maxWidth: "560px" }}>
+            <div className="card" style={{ padding: "3rem 2.5rem", textAlign: "center", boxShadow: "var(--shadow-lg)" }}>
+              <img
+                src="/assets/images/logo.jpg"
+                alt="NexJyoti Logo"
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "50%",
+                  margin: "0 auto 12px",
+                  display: "block",
+                  boxShadow: "var(--shadow-md)",
+                }}
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
+              <span className="section-label" style={{ marginBottom: "8px" }}>Public Registry</span>
+              <h1 style={{ fontSize: "1.8rem", color: "var(--text-dark)", marginBottom: "10px" }}>
+                Official ID Verification
+              </h1>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginBottom: "2rem", lineHeight: 1.6 }}>
+                Enter the official Employee or Volunteer ID to verify authentic credentials issued by NexJyoti Education Foundation.
               </p>
+
+              <form onSubmit={handleSearch}>
+                <div className="form-group" style={{ marginBottom: "1.5rem" }}>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="E.g., NXJY-FD-001"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    style={{ textAlign: "center", fontSize: "1.1rem", textTransform: "uppercase", letterSpacing: "1px", fontWeight: "600" }}
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }}>
+                  Verify Credential
+                </button>
+              </form>
+
+              <div style={{ marginTop: "2rem", borderTop: "1px solid var(--border)", paddingTop: "1.5rem" }}>
+                <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: 0 }}>
+                  Need assistance? Contact us at <a href="mailto:info@nexjyoti.org" style={{ color: "var(--primary)", fontWeight: 600 }}>info@nexjyoti.org</a>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
+    <>
+    <SEOHead
+      title="Verify Employee — NexJyoti Education Foundation"
+      description="Verify the identity and association of NexJyoti Education Foundation team members and volunteers using their employee ID."
+      path="/verify"
+    />
     <div
       style={{
         minHeight: "80vh",
@@ -521,5 +535,6 @@ export default function Verify() {
         )}
       </div>
     </div>
+    </>
   );
 }

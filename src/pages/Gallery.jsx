@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import SEOHead from "../components/SEOHead";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import "../styles/gallery.css";
@@ -125,6 +126,12 @@ export default function Gallery() {
 
   return (
     <div className="gallery-page">
+      <SEOHead
+        title="Photo Gallery — NexJyoti Education Foundation in Action"
+        description="See real photos and videos of NexJyoti's education programs, Mission Udaan centers, community events, and volunteer activities across Jharkhand, India."
+        path="/gallery"
+      />
+
       {/* Hero Banner */}
       <section className="gallery-hero">
         <div className="container">

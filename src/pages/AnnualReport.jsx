@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import SEOHead from "../components/SEOHead";
 
 export default function AnnualReport() {
   useEffect(() => {
@@ -22,6 +23,12 @@ export default function AnnualReport() {
 
   return (
     <div>
+      <SEOHead
+        title="Annual Report — NexJyoti Education Foundation"
+        description="Read NexJyoti's annual reports covering impact metrics, financials, and program outcomes. Full transparency in everything we do. 80G registered NGO."
+        path="/annual-report"
+      />
+
       {/* Hero Section */}
       <section className="about-hero" id="annualReportHero">
         <div className="container animate-on-scroll">

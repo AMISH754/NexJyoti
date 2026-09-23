@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import SEOHead from "../components/SEOHead";
 import "../styles/register.css";
 
 export default function Register() {
@@ -7,7 +8,11 @@ export default function Register() {
 
   return (
     <>
-      <title>Join Us — NexJyoti Education Foundation</title>
+      <SEOHead
+        title="Join NexJyoti — Volunteer or Member Registration"
+        description="Register as a volunteer or member with NexJyoti Education Foundation. Help us educate, empower, and elevate underprivileged communities in Jharkhand, India."
+        path="/register"
+      />
 
       <div className="register-page">
         {/* Hero */}

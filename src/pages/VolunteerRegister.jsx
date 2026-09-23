@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import SEOHead from "../components/SEOHead";
 import "../styles/register.css";
 
 /* ── Steps ── */
@@ -470,7 +471,11 @@ export default function VolunteerRegister() {
 
   return (
     <>
-      <title>Volunteer Registration — NexJyoti Education Foundation</title>
+      <SEOHead
+        title="Volunteer Registration — NexJyoti Education Foundation"
+        description="Register as a volunteer with NexJyoti Education Foundation. Contribute your time and skills to educate underprivileged children in Jharkhand, India."
+        path="/volunteer-register"
+      />
       <div className="register-page">
         <div className="register-hero">
           <div className="reg-hero-bg-dots" aria-hidden="true" />

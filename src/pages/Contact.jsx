@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import SEOHead from "../components/SEOHead";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -59,6 +60,12 @@ export default function Contact() {
 
   return (
     <div>
+      <SEOHead
+        title="Contact NexJyoti Education Foundation"
+        description="Reach out to NexJyoti for partnerships, volunteering, donations, or inquiries. Based in Jharkhand, India. We're here to listen and collaborate."
+        path="/contact"
+      />
+
       {/* Contact Header */}
       <section className="about-hero" id="contactHero">
         <div className="container animate-on-scroll">

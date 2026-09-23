@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import SEOHead from "../components/SEOHead";
 
 export default function Terms() {
   useEffect(() => {
@@ -22,6 +23,12 @@ export default function Terms() {
 
   return (
     <div>
+      <SEOHead
+        title="Terms & Conditions — NexJyoti Education Foundation"
+        description="Terms and conditions for using the NexJyoti Education Foundation website. Read our policies on donations, volunteering, registration, and general use."
+        path="/terms"
+      />
+
       {/* Hero Header */}
       <section className="about-hero" id="termsHero">
         <div className="container animate-on-scroll">

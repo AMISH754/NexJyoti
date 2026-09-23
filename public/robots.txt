@@ -3,4 +3,27 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/*
 
+# Explicitly invite AI search & Generative Engine crawlers
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+
+# Sitemaps & Machine-Readable LLM Knowledge
 Sitemap: https://nexjyoti.org/sitemap.xml
+# LLM Context: https://nexjyoti.org/llms.txt

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import SEOHead from "../components/SEOHead";
 import { Link } from "react-router-dom";
 
 // Staggered CountUp Component
@@ -254,6 +255,94 @@ export default function Home() {
 
   return (
     <div>
+      <SEOHead
+        title="NexJyoti Education Foundation — Educate. Empower. Elevate."
+        description="NexJyoti Education Foundation empowers 1000+ underprivileged children in Jharkhand, India through free education, youth skilling, women empowerment, and community development. Donate or volunteer today."
+        path="/"
+      />
+
+      {/* Organization + FAQ Structured Data (JSON-LD) */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "NGO",
+        "name": "NexJyoti Education Foundation",
+        "alternateName": "NexJyoti",
+        "url": "https://nexjyoti.org",
+        "logo": "https://nexjyoti.org/assets/images/logo-fullname.jpeg",
+        "description": "NexJyoti Education Foundation is a registered non-profit (NGO) founded in 2021, dedicated to empowering underprivileged children through quality education, youth skill development, women empowerment, and community development in Jharkhand, India.",
+        "foundingDate": "2021",
+        "founder": { "@type": "Person", "name": "Shivnarayan Kumar" },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Irgu Toli Road, Raja Hata Lane, Kishore Ganj",
+          "addressLocality": "Ranchi",
+          "addressRegion": "Jharkhand",
+          "postalCode": "834001",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "23.3699",
+          "longitude": "85.3253"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-9572570256",
+          "contactType": "General Inquiries",
+          "email": "info@nexjyoti.org",
+          "areaServed": "IN"
+        },
+        "areaServed": "India",
+        "nonprofitStatus": "Registered under Section 80G of the Indian Income Tax Act"
+      }) }} />
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is NexJyoti Education Foundation?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "NexJyoti Education Foundation is a registered non-profit organisation (NGO) based in Jharkhand, India, founded in 2021 by Shivnarayan Kumar. The foundation provides free quality education to underprivileged children, youth skill development programs, women empowerment initiatives, and community development activities. NexJyoti has educated over 1,000 children across 4+ centers."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How can I donate to NexJyoti?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can donate online at nexjyoti.org/donate. NexJyoti is registered under Section 80G of the Indian Income Tax Act, making your donations eligible for tax deduction. Donations start from ₹500, which provides a child with one month of quality education."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where does NexJyoti operate?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "NexJyoti currently operates 4+ education centers primarily in rural Jharkhand, India, focusing on tribal and economically weaker communities."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How can I volunteer with NexJyoti?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can register as a volunteer at nexjyoti.org/volunteer-register. NexJyoti welcomes volunteers for teaching, event management, content creation, technology support, and community outreach."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is NexJyoti a registered NGO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, NexJyoti Education Foundation is a registered non-profit organisation under Indian law. It holds 80G registration, allowing donors to claim tax deductions on their contributions. The foundation publishes annual reports with audited financials for full transparency."
+            }
+          }
+        ]
+      }) }} />
+
       {/* ── HERO SECTION ── */}
       <section className="hero" id="hero" aria-label="Hero Banner">
         <div className="hero-bg"></div>
