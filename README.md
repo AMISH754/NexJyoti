@@ -71,7 +71,7 @@ d:\ngo\
     *   **Leadership Perspectives (10 Leaders)**: Features reflections and LinkedIn integrations for the Leadership Council.
     *   **Voices of Our Volunteers (12 Volunteers)**: Dedicated volunteer recognition quotes and stories of impact with responsive slider navigation.
 2.  **Public Credential & ID Verification Portal (`/verify`)**:
-    *   Search and authenticate official staff/volunteer IDs (format `NJEF-<hire year>-<5 digits>`, e.g. `NJEF-2021-00001`).
+    *   Search and authenticate official staff/volunteer IDs (format `NJEF-<hire year>-<4 digits>`, e.g. `NJEF-2021-0001`).
     *   Generates official digital verification credential cards with photo, designation, department, status, and digital seal (no email addresses are shown publicly).
 3.  **Comprehensive Admin Portal (`/admin/dashboard`)**:
     *   **Staff Registry**: Add, edit, and delete staff records with instant live reflection on verification cards.

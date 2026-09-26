@@ -27,17 +27,17 @@ const EMPTY_FORM = {
   photoUrl: "",
 };
 
-// Official ID format: NJEF-<hire year>-<5-digit number>, e.g. NJEF-2021-00001.
+// Official ID format: NJEF-<hire year>-<4-digit number>, e.g. NJEF-2021-0001.
 // Numbers run on across years, so the next ID is always one above the highest NJEF number in use.
 const ID_PREFIX = "NJEF";
-const ID_PATTERN = /^NJEF-(\d{4})-(\d{5})$/;
+const ID_PATTERN = /^NJEF-(\d{4})-(\d+)$/;
 
 function nextEmployeeId(employees, hireYear) {
   const highest = employees.reduce((max, emp) => {
     const match = String(emp.employeeId || "").trim().toUpperCase().match(ID_PATTERN);
     return match ? Math.max(max, parseInt(match[2], 10)) : max;
   }, 0);
-  return `${ID_PREFIX}-${hireYear}-${String(highest + 1).padStart(5, "0")}`;
+  return `${ID_PREFIX}-${hireYear}-${String(highest + 1).padStart(4, "0")}`;
 }
 
 const EMPTY_GALLERY_FORM = {
@@ -1432,7 +1432,7 @@ export default function AdminDashboard() {
                       id="emp-id"
                       type="text"
                       name="employeeId"
-                      placeholder="e.g. NJEF-2021-00001"
+                      placeholder="e.g. NJEF-2021-0001"
                       value={form.employeeId}
                       onChange={handleChange}
                       style={{ textTransform: "uppercase" }}

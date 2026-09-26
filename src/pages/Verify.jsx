@@ -173,7 +173,7 @@ export default function Verify() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="E.g., NJEF-2021-00001"
+                    placeholder="E.g., NJEF-2021-0001"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     style={{ textAlign: "center", fontSize: "1.1rem", textTransform: "uppercase", letterSpacing: "1px", fontWeight: "600" }}
