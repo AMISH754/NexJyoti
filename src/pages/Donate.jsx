@@ -9,10 +9,13 @@ export default function Donate() {
   const [customAmount, setCustomAmount] = useState("1000");
   const [donorInfo, setDonorInfo] = useState({ name: "", email: "", phone: "" });
   const [donationSuccess, setDonationSuccess] = useState(false);
+  const [donationLoading, setDonationLoading] = useState(false);
+  const [donationError, setDonationError] = useState("");
 
   // Volunteer states
   const [volInfo, setVolInfo] = useState({ name: "", email: "", role: "", message: "", botField: "" });
   const [volSuccess, setVolSuccess] = useState(false);
+  const [volError, setVolError] = useState("");
   const [volLoading, setVolLoading] = useState(false);
   const [volLoadTime] = useState(Date.now());
 
@@ -94,9 +97,26 @@ export default function Donate() {
   };
 
   // Submit Donation
-  const handleDonationSubmit = (e) => {
+  const handleDonationSubmit = async (e) => {
     e.preventDefault();
-    setDonationSuccess(true);
+    setDonationError("");
+    setDonationLoading(true);
+    try {
+      await addDoc(collection(db, "pledges"), {
+        amount: parseInt(customAmount, 10) || 0,
+        name: donorInfo.name.trim(),
+        email: donorInfo.email.trim(),
+        phone: donorInfo.phone.trim(),
+        createdAt: new Date().toISOString(),
+        status: "pledged",
+      });
+      setDonationSuccess(true);
+    } catch (err) {
+      console.error("Error saving pledge:", err);
+      setDonationError("We couldn't record your pledge. Please try again, or email info@nexjyoti.org.");
+    } finally {
+      setDonationLoading(false);
+    }
   };
 
   // Submit Volunteer Signup
@@ -111,6 +131,7 @@ export default function Donate() {
       return;
     }
 
+    setVolError("");
     setVolLoading(true);
     try {
       await addDoc(collection(db, "volunteers"), {
@@ -124,7 +145,7 @@ export default function Donate() {
       setVolSuccess(true);
     } catch (err) {
       console.error("Error saving volunteer application:", err);
-      setVolSuccess(true);
+      setVolError("We couldn't submit your application. Please try again, or email info@nexjyoti.org.");
     } finally {
       setVolLoading(false);
     }
@@ -201,7 +222,7 @@ export default function Donate() {
                   Thank you, <strong>{donorInfo.name}</strong>, for your generous support of <strong>₹{parseInt(customAmount).toLocaleString("en-IN")}</strong>.
                 </p>
                 <p style={{ fontSize: "0.9rem", color: "#065f46" }}>
-                  We have sent an confirmation summary and your 80G tax receipt details to <strong>{donorInfo.email}</strong>.
+                  Our team will contact you at <strong>{donorInfo.email}</strong> with payment details. Your 80G receipt is issued once the payment is received.
                 </p>
                 <button className="btn btn-outline-blue mt-24" onClick={() => { setDonationSuccess(false); setDonorInfo({ name: "", email: "", phone: "" }); }}>
                   Make Another Donation
@@ -278,8 +299,11 @@ export default function Donate() {
                   />
                 </div>
 
-                <button type="submit" className="btn btn-primary w-full" id="btnSubmitDonation" style={{ justifyContent: "center", width: "100%" }}>
-                  Securely Proceed to Payment
+                {donationError && (
+                  <p role="alert" style={{ color: "#b91c1c", fontSize: "0.9rem", marginBottom: "12px" }}>{donationError}</p>
+                )}
+                <button type="submit" className="btn btn-primary w-full" id="btnSubmitDonation" disabled={donationLoading} style={{ justifyContent: "center", width: "100%", opacity: donationLoading ? 0.7 : 1 }}>
+                  {donationLoading ? "Recording Pledge..." : "Submit Pledge"}
                 </button>
                 <p style={{ textAlign: "center", fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "12px" }}>
                   Tax Exemption under 80G included with every transaction.
@@ -453,6 +477,9 @@ export default function Donate() {
                   ></textarea>
                 </div>
 
+                {volError && (
+                  <p role="alert" style={{ color: "#b91c1c", fontSize: "0.9rem", marginBottom: "12px" }}>{volError}</p>
+                )}
                 <button type="submit" className="btn btn-secondary w-full" id="btnSubmitVolunteer" disabled={volLoading} style={{ justifyContent: "center", width: "100%", opacity: volLoading ? 0.7 : 1 }}>
                   {volLoading ? "Submitting Application..." : "Submit Volunteer Application"}
                 </button>
