@@ -4,9 +4,12 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   collection,
   getDocs,
+  getDoc,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
+  deleteField,
   doc,
 } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -16,7 +19,6 @@ import "../styles/admin.css";
 
 const EMPTY_FORM = {
   name: "",
-  email: "",
   employeeId: "",
   designation: "",
   department: "",
@@ -24,6 +26,19 @@ const EMPTY_FORM = {
   status: "Active",
   photoUrl: "",
 };
+
+// Official ID format: NJEF-<hire year>-<5-digit number>, e.g. NJEF-2021-00001.
+// Numbers run on across years, so the next ID is always one above the highest NJEF number in use.
+const ID_PREFIX = "NJEF";
+const ID_PATTERN = /^NJEF-(\d{4})-(\d{5})$/;
+
+function nextEmployeeId(employees, hireYear) {
+  const highest = employees.reduce((max, emp) => {
+    const match = String(emp.employeeId || "").trim().toUpperCase().match(ID_PATTERN);
+    return match ? Math.max(max, parseInt(match[2], 10)) : max;
+  }, 0);
+  return `${ID_PREFIX}-${hireYear}-${String(highest + 1).padStart(5, "0")}`;
+}
 
 const EMPTY_GALLERY_FORM = {
   eventName: "",
@@ -205,16 +220,13 @@ export default function AdminDashboard() {
   };
 
   const handleConvertToEmployee = (reg) => {
-    const rolePrefix = reg.type === "volunteer" ? "VL" : "MB";
-    const nextNum = String(employees.length + 1).padStart(3, "0");
-    const autoId = `NXJY-${rolePrefix}-${nextNum}`;
+    const autoId = nextEmployeeId(employees, new Date().getFullYear());
     const autoDesignation = reg.type === "volunteer" ? "Volunteer" : "Executive Member";
     const autoDept =
       reg.volunteerAreas?.[0] || reg.memberAreas?.[0] || "Community Outreach";
 
     setForm({
       name: reg.fullName || "",
-      email: reg.email || "",
       employeeId: autoId,
       designation: autoDesignation,
       department: autoDept,
@@ -285,7 +297,6 @@ export default function AdminDashboard() {
   const openEditForm = (emp) => {
     setForm({
       name: emp.name || "",
-      email: emp.email || "",
       employeeId: emp.employeeId || "",
       designation: emp.designation || "",
       department: emp.department || "",
@@ -350,19 +361,37 @@ export default function AdminDashboard() {
         }
       }
 
+      const employeeId = form.employeeId.trim().toUpperCase();
       const employeeData = {
         ...form,
         photoUrl: finalPhotoUrl,
-        employeeId: form.employeeId.trim().toUpperCase(),
+        employeeId,
         lastUpdated: new Date().toISOString(),
       };
 
+      // IDs must be unique across the registry (older records use random document keys).
+      const duplicate = employees.find(
+        (emp) => (emp.employeeId || "").toUpperCase() === employeeId && emp._docId !== editingId
+      );
+      if (duplicate) {
+        showAlert("error", `ID ${employeeId} is already assigned to ${duplicate.name}.`);
+        setSaving(false);
+        return;
+      }
+
       if (editingId) {
-        const docRef = doc(db, "employees", editingId);
-        await updateDoc(docRef, employeeData);
+        // Records are publicly readable on /verify, so personal emails are removed on save.
+        await updateDoc(doc(db, "employees", editingId), { ...employeeData, email: deleteField() });
         showAlert("success", `Employee "${form.name}" updated successfully!`);
       } else {
-        await addDoc(collection(db, "employees"), employeeData);
+        // New records use the ID as the document key, which /verify reads directly.
+        const docRef = doc(db, "employees", employeeId);
+        if ((await getDoc(docRef)).exists()) {
+          showAlert("error", `ID ${employeeId} already exists.`);
+          setSaving(false);
+          return;
+        }
+        await setDoc(docRef, employeeData);
         showAlert("success", `Employee "${form.name}" added successfully!`);
       }
 
@@ -758,11 +787,6 @@ export default function AdminDashboard() {
                           </td>
                           <td className="emp-name">
                             <div>{emp.name}</div>
-                            {emp.email && (
-                              <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 400 }}>
-                                {emp.email}
-                              </div>
-                            )}
                           </td>
                           <td className="emp-id">{emp.employeeId}</td>
                           <td>{emp.designation}</td>
@@ -1403,23 +1427,12 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div className="admin-field">
-                    <label htmlFor="emp-email">Email Address</label>
-                    <input
-                      id="emp-email"
-                      type="email"
-                      name="email"
-                      placeholder="e.g. rahul@nexjyoti.org"
-                      value={form.email || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="admin-field">
                     <label htmlFor="emp-id">Employee ID *</label>
                     <input
                       id="emp-id"
                       type="text"
                       name="employeeId"
-                      placeholder="e.g. NXJY-FD-001"
+                      placeholder="e.g. NJEF-2021-00001"
                       value={form.employeeId}
                       onChange={handleChange}
                       style={{ textTransform: "uppercase" }}
