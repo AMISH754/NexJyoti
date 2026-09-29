@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, limit, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import SEOHead from "../components/SEOHead";
 
@@ -24,17 +24,22 @@ export default function Verify() {
       try {
         setLoading(true);
         setError(false);
-        const q = query(
-          collection(db, "employees"),
-          where("employeeId", "==", employeeId.trim())
-        );
-        const querySnapshot = await getDocs(q);
+        const id = employeeId.trim().toUpperCase();
 
-        if (!querySnapshot.empty) {
-          setEmployee(querySnapshot.docs[0].data());
-        } else {
-          setEmployee(null);
+        // New records are stored under their ID, so one direct read is enough.
+        if (/^[A-Z0-9_-]{1,64}$/.test(id)) {
+          const snap = await getDoc(doc(db, "employees", id));
+          if (snap.exists()) {
+            setEmployee(snap.data());
+            return;
+          }
         }
+
+        // Older records have random document IDs: look them up by field, one result at most
+        // (the security rules reject any public query without limit(1)).
+        const q = query(collection(db, "employees"), where("employeeId", "==", id), limit(1));
+        const querySnapshot = await getDocs(q);
+        setEmployee(querySnapshot.empty ? null : querySnapshot.docs[0].data());
       } catch (err) {
         console.error("Error fetching employee:", err);
         setError(true);
@@ -168,7 +173,7 @@ export default function Verify() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="E.g., NXJY-FD-001"
+                    placeholder="E.g., NJEF-2021-0001"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     style={{ textAlign: "center", fontSize: "1.1rem", textTransform: "uppercase", letterSpacing: "1px", fontWeight: "600" }}
@@ -384,30 +389,6 @@ export default function Verify() {
                     {employee.employeeId}
                   </div>
                 </div>
-
-                {employee.email && (
-                  <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "0.8rem" }}>
-                    <small
-                      style={{
-                        color: "var(--text-muted)",
-                        fontSize: "0.75rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "1px",
-                        fontWeight: "600",
-                      }}
-                    >
-                      Email Address
-                    </small>
-                    <div style={{ fontSize: "1.05rem", color: "var(--text-dark)", marginTop: "4px", fontWeight: "500" }}>
-                      <a
-                        href={`mailto:${employee.email}`}
-                        style={{ color: "var(--primary)", textDecoration: "none", fontWeight: "600" }}
-                      >
-                        {employee.email}
-                      </a>
-                    </div>
-                  </div>
-                )}
 
                 <div style={{ borderBottom: "1px solid var(--border)", paddingBottom: "0.8rem" }}>
                   <small

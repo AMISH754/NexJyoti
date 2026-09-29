@@ -7,6 +7,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "", botField: "" });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [loadTime] = useState(Date.now());
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function Contact() {
       return;
     }
 
+    setSubmitError("");
     setLoading(true);
     try {
       await addDoc(collection(db, "contacts"), {
@@ -52,7 +54,7 @@ export default function Contact() {
       setSubmitted(true);
     } catch (err) {
       console.error("Error submitting contact inquiry:", err);
-      setSubmitted(true);
+      setSubmitError("Your message could not be sent. Please try again, or email info@nexjyoti.org.");
     } finally {
       setLoading(false);
     }
@@ -201,6 +203,9 @@ export default function Contact() {
                   ></textarea>
                 </div>
 
+                {submitError && (
+                  <p role="alert" style={{ color: "#b91c1c", fontSize: "0.9rem", marginBottom: "12px" }}>{submitError}</p>
+                )}
                 <button type="submit" className="btn btn-primary w-full" id="btnSubmitInquiry" disabled={loading} style={{ justifyContent: "center", width: "100%", opacity: loading ? 0.7 : 1 }}>
                   {loading ? "Sending..." : "Send Message"}
                 </button>

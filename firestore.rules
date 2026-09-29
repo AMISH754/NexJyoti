@@ -3,34 +3,56 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // 1. Employees: Public can read to verify credentials; only authenticated admins can write
-    match /employees/{employeeId} {
-      allow read: if true;
-      allow write: if request.auth != null;
+    // Website admins are listed in the `admins` collection: one document per Firebase Auth UID,
+    // created by hand in the Firebase console. Being signed in is not enough on its own, because
+    // anyone can create a Firebase Auth account using the site's public API key.
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
-    // 2. Contact Inquiries: Anyone can submit a message; only authenticated admins can view/delete
+    // Admin list: each admin may read only their own entry; changes are made in the console only.
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // 1. Employees: the public can verify one ID at a time (direct read, or a query with limit(1)),
+    //    but cannot list the whole registry. Only admins can write.
+    match /employees/{docId} {
+      allow get: if true;
+      allow list: if isAdmin() || request.query.limit <= 1;
+      allow write: if isAdmin();
+    }
+
+    // 2. Contact inquiries: anyone can submit; only admins can view or manage them.
     match /contacts/{contactId} {
       allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if isAdmin();
     }
 
-    // 3. Volunteers: Anyone can submit an application; only authenticated admins can view/delete
+    // 3. Volunteers: anyone can apply; only admins can view or manage applications.
     match /volunteers/{volunteerId} {
       allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if isAdmin();
     }
 
-    // 4. Registrations: Anyone can submit via /register page; only authenticated admins can view/delete
+    // 4. Registrations (/register pages): anyone can submit; only admins can view or manage them.
     match /registrations/{registrationId} {
       allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if isAdmin();
     }
 
-    // 5. Gallery: Public can read to view website gallery; authenticated admins can create/update/delete
+    // 5. Donation pledges (/donate): anyone can pledge; only admins can view or manage pledges.
+    match /pledges/{pledgeId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // 6. Gallery: public can view; only admins can change it.
     match /gallery/{itemId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
   }
 }
