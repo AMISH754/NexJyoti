@@ -831,18 +831,18 @@ select.reg-input {
     margin-left: 0;
   }
 
+  /* Bar and "% complete" stay on one line, inside the banner with room below them. */
   .reg-progress-wrap {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
+    gap: 10px;
+    margin: -44px 0 28px;
   }
 
   .reg-progress-label {
-    text-align: left;
+    min-width: 0;
   }
 
   .register-hero {
-    padding: 110px 20px 64px;
+    padding: 110px 20px 84px;
   }
 }
 
@@ -1082,7 +1082,7 @@ select.reg-input {
   }
 
   .register-hero {
-    padding: 100px 0 50px;
+    padding: 100px 0 84px; /* leaves room for the progress bar, which sits inside the banner */
   }
 
   .register-hero h1 {
