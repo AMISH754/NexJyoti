@@ -412,15 +412,8 @@ export default function VolunteerRegister() {
     if (!data.volunteerAreas.length) e.volunteerAreas = "Please select at least one area.";
     if (!data.volunteerMode) e.volunteerMode = "Please select a preferred mode.";
     if (!data.volunteerTimeCommitment) e.volunteerTimeCommitment = "Please select your time commitment.";
+    if (!data.hasPreviousVolunteering) e.hasPreviousVolunteering = "Please answer this question.";
     setErrors(e); return Object.keys(e).length === 0;
-  };
-
-  const validateExperience = () => {
-    if (!data.hasPreviousVolunteering) {
-      setErrors({ hasPreviousVolunteering: "Please answer this question." });
-      return false;
-    }
-    return true;
   };
 
   const validateConnection = () => {
@@ -435,12 +428,12 @@ export default function VolunteerRegister() {
   };
 
   const next_S1 = () => { if (validatePersonal()) go(S.PROFILE); };
-  const next_S2 = () => { if (validateProfile()) go(S.EXPERIENCE); };
-  const next_S3 = () => {
-    if (validateExperience())
-      go(data.hasPreviousVolunteering === "Yes" ? S.EXP_DETAILS : S.CONNECTION);
+  // The "previously volunteered?" question is on step 2: "Yes" opens the (optional) experience step,
+  // "No" skips it.
+  const next_S2 = () => {
+    if (validateProfile()) go(data.hasPreviousVolunteering === "Yes" ? S.EXPERIENCE : S.CONNECTION);
   };
-  const next_S3b = () => go(S.CONNECTION);
+  const next_S3 = () => go(S.CONNECTION);
   const next_S4 = () => { if (validateConnection()) go(S.DECLARATION); };
 
   const handleSubmit = async () => {
@@ -455,6 +448,8 @@ export default function VolunteerRegister() {
     setSubmitting(true); setSubmitError("");
     try {
       const { website_hp, ...cleanData } = data;
+      // Experience text only counts if the answer is still "Yes" (it may have been changed after typing).
+      if (cleanData.hasPreviousVolunteering !== "Yes") cleanData.previousVolunteeringExp = "";
       await addDoc(collection(db, "registrations"), {
         ...cleanData, type: "volunteer", status: "pending", submittedAt: new Date().toISOString(),
       });
