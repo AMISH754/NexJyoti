@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import SEOHead from "../components/SEOHead";
 import LocationFields from "../components/LocationFields";
 import { BLOOD_GROUPS, isValidPincode } from "../utils/indiaLocation";
+import { clearDraft, hasAnswers, loadDraft, restoreAnswers, saveDraft } from "../utils/formDraft";
 import "../styles/register.css";
 
 /* ── Steps ── */
 const S = { PERSONAL: 1, PROFILE: 2, ASSOCIATION: 3, CONNECTION: 4, DECLARATION: 5, SUCCESS: 6 };
-const PROGRESS = { 1: 14, 2: 36, 3: 56, 4: 74, 5: 90, 6: 100 };
+// Share of the form completed: 0% on step 1, rising as steps are finished, 100% once submitted.
+const PROGRESS = { 1: 0, 2: 20, 3: 40, 4: 60, 5: 80, 6: 100 };
+const DRAFT_KEY = "member-registration";
 
 /* ── Options ── */
 const STATUS_OPTIONS = [
@@ -359,12 +362,17 @@ function SuccessScreen() {
 
 /* ── MAIN ── */
 export default function MemberRegister() {
-  const [step, setStep] = useState(S.PERSONAL);
-  const [data, setData] = useState({ ...INITIAL });
+  // Answers (and the current step) are kept in this browser tab, so refreshing doesn't lose them.
+  const [draft] = useState(() => loadDraft(DRAFT_KEY));
+  const [step, setStep] = useState(() =>
+    (draft && Object.values(S).includes(draft.step) && draft.step !== S.SUCCESS ? draft.step : S.PERSONAL));
+  const [data, setData] = useState(() => restoreAnswers(INITIAL, draft?.data));
+  const [restored, setRestored] = useState(() => hasAnswers(draft?.data));
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [loadTime] = useState(Date.now());
+  // When this person started the form (kept across reloads), used by the anti-bot timing check below.
+  const [loadTime] = useState(() => draft?.startedAt || Date.now());
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -380,7 +388,18 @@ export default function MemberRegister() {
     if (errors[name]) setErrors(p => ({ ...p, [name]: "" }));
   };
 
-  const go = (s) => { window.scrollTo({ top: 0, behavior: "smooth" }); setStep(s); setErrors({}); setSubmitError(""); };
+  const go = (s) => { window.scrollTo({ top: 0, behavior: "smooth" }); setStep(s); setErrors({}); setSubmitError(""); setRestored(false); };
+
+  useEffect(() => {
+    if (step === S.SUCCESS) { clearDraft(DRAFT_KEY); return; }
+    saveDraft(DRAFT_KEY, { step, startedAt: loadTime, data: { ...data, website_hp: "" } });
+  }, [data, step]);
+
+  const startOver = () => {
+    clearDraft(DRAFT_KEY);
+    setData({ ...INITIAL });
+    go(S.PERSONAL);
+  };
 
   const validatePersonal = () => {
     const e = {};
@@ -442,6 +461,8 @@ export default function MemberRegister() {
       const { website_hp, ...cleanData } = data;
       // "City, State" is also saved as location, which the admin list shows.
       cleanData.location = [cleanData.city.trim(), cleanData.state].filter(Boolean).join(", ");
+      // The description only counts if the answer is still "Yes" (it may have been changed after typing).
+      if (cleanData.hasPreviousAssociation !== "Yes") cleanData.previousAssociationDesc = "";
       await addDoc(collection(db, "registrations"), {
         ...cleanData, type: "member", status: "pending", submittedAt: new Date().toISOString(),
       });
@@ -487,6 +508,12 @@ export default function MemberRegister() {
           )}
 
           <div className="register-form-card">
+            {restored && step !== S.SUCCESS && (
+              <div className="reg-restored" role="status">
+                <span>We kept the answers you entered before the page reloaded.</span>
+                <button type="button" className="reg-restored-reset" onClick={startOver}>Start over</button>
+              </div>
+            )}
             {step === S.PERSONAL && <StepPersonal data={data} errors={errors} onChange={handleChange} onNext={next_S1} />}
             {step === S.PROFILE && <StepProfile data={data} errors={errors} onChange={handleChange} onCheckboxGroup={handleCheckboxGroup} onNext={next_S2} onBack={() => go(S.PERSONAL)} />}
             {step === S.ASSOCIATION && <StepAssociation data={data} errors={errors} onChange={handleChange} onNext={next_S3} onBack={() => go(S.PROFILE)} />}
