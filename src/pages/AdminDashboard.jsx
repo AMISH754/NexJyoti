@@ -20,6 +20,7 @@ import "../styles/admin.css";
 const EMPTY_FORM = {
   name: "",
   employeeId: "",
+  email: "",
   designation: "",
   department: "",
   dateOfJoining: "",
@@ -228,6 +229,7 @@ export default function AdminDashboard() {
     setForm({
       name: reg.fullName || "",
       employeeId: autoId,
+      email: reg.email || "",
       designation: autoDesignation,
       department: autoDept,
       dateOfJoining: new Date().toISOString().split("T")[0],
@@ -298,6 +300,7 @@ export default function AdminDashboard() {
     setForm({
       name: emp.name || "",
       employeeId: emp.employeeId || "",
+      email: emp.email || "",
       designation: emp.designation || "",
       department: emp.department || "",
       dateOfJoining: emp.dateOfJoining || "",
@@ -364,6 +367,7 @@ export default function AdminDashboard() {
       const employeeId = form.employeeId.trim().toUpperCase();
       const employeeData = {
         ...form,
+        email: (form.email || "").trim(),
         photoUrl: finalPhotoUrl,
         employeeId,
         lastUpdated: new Date().toISOString(),
@@ -380,8 +384,7 @@ export default function AdminDashboard() {
       }
 
       if (editingId) {
-        // Records are publicly readable on /verify, so personal emails are removed on save.
-        await updateDoc(doc(db, "employees", editingId), { ...employeeData, email: deleteField() });
+        await updateDoc(doc(db, "employees", editingId), employeeData);
         showAlert("success", `Employee "${form.name}" updated successfully!`);
       } else {
         // New records use the ID as the document key, which /verify reads directly.
@@ -787,6 +790,11 @@ export default function AdminDashboard() {
                           </td>
                           <td className="emp-name">
                             <div>{emp.name}</div>
+                            {emp.email && (
+                              <small style={{ color: "var(--text-muted)", fontSize: "0.78rem" }}>
+                                {emp.email}
+                              </small>
+                            )}
                           </td>
                           <td className="emp-id">{emp.employeeId}</td>
                           <td>{emp.designation}</td>
@@ -1437,6 +1445,17 @@ export default function AdminDashboard() {
                       onChange={handleChange}
                       style={{ textTransform: "uppercase" }}
                       required
+                    />
+                  </div>
+                  <div className="admin-field">
+                    <label htmlFor="emp-email">Email Address</label>
+                    <input
+                      id="emp-email"
+                      type="email"
+                      name="email"
+                      placeholder="e.g. rahul@nexjyoti.org"
+                      value={form.email}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="admin-field">
