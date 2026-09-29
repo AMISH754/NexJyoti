@@ -21,8 +21,8 @@ export default function Footer() {
             <div className="footer-social">
               <a href="#" className="social-icon" aria-label="Facebook">f</a>
               <a href="#" className="social-icon" aria-label="Twitter">𝕏</a>
-              <a href="#" className="social-icon" aria-label="Instagram">IG</a>
-              <a href="#" className="social-icon" aria-label="LinkedIn">in</a>
+              <a href="https://www.instagram.com/nexjyoti_edu/" className="social-icon" aria-label="Instagram">IG</a>
+              <a href="https://www.linkedin.com/company/nexjyoti-education-foundation/" className="social-icon" aria-label="LinkedIn">in</a>
               <a href="#" className="social-icon" aria-label="YouTube">YT</a>
             </div>
           </div>
