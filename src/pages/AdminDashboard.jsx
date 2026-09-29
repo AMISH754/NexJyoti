@@ -1608,6 +1608,8 @@ export default function AdminDashboard() {
                   ["Mobile", viewRegistration.mobile || "—"],
                   ["Email", viewRegistration.email || "—"],
                   ["Location", viewRegistration.location || "—"],
+                  ["PIN Code", viewRegistration.pincode || "—"],
+                  ["Blood Group", viewRegistration.bloodGroup || "—"],
                   ["Prof. Status", viewRegistration.professionalStatus || "—"],
                   ["Qualification", viewRegistration.qualification || "—"],
                   ["Institution", viewRegistration.institution || "—"],

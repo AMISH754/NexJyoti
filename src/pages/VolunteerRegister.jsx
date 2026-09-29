@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import SEOHead from "../components/SEOHead";
+import LocationFields from "../components/LocationFields";
+import { BLOOD_GROUPS, isValidPincode } from "../utils/indiaLocation";
+import { clearDraft, hasAnswers, loadDraft, restoreAnswers, saveDraft } from "../utils/formDraft";
 import "../styles/register.css";
 
 /* ── Steps ── */
 const S = { PERSONAL: 1, PROFILE: 2, EXPERIENCE: 3, CONNECTION: 4, DECLARATION: 5, SUCCESS: 6 };
 
-const PROGRESS = { 1: 14, 2: 36, 3: 56, 4: 74, 5: 90, 6: 100 };
+// Share of the form completed: 0% on step 1, rising as steps are finished, 100% once submitted.
+const PROGRESS = { 1: 0, 2: 20, 3: 40, 4: 60, 5: 80, 6: 100 };
+const DRAFT_KEY = "volunteer-registration";
 
 /* ── Options ── */
 const STATUS_OPTIONS = [
@@ -53,7 +58,8 @@ const DECLARATIONS = [
 ];
 
 const INITIAL = {
-  fullName: "", dateOfBirth: "", mobile: "", email: "", location: "",
+  fullName: "", dateOfBirth: "", bloodGroup: "", mobile: "", email: "",
+  pincode: "", city: "", state: "", location: "",
   professionalStatus: "", qualification: "", institution: "",
   volunteerMotivation: "", volunteerAreas: [], volunteerSkills: "",
   volunteerMode: "", volunteerAvailability: [], volunteerTimeCommitment: "",
@@ -150,24 +156,28 @@ function StepPersonal({ data, errors, onChange, onNext }) {
             type="date" name="dateOfBirth" value={data.dateOfBirth} onChange={onChange}
             max={new Date().toISOString().split("T")[0]} />
         </Field>
+        <Field label="Blood Group" error={errors.bloodGroup}>
+          <select id="vol-blood" className="reg-input" name="bloodGroup" value={data.bloodGroup} onChange={onChange}>
+            <option value="">Select blood group (optional)…</option>
+            {BLOOD_GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
+          </select>
+        </Field>
+      </div>
+
+      <div className="reg-grid-2">
         <Field label="Mobile / WhatsApp Number" required error={errors.mobile}>
           <input id="vol-mobile" className={`reg-input ${errors.mobile ? "input-error" : ""}`}
             type="tel" name="mobile" value={data.mobile} onChange={onChange}
             placeholder="10-digit mobile number" maxLength={10} />
         </Field>
+        <Field label="Email Address" required error={errors.email}>
+          <input id="vol-email" className={`reg-input ${errors.email ? "input-error" : ""}`}
+            type="email" name="email" value={data.email} onChange={onChange}
+            placeholder="your@email.com" autoComplete="email" />
+        </Field>
       </div>
 
-      <Field label="Email Address" required error={errors.email}>
-        <input id="vol-email" className={`reg-input ${errors.email ? "input-error" : ""}`}
-          type="email" name="email" value={data.email} onChange={onChange}
-          placeholder="your@email.com" autoComplete="email" />
-      </Field>
-
-      <Field label="Current City / District & State" required error={errors.location} hint="Example: Ranchi, Jharkhand">
-        <input id="vol-location" className={`reg-input ${errors.location ? "input-error" : ""}`}
-          type="text" name="location" value={data.location} onChange={onChange}
-          placeholder="e.g. Ranchi, Jharkhand" />
-      </Field>
+      <LocationFields idPrefix="vol" data={data} errors={errors} onChange={onChange} />
 
       <div className="reg-grid-2">
         <Field label="Current Professional / Educational Status" required error={errors.professionalStatus}>
@@ -369,12 +379,17 @@ function SuccessScreen() {
 
 /* ── MAIN ── */
 export default function VolunteerRegister() {
-  const [step, setStep] = useState(S.PERSONAL);
-  const [data, setData] = useState({ ...INITIAL });
+  // Answers (and the current step) are kept in this browser tab, so refreshing doesn't lose them.
+  const [draft] = useState(() => loadDraft(DRAFT_KEY));
+  const [step, setStep] = useState(() =>
+    (draft && Object.values(S).includes(draft.step) && draft.step !== S.SUCCESS ? draft.step : S.PERSONAL));
+  const [data, setData] = useState(() => restoreAnswers(INITIAL, draft?.data));
+  const [restored, setRestored] = useState(() => hasAnswers(draft?.data));
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [loadTime] = useState(Date.now());
+  // When this person started the form (kept across reloads), used by the anti-bot timing check below.
+  const [loadTime] = useState(() => draft?.startedAt || Date.now());
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -390,7 +405,18 @@ export default function VolunteerRegister() {
     if (errors[name]) setErrors(p => ({ ...p, [name]: "" }));
   };
 
-  const go = (s) => { window.scrollTo({ top: 0, behavior: "smooth" }); setStep(s); setErrors({}); setSubmitError(""); };
+  const go = (s) => { window.scrollTo({ top: 0, behavior: "smooth" }); setStep(s); setErrors({}); setSubmitError(""); setRestored(false); };
+
+  useEffect(() => {
+    if (step === S.SUCCESS) { clearDraft(DRAFT_KEY); return; }
+    saveDraft(DRAFT_KEY, { step, startedAt: loadTime, data: { ...data, website_hp: "" } });
+  }, [data, step]);
+
+  const startOver = () => {
+    clearDraft(DRAFT_KEY);
+    setData({ ...INITIAL });
+    go(S.PERSONAL);
+  };
 
   const validatePersonal = () => {
     const e = {};
@@ -400,7 +426,11 @@ export default function VolunteerRegister() {
     else if (!/^[6-9]\d{9}$/.test(data.mobile.trim())) e.mobile = "Please enter a valid 10-digit Indian mobile number.";
     if (!data.email.trim()) e.email = "Email address is required.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Please enter a valid email address.";
-    if (!data.location.trim()) e.location = "Current location is required.";
+    if (!isValidPincode(data.pincode)) {
+      e.pincode = data.pincode ? "Please enter a valid 6-digit PIN code." : "PIN code is required.";
+    }
+    if (!data.city.trim()) e.city = "City / district is required.";
+    if (!data.state) e.state = "Please select your state.";
     if (!data.professionalStatus) e.professionalStatus = "Please select your status.";
     if (!data.qualification.trim()) e.qualification = "This field is required.";
     setErrors(e); return Object.keys(e).length === 0;
@@ -412,15 +442,8 @@ export default function VolunteerRegister() {
     if (!data.volunteerAreas.length) e.volunteerAreas = "Please select at least one area.";
     if (!data.volunteerMode) e.volunteerMode = "Please select a preferred mode.";
     if (!data.volunteerTimeCommitment) e.volunteerTimeCommitment = "Please select your time commitment.";
+    if (!data.hasPreviousVolunteering) e.hasPreviousVolunteering = "Please answer this question.";
     setErrors(e); return Object.keys(e).length === 0;
-  };
-
-  const validateExperience = () => {
-    if (!data.hasPreviousVolunteering) {
-      setErrors({ hasPreviousVolunteering: "Please answer this question." });
-      return false;
-    }
-    return true;
   };
 
   const validateConnection = () => {
@@ -435,12 +458,12 @@ export default function VolunteerRegister() {
   };
 
   const next_S1 = () => { if (validatePersonal()) go(S.PROFILE); };
-  const next_S2 = () => { if (validateProfile()) go(S.EXPERIENCE); };
-  const next_S3 = () => {
-    if (validateExperience())
-      go(data.hasPreviousVolunteering === "Yes" ? S.EXP_DETAILS : S.CONNECTION);
+  // The "previously volunteered?" question is on step 2: "Yes" opens the (optional) experience step,
+  // "No" skips it.
+  const next_S2 = () => {
+    if (validateProfile()) go(data.hasPreviousVolunteering === "Yes" ? S.EXPERIENCE : S.CONNECTION);
   };
-  const next_S3b = () => go(S.CONNECTION);
+  const next_S3 = () => go(S.CONNECTION);
   const next_S4 = () => { if (validateConnection()) go(S.DECLARATION); };
 
   const handleSubmit = async () => {
@@ -455,6 +478,10 @@ export default function VolunteerRegister() {
     setSubmitting(true); setSubmitError("");
     try {
       const { website_hp, ...cleanData } = data;
+      // "City, State" is also saved as location, which the admin list shows.
+      cleanData.location = [cleanData.city.trim(), cleanData.state].filter(Boolean).join(", ");
+      // Experience text only counts if the answer is still "Yes" (it may have been changed after typing).
+      if (cleanData.hasPreviousVolunteering !== "Yes") cleanData.previousVolunteeringExp = "";
       await addDoc(collection(db, "registrations"), {
         ...cleanData, type: "volunteer", status: "pending", submittedAt: new Date().toISOString(),
       });
@@ -500,6 +527,12 @@ export default function VolunteerRegister() {
           )}
 
           <div className="register-form-card">
+            {restored && step !== S.SUCCESS && (
+              <div className="reg-restored" role="status">
+                <span>We kept the answers you entered before the page reloaded.</span>
+                <button type="button" className="reg-restored-reset" onClick={startOver}>Start over</button>
+              </div>
+            )}
             {step === S.PERSONAL && <StepPersonal data={data} errors={errors} onChange={handleChange} onNext={next_S1} />}
             {step === S.PROFILE && <StepProfile data={data} errors={errors} onChange={handleChange} onCheckboxGroup={handleCheckboxGroup} onNext={next_S2} onBack={() => go(S.PERSONAL)} />}
             {step === S.EXPERIENCE && <StepExperience data={data} errors={errors} onChange={handleChange} onNext={next_S3} onBack={() => go(S.PROFILE)} />}
