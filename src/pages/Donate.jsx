@@ -187,7 +187,7 @@ export default function Donate() {
             <div className="card" style={{ backgroundColor: "var(--primary-glow)", border: "1px solid rgba(59, 130, 246, 0.2)", padding: "24px" }}>
               <h4 style={{ color: "var(--primary)", marginBottom: "0.5rem", fontWeight: 700 }}>Alternative Modes of Support</h4>
               <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6, color: "var(--text-body)" }}>
-                If you prefer bank wire transfer or contributing hardware (laptops, solar units) directly, please connect with us at <strong>admin@nexjyoti.org</strong> or via phone at <strong> (+91) 9572570256</strong>.
+                If you prefer bank wire transfer or contributing hardware (laptops, solar units) directly, please connect with us at <strong>info@@nexjyoti.org</strong> or via phone at <strong> (+91) 9572570256</strong>.
               </p>
             </div>
           </div>
