@@ -5,7 +5,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
+    // No localStorage when pages are prerendered at build time.
+    return typeof window !== "undefined" && window.localStorage.getItem("theme") === "dark";
   });
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function Navbar() {
       <nav className={`navbar ${scrolled ? "scrolled" : ""}`} id="navbar" role="navigation" aria-label="Main Navigation">
         <div className="container">
           <Link to="/" className="nav-logo" aria-label="NexJyoti Home" onClick={closeMenu}>
-            <img src="/assets/images/logo-fullname.jpeg" alt="NexJyoti Education Foundation Logo" />
+            <img src="/assets/images/logo-fullname.jpeg" alt="NexJyoti Education Foundation logo" />
           </Link>
           <ul className="nav-menu" role="list">
             <li>

@@ -161,11 +161,7 @@ export default function Programs() {
 
   return (
     <div>
-      <SEOHead
-        title="Our Programs — Education, Skilling & Women Empowerment | NexJyoti"
-        description="Explore NexJyoti's four core programs: free children's education, youth skill development, women empowerment, and holistic community development in rural Jharkhand, India."
-        path="/programs"
-      />
+      <SEOHead path="/programs" />
 
       {/* Hero Section */}
       <section className="about-hero" id="programsHero">

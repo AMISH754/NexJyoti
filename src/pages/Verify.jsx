@@ -11,7 +11,8 @@ export default function Verify() {
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(Boolean(employeeId));
   const [error, setError] = useState(false);
-  const isAdmin = sessionStorage.getItem("nexjyoti_admin") === "true";
+  // No sessionStorage when pages are prerendered at build time.
+  const isAdmin = typeof window !== "undefined" && window.sessionStorage.getItem("nexjyoti_admin") === "true";
 
   useEffect(() => {
     if (!employeeId) {
@@ -128,11 +129,7 @@ export default function Verify() {
   if (!employeeId) {
     return (
       <>
-        <SEOHead
-          title="Credential Verification — NexJyoti Education Foundation"
-          description="Verify authentic employee, member, or volunteer credentials issued by NexJyoti Education Foundation via our official public registry."
-          path="/verify"
-        />
+        <SEOHead path="/verify" />
         <div
           style={{
             minHeight: "80vh",
@@ -147,7 +144,7 @@ export default function Verify() {
             <div className="card" style={{ padding: "3rem 2.5rem", textAlign: "center", boxShadow: "var(--shadow-lg)" }}>
               <img
                 src="/assets/images/logo.jpg"
-                alt="NexJyoti Logo"
+                alt="NexJyoti Education Foundation logo"
                 style={{
                   width: "60px",
                   height: "60px",
@@ -199,11 +196,7 @@ export default function Verify() {
 
   return (
     <>
-    <SEOHead
-      title="Verify Employee — NexJyoti Education Foundation"
-      description="Verify the identity and association of NexJyoti Education Foundation team members and volunteers using their employee ID."
-      path="/verify"
-    />
+    <SEOHead path="/verify" />
     <div
       style={{
         minHeight: "80vh",
@@ -240,7 +233,7 @@ export default function Verify() {
             >
               <img
                 src="/assets/images/logo.jpg"
-                alt="NexJyoti Logo"
+                alt="NexJyoti Education Foundation logo"
                 style={{
                   width: "56px",
                   height: "56px",

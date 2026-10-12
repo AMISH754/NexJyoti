@@ -479,11 +479,7 @@ export default function MemberRegister() {
 
   return (
     <>
-      <SEOHead
-        title="Member Registration — NexJyoti Education Foundation"
-        description="Become a member of NexJyoti Education Foundation. Join our community of changemakers working to provide quality education to underprivileged children."
-        path="/member-register"
-      />
+      <SEOHead path="/member-register" />
       <div className="register-page">
         <div className="register-hero register-hero-gold">
           <div className="reg-hero-bg-dots" aria-hidden="true" />

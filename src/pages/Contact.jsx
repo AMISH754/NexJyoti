@@ -62,11 +62,7 @@ export default function Contact() {
 
   return (
     <div>
-      <SEOHead
-        title="Contact NexJyoti Education Foundation"
-        description="Reach out to NexJyoti for partnerships, volunteering, donations, or inquiries. Based in Jharkhand, India. We're here to listen and collaborate."
-        path="/contact"
-      />
+      <SEOHead path="/contact" />
 
       {/* Contact Header */}
       <section className="about-hero" id="contactHero">

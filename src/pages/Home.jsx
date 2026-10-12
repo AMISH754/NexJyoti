@@ -255,47 +255,9 @@ export default function Home() {
 
   return (
     <div>
-      <SEOHead
-        title="NexJyoti Education Foundation — Educate. Empower. Elevate."
-        description="NexJyoti Education Foundation empowers 1000+ underprivileged children in Jharkhand, India through free education, youth skilling, women empowerment, and community development. Donate or volunteer today."
-        path="/"
-      />
+      <SEOHead path="/" />
 
-      {/* Organization + FAQ Structured Data (JSON-LD) */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "NGO",
-        "name": "NexJyoti Education Foundation",
-        "alternateName": "NexJyoti",
-        "url": "https://nexjyoti.org",
-        "logo": "https://nexjyoti.org/assets/images/logo-fullname.jpeg",
-        "description": "NexJyoti Education Foundation is a registered non-profit (NGO) founded in 2021, dedicated to empowering underprivileged children through quality education, youth skill development, women empowerment, and community development in Jharkhand, India.",
-        "foundingDate": "2021",
-        "founder": { "@type": "Person", "name": "Shivnarayan Kumar" },
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Irgu Toli Road, Raja Hata Lane, Kishore Ganj",
-          "addressLocality": "Ranchi",
-          "addressRegion": "Jharkhand",
-          "postalCode": "834001",
-          "addressCountry": "IN"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "23.3699",
-          "longitude": "85.3253"
-        },
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+91-9572570256",
-          "contactType": "General Inquiries",
-          "email": "info@nexjyoti.org",
-          "areaServed": "IN"
-        },
-        "areaServed": "India",
-        "nonprofitStatus": "Registered under Section 80G of the Indian Income Tax Act"
-      }) }} />
-
+      {/* FAQ Structured Data (JSON-LD); the organisation schema comes from SEOHead */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",

@@ -126,11 +126,7 @@ export default function Gallery() {
 
   return (
     <div className="gallery-page">
-      <SEOHead
-        title="Photo Gallery — NexJyoti Education Foundation in Action"
-        description="See real photos and videos of NexJyoti's education programs, Mission Udaan centers, community events, and volunteer activities across Jharkhand, India."
-        path="/gallery"
-      />
+      <SEOHead path="/gallery" />
 
       {/* Hero Banner */}
       <section className="gallery-hero">

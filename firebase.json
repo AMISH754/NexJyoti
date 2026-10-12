@@ -12,8 +12,16 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/verify/**",
+        "destination": "/verify.html"
+      },
+      {
+        "source": "/admin",
+        "destination": "/spa.html"
+      },
+      {
+        "source": "/admin/**",
+        "destination": "/spa.html"
       }
     ],
     "cleanUrls": true,
