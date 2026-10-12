@@ -10,7 +10,7 @@ export default function Footer() {
             <img
               src="/assets/images/logo-fullname.jpeg"
               onError={(e) => { e.target.src = "/assets/images/logo.jpg"; }}
-              alt="NexJyoti Education Foundation"
+              alt="NexJyoti Education Foundation logo"
             />
             <p>
               NexJyoti Education Foundation works to bring quality education and opportunity to every underprivileged child and youth across India.

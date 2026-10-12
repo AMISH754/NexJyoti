@@ -143,7 +143,7 @@ export default function Verify() {
             <div className="card" style={{ padding: "3rem 2.5rem", textAlign: "center", boxShadow: "var(--shadow-lg)" }}>
               <img
                 src="/assets/images/logo.jpg"
-                alt="NexJyoti Logo"
+                alt="NexJyoti Education Foundation logo"
                 style={{
                   width: "60px",
                   height: "60px",
@@ -232,7 +232,7 @@ export default function Verify() {
             >
               <img
                 src="/assets/images/logo.jpg"
-                alt="NexJyoti Logo"
+                alt="NexJyoti Education Foundation logo"
                 style={{
                   width: "56px",
                   height: "56px",
