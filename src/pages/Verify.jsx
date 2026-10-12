@@ -11,7 +11,8 @@ export default function Verify() {
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(Boolean(employeeId));
   const [error, setError] = useState(false);
-  const isAdmin = sessionStorage.getItem("nexjyoti_admin") === "true";
+  // No sessionStorage when pages are prerendered at build time.
+  const isAdmin = typeof window !== "undefined" && window.sessionStorage.getItem("nexjyoti_admin") === "true";
 
   useEffect(() => {
     if (!employeeId) {

@@ -5,7 +5,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
+    // No localStorage when pages are prerendered at build time.
+    return typeof window !== "undefined" && window.localStorage.getItem("theme") === "dark";
   });
 
   useEffect(() => {
