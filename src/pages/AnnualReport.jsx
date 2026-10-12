@@ -23,11 +23,7 @@ export default function AnnualReport() {
 
   return (
     <div>
-      <SEOHead
-        title="Annual Report — NexJyoti Education Foundation"
-        description="Read NexJyoti's annual reports covering impact metrics, financials, and program outcomes. Full transparency in everything we do. 80G registered NGO."
-        path="/annual-report"
-      />
+      <SEOHead path="/annual-report" />
 
       {/* Hero Section */}
       <section className="about-hero" id="annualReportHero">

@@ -498,11 +498,7 @@ export default function VolunteerRegister() {
 
   return (
     <>
-      <SEOHead
-        title="Volunteer Registration — NexJyoti Education Foundation"
-        description="Register as a volunteer with NexJyoti Education Foundation. Contribute your time and skills to educate underprivileged children in Jharkhand, India."
-        path="/volunteer-register"
-      />
+      <SEOHead path="/volunteer-register" />
       <div className="register-page">
         <div className="register-hero">
           <div className="reg-hero-bg-dots" aria-hidden="true" />

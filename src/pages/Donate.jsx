@@ -153,11 +153,7 @@ export default function Donate() {
 
   return (
     <div>
-      <SEOHead
-        title="Donate to NexJyoti — Support a Child's Education in India"
-        description="Your donation of ₹500 provides a month of quality education. NexJyoti is 80G registered for tax deduction. 100% transparent. Donate today to change a life."
-        path="/donate"
-      />
+      <SEOHead path="/donate" />
 
       {/* Support Header */}
       <section className="about-hero" id="donateHero">

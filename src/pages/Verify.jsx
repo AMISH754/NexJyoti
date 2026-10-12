@@ -128,11 +128,7 @@ export default function Verify() {
   if (!employeeId) {
     return (
       <>
-        <SEOHead
-          title="Credential Verification — NexJyoti Education Foundation"
-          description="Verify authentic employee, member, or volunteer credentials issued by NexJyoti Education Foundation via our official public registry."
-          path="/verify"
-        />
+        <SEOHead path="/verify" />
         <div
           style={{
             minHeight: "80vh",
@@ -199,11 +195,7 @@ export default function Verify() {
 
   return (
     <>
-    <SEOHead
-      title="Verify Employee — NexJyoti Education Foundation"
-      description="Verify the identity and association of NexJyoti Education Foundation team members and volunteers using their employee ID."
-      path="/verify"
-    />
+    <SEOHead path="/verify" />
     <div
       style={{
         minHeight: "80vh",

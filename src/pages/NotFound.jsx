@@ -5,12 +5,7 @@ import SEOHead from "../components/SEOHead";
 export default function NotFound() {
   return (
     <>
-      <SEOHead
-        title="404: Page Not Found — NexJyoti Education Foundation"
-        description="The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
-        path="/404"
-        noindex={true}
-      />
+      <SEOHead path="/404" />
       <div style={{
         minHeight: "75vh",
         display: "flex",
