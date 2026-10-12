@@ -1,4 +1,5 @@
 // Build step 3 of 3 (see "build" in package.json). Writes static HTML for every public route,
+// 404.html (served with HTTP 404 by Firebase Hosting) and spa.html (app shell for /admin),
 // then checks the result. The build fails if a page breaks one of the SEO rules.
 import fs from "node:fs";
 import path from "node:path";
@@ -80,8 +81,26 @@ for (const route of ROUTES) {
   results.push({ path: route.path, file: fileFor(route.path), robots: route.robots || "index", ...info });
 }
 
+// 404 page: what Firebase Hosting serves, with status 404, for any path that has no file.
+{
+  const { head, html } = render("/this-page-does-not-exist");
+  const page = fill(head, html);
+  const info = inspect(page);
+  if (!/noindex/.test(info.robots || "")) problems.push("404.html: missing noindex");
+  if (info.h1Count !== 1) problems.push(`404.html: has ${info.h1Count} <h1> elements`);
+  if (info.canonical) problems.push("404.html: should not have a canonical link");
+  write("404.html", page);
+  results.push({ path: "(unknown paths)", file: "404.html", robots: "notFound", ...info });
+}
+
+// App shell for /admin and /admin/* (not prerendered, never indexed).
+write("spa.html", fill(
+  '<title>NexJyoti Education Foundation</title>\n  <meta name="robots" content="noindex, nofollow" />',
+  "",
+));
+
 // ── Report ────────────────────────────────────────────────────────────────────
-console.log(`\nPrerendered ${results.length} pages into dist/\n`);
+console.log(`\nPrerendered ${results.length} pages into dist/ (+ spa.html)\n`);
 console.table(results.map((r) => ({
   path: r.path, file: r.file, robots: r.robots, h1: r.h1Count, textChars: r.textLength, title: r.title,
 })));
