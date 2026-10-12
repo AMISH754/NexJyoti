@@ -1,15 +1,16 @@
 // Build step 3 of 3 (see "build" in package.json). Writes static HTML for every public route,
-// 404.html (served with HTTP 404 by Firebase Hosting) and spa.html (app shell for /admin),
-// then checks the result. The build fails if a page breaks one of the SEO rules.
+// 404.html (served with HTTP 404 by Firebase Hosting), spa.html (app shell for /admin) and
+// sitemap.xml, then checks the result. The build fails if a page breaks one of the SEO rules.
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
 const ssrEntry = path.join(root, "dist-ssr", "entry-server.js");
 
-const { render, ROUTES, NOT_FOUND, SITE_URL, canonicalUrl, pageTitle, robotsContent } =
+const { render, ROUTES, NOT_FOUND, SITE_URL, canonicalUrl, pageTitle, isIndexable, robotsContent } =
   await import(pathToFileURL(ssrEntry).href);
 
 const template = fs.readFileSync(path.join(dist, "index.html"), "utf8");
@@ -99,8 +100,29 @@ write("spa.html", fill(
   "",
 ));
 
+// ── sitemap.xml: indexable routes only, <lastmod> = last commit that changed the page ──────────
+const today = new Date().toISOString().slice(0, 10);
+function lastModified(sources) {
+  const dates = sources.map((file) => {
+    try {
+      const dirty = execFileSync("git", ["status", "--porcelain", "--", file], { cwd: root, encoding: "utf8" }).trim();
+      if (dirty) return today; // changed but not committed yet
+      const date = execFileSync("git", ["log", "-1", "--format=%cs", "--", file], { cwd: root, encoding: "utf8" }).trim();
+      if (date) return date;
+    } catch {
+      // git not available: fall back to the file's modification date
+    }
+    return fs.statSync(path.join(root, file)).mtime.toISOString().slice(0, 10);
+  });
+  return dates.sort().pop();
+}
+const entries = ROUTES.filter(isIndexable).map((route) => (
+  `  <url>\n    <loc>${canonicalUrl(route.path)}</loc>\n    <lastmod>${lastModified(route.sources)}</lastmod>\n  </url>`
+));
+write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.join("\n")}\n</urlset>\n`);
+
 // ── Report ────────────────────────────────────────────────────────────────────
-console.log(`\nPrerendered ${results.length} pages into dist/ (+ spa.html)\n`);
+console.log(`\nPrerendered ${results.length} pages into dist/ (+ spa.html, sitemap.xml with ${entries.length} URLs)\n`);
 console.table(results.map((r) => ({
   path: r.path, file: r.file, robots: r.robots, h1: r.h1Count, textChars: r.textLength, title: r.title,
 })));
