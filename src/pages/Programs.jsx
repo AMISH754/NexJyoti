@@ -119,28 +119,28 @@ export default function Programs() {
       gradient: "linear-gradient(135deg, #ef9535, #c86e0f)",
       bgColor: "bg-off-white"
     },
-    // {
-    //   id: "digital-literacy",
-    //   badge: "Pillar 5 — Technology Access",
-    //   title: "Digital Inclusion & Literacy",
-    //   desc: "To survive in the modern economy, digital literacy is essential. We install solar-powered computer labs in rural government schools, giving children access to advanced digital tools.",
-    //   points: [
-    //     "Solar-powered computer configurations in rural areas",
-    //     "Offline educational servers loaded with interactive curriculum",
-    //     "Practical classes on browsing, coding, and document design",
-    //     "Free community digital kiosks for online government forms"
-    //   ],
-    //   ctaText: "Sponsor a Solar Tech Lab",
-    //   ctaLink: "/donate",
-    //   statNum: "+",
-    //   statLabel: "Tech Labs Built",
-    //   statDesc: "Solar classrooms running uninterrupted by rural electricity failures.",
-    //   gradient: "linear-gradient(135deg, #2A62B5, #0D2E5C)",
-    //   bgColor: "bg-white"
-    // },
+    {
+      id: "digital-literacy",
+      badge: "Pillar 5 — Technology Access",
+      title: "Digital Inclusion & Literacy",
+      desc: "Digital skills are now as basic as reading and writing. At our classroom centers, children learn to use computers with confidence alongside their regular studies, so no child falls behind for lack of a device at home.",
+      points: [
+        "Computer basics taught at our classroom centers",
+        "Practical classes on typing, browsing, and creating documents",
+        "Safe and responsible internet use for every child",
+        "Computer lessons led by our teachers and volunteers"
+      ],
+      ctaText: "Help Equip Our Classroom Centers",
+      ctaLink: "/donate",
+      statNum: "4+",
+      statLabel: "Classroom Centers",
+      statDesc: "Centers where children build digital skills alongside their regular studies.",
+      gradient: "linear-gradient(135deg, #2A62B5, #0D2E5C)",
+      bgColor: "bg-white"
+    },
     {
       id: "community-empowerment",
-      badge: "Pillar 5 — Sustainable Livelihoods",
+      badge: "Pillar 6 — Sustainable Livelihoods",
       title: "Community & Women Empowerment",
       desc: "We foster financial independence and leadership at the grassroots level. By training women's self-help groups in sustainable skills, we create self-sustaining village economies.",
       points: [
