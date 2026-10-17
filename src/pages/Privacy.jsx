@@ -1,5 +1,19 @@
 import React, { useEffect } from "react";
 import SEOHead from "../components/SEOHead";
+import { LegalIcon, LegalTabs, LegalToc } from "../components/LegalPage";
+
+// [id, title] of each numbered section, for the "On this page" list.
+const SECTIONS = [
+  ["information-we-collect", "Information We Collect"],
+  ["how-we-use-information", "How We Use Information"],
+  ["data-protection-and-security", "Data Protection & Security"],
+  ["sharing-of-information", "Sharing of Information"],
+  ["cookies-and-website-analytics", "Cookies & Website Analytics"],
+  ["external-links", "External Links"],
+  ["childrens-privacy", "Children’s Privacy"],
+  ["policy-updates", "Policy Updates"],
+  ["contact-us", "Contact Us"],
+];
 
 export default function Privacy() {
   useEffect(() => {
@@ -22,28 +36,30 @@ export default function Privacy() {
   }, []);
 
   return (
-    <div>
+    <div className="legal-page legal-page--privacy">
       <SEOHead path="/privacy" />
 
       {/* Hero Header */}
-      <section className="about-hero" id="privacyHero">
+      <section className="about-hero legal-hero" id="privacyHero">
         <div className="container animate-on-scroll">
-          <span className="section-subtitle">Legal & Policies</span>
+          <span className="legal-hero-icon"><LegalIcon name="shield" size={30} /></span>
+          <span className="section-subtitle">Data & Privacy</span>
           <h1>Privacy Policy</h1>
           <p className="lead" style={{ maxWidth: "700px", margin: "0 auto" }}>
             This policy explains how we collect, use, protect, and manage information shared with us.
           </p>
+          <LegalTabs />
         </div>
       </section>
 
       {/* Main Content Section */}
       <section className="section bg-white" id="privacyContentSection" style={{ padding: "60px 0 90px" }}>
         <div className="container-narrow">
-          <div className="card form-card animate-on-scroll" style={{ padding: "40px", borderRadius: "var(--radius-lg)" }}>
+          <div className="card form-card legal-card animate-on-scroll" style={{ padding: "40px", borderRadius: "var(--radius-lg)" }}>
             
             <div style={{ marginBottom: "2rem" }}>
               <h2 style={{ fontSize: "1.8rem", color: "var(--primary-dark)", textAlign: "left" }}>
-                NexJyoti Education Foundation
+                Our Commitment to Your Privacy
               </h2>
               <div className="divider divider-left"></div>
               <p className="mt-24" style={{ fontSize: "1.05rem", lineHeight: 1.7, color: "var(--text-body)" }}>
@@ -54,15 +70,16 @@ export default function Privacy() {
               <p className="mt-12" style={{ fontWeight: "600", color: "var(--primary)" }}>
                 By accessing or using our website and services, you agree to the practices described in this Privacy Policy.
               </p>
+              <LegalToc sections={SECTIONS} />
             </div>
 
             <hr style={{ border: "0", borderTop: "1px solid var(--border)", margin: "2rem 0" }} />
 
             <div style={{ display: "grid", gap: "2rem" }}>
               
-              <div>
+              <div className="legal-section" id="information-we-collect">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>1.</span> Information We Collect
+                  <span className="legal-num">1.</span> Information We Collect
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   We may collect the following types of information:
@@ -79,9 +96,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="how-we-use-information">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>2.</span> How We Use Information
+                  <span className="legal-num">2.</span> How We Use Information
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   The information collected may be used to:
@@ -100,9 +117,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="data-protection-and-security">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>3.</span> Data Protection & Security
+                  <span className="legal-num">3.</span> Data Protection & Security
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   NexJyoti Education Foundation is committed to maintaining appropriate technical and
@@ -115,9 +132,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="sharing-of-information">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>4.</span> Sharing of Information
+                  <span className="legal-num">4.</span> Sharing of Information
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   We may share information only when necessary with:
@@ -132,9 +149,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="cookies-and-website-analytics">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>5.</span> Cookies & Website Analytics
+                  <span className="legal-num">5.</span> Cookies & Website Analytics
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   Our website may use cookies and analytics tools to improve functionality, understand visitor
@@ -146,9 +163,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="external-links">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>6.</span> External Links
+                  <span className="legal-num">6.</span> External Links
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   Our website may contain links to third-party websites or platforms. NexJyoti Education Foundation
@@ -159,9 +176,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="childrens-privacy">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>7.</span> Children’s Privacy
+                  <span className="legal-num">7.</span> Children’s Privacy
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   Protecting children's dignity and privacy is extremely important to us. Any student-related
@@ -174,9 +191,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="policy-updates">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>8.</span> Policy Updates
+                  <span className="legal-num">8.</span> Policy Updates
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   NexJyoti Education Foundation may update this Privacy Policy periodically to reflect organizational,
@@ -185,9 +202,9 @@ export default function Privacy() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="contact-us">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>9.</span> Contact Us
+                  <span className="legal-num">9.</span> Contact Us
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   For questions, concerns, or requests related to this Privacy Policy, please contact:
@@ -197,7 +214,7 @@ export default function Privacy() {
                   padding: "16px 20px", 
                   background: "var(--off-white)", 
                   borderRadius: "var(--radius-md)",
-                  borderLeft: "4px solid var(--gold)" 
+                  borderLeft: "4px solid var(--legal-accent)" 
                 }}>
                   <strong style={{ display: "block", color: "var(--primary-dark)", marginBottom: "4px" }}>
                     NexJyoti Education Foundation
