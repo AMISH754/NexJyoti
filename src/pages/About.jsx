@@ -121,7 +121,7 @@ export default function About() {
             <div className="about-detailed-card animate-on-scroll">
               <h2 className="huge-heading">Mission</h2>
               <p className="lead-text">
-                <strong>Breaking the Chain of Generational Poverty through Education</strong> — our mission is clear and resolute: to break the chain of continued poverty from generation to generation. We passionately believe that no child should be deprived of quality education, and we are dedicated to making this belief a reality. By focusing on education, we aim to empower each child with the tools and knowledge needed to break free from the cycle of poverty, ensuring a brighter future for generations to come. Our mission is a pledge to create a world where education becomes the key that unlocks doors to opportunity, dreams, and sustainable change.
+                <strong>Breaking the Chain of Generational Poverty through Education</strong> — our mission is clear and resolute: to break the chain of continued poverty from generation to generation. We passionately believe that no child should be deprived of quality education, and we are dedicated to making this belief a reality. By focusing on education, we aim to empower each child with the tools and knowledge needed to break free from the chain of generational poverty, ensuring a brighter future for generations to come. Our mission is a pledge to create a world where education becomes the key that unlocks doors to opportunity, dreams, and sustainable change.
               </p>
             </div>
 
