@@ -476,7 +476,7 @@ export default function Home() {
           <div className="why-grid">
             <div className="why-visual animate-on-scroll">
               <div className="why-img-wrap">
-                <img src="/assets/images/why-us.jpg" alt="Children studying at a NexJyoti classroom center" />
+                <img src="/assets/images/why-us.jpg" alt="Children studying at a NexJyoti classroom center" className="focus-left" />
                 <div className="why-badge-float">
                   <div>
                     <strong>Est. 2021</strong>
