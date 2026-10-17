@@ -1259,6 +1259,131 @@ footer {
   line-height: 1.7;
 }
 
+/* ── LEGAL PAGES (Privacy Policy, Terms & Conditions) ── */
+/* Each page has its own accent so the two documents are easy to tell apart. */
+.legal-page--privacy {
+  --legal-accent: var(--green);
+  --legal-accent-light: var(--green-light);
+}
+
+.legal-page--terms {
+  --legal-accent: var(--gold);
+  --legal-accent-light: var(--gold-light);
+}
+
+.legal-hero-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--legal-accent-light);
+}
+
+.legal-hero .section-subtitle {
+  color: var(--legal-accent-light);
+}
+
+.legal-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.legal-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: background var(--transition), color var(--transition);
+}
+
+.legal-tab:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.legal-tab.active {
+  background: var(--white);
+  border-color: var(--white);
+  color: #0D2E5C;
+}
+
+.legal-card {
+  border-top: 4px solid var(--legal-accent);
+}
+
+.legal-num {
+  color: var(--legal-accent);
+}
+
+.legal-section {
+  scroll-margin-top: calc(var(--nav-height) + 20px);
+}
+
+.legal-section a,
+.legal-toc a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.legal-toc {
+  margin-top: 1.5rem;
+  padding: 18px 22px;
+  background: var(--off-white);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--legal-accent);
+}
+
+.legal-toc-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+
+.legal-toc ol {
+  margin: 0;
+  padding-left: 20px;
+  list-style: decimal;
+  columns: 2;
+  column-gap: 32px;
+  font-size: 0.9rem;
+}
+
+.legal-toc li {
+  padding: 3px 0;
+  break-inside: avoid;
+}
+
+.legal-toc li::marker {
+  color: var(--legal-accent);
+  font-weight: 700;
+}
+
+.legal-toc a {
+  color: var(--text-body);
+}
+
+@media (max-width: 600px) {
+  .legal-toc ol {
+    columns: 1;
+  }
+}
+
 /* ── STORY DETAILED & VALUES GRID ── */
 .story-grid {
   display: grid;

@@ -70,7 +70,7 @@ export default function Contact() {
           <span className="section-subtitle">Connect With Us</span>
           <h1>We are Here to Listen</h1>
           <p className="lead" style={{ maxWidth: "700px", margin: "0 auto" }}>
-            Have questions about our transparency, digital school setups, or how to sponsor a vocational lab? Drop us a line!
+            Have questions about our transparency, our classroom centers, or how to support our programs? Drop us a line!
           </p>
         </div>
       </section>
@@ -98,18 +98,15 @@ export default function Contact() {
               {/* Email Card */}
               <div className="contact-item-card" id="contactEmail">
                 <div className="contact-details">
-                  <h4>General Inquiries</h4>
+                  <h4>General Inquiries & Partnerships</h4>
                   <p style={{ margin: 0, fontSize: "0.95rem" }}> info@nexjyoti.org</p>
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                    For partnerships: <strong> info@nexjyoti.org</strong>
-                  </p>
                 </div>
               </div>
 
               {/* Phone Card */}
               <div className="contact-item-card" id="contactPhone">
                 <div className="contact-details">
-                  <h4>Telephone Hotline</h4>
+                  <h4>Official Contact No.</h4>
                   <p style={{ margin: 0, fontSize: "0.95rem" }}>+91 9572570256</p>
                   <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>Dedicated to Community Impact, Every Day</p>
                 </div>
