@@ -77,7 +77,7 @@ export default function Donate() {
       "500": "₹500 provides a child with learning materials, school uniforms, and writing notebooks for an entire term.",
       "1000": "₹1,000 sponsors complete health checkups and basic nutritional supplements for 2 marginalized children.",
       "2000": "₹2,000 funds a full month of certified vocational IT & basic digital literacy classes for an under-resourced youth.",
-      "5000": "₹5,000 provides hardware modules (solar energy cell, networking terminal, Raspberry Pi unit) for a rural school."
+      "5000": "₹5,000 helps equip our classroom centers with computers, books, and learning materials for children."
     };
 
     if (impactMap[value]) {
@@ -92,7 +92,7 @@ export default function Donate() {
     } else if (amt < 3000) {
       return `₹${amt.toLocaleString("en-IN")} sponsors vocational training courses, IT skill guidance, and career workshops for local youth.`;
     } else {
-      return `₹${amt.toLocaleString("en-IN")} contributes directly to building solar-powered digital classrooms and computer equipment libraries in rural villages.`;
+      return `₹${amt.toLocaleString("en-IN")} contributes directly to running and equipping our classroom centers, including computer lessons for children.`;
     }
   };
 
@@ -161,7 +161,7 @@ export default function Donate() {
           <span className="section-subtitle">Make an Impact Today</span>
           <h1>Every Contribution Shapes a Future</h1>
           <p className="lead" style={{ maxWidth: "700px", margin: "0 auto" }}>
-            Your support provides essential computer kits, solar-powered systems, and career-oriented textbooks to youth striving for a brighter tomorrow.
+            Your support provides computers, learning materials, and career-oriented textbooks for children and youth at our classroom centers.
           </p>
         </div>
       </section>
@@ -190,7 +190,7 @@ export default function Donate() {
               <div style={{ display: "flex", gap: "1rem", alignItems: "start" }}>
                 <span style={{ fontSize: "1.25rem", color: "var(--primary)", fontWeight: "bold", lineHeight: 1 }}>✔</span>
                 <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  <strong>Actionable Tracking</strong>: Class enrollment details and solar lab setup locations are shared with sponsors openly so you can track progress.
+                  <strong>Actionable Tracking</strong>: Class enrollment details and updates from our classroom centers are shared with sponsors openly so you can track progress.
                 </p>
               </div>
               <div style={{ display: "flex", gap: "1rem", alignItems: "start" }}>
@@ -204,7 +204,7 @@ export default function Donate() {
             <div className="card" style={{ backgroundColor: "var(--primary-glow)", border: "1px solid rgba(59, 130, 246, 0.2)", padding: "24px" }}>
               <h4 style={{ color: "var(--primary)", marginBottom: "0.5rem", fontWeight: 700 }}>Alternative Modes of Support</h4>
               <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6, color: "var(--text-body)" }}>
-                If you prefer bank wire transfer or contributing hardware (laptops, solar units) directly, please connect with us at <strong>info@nexjyoti.org</strong> or via phone at <strong> (+91) 9572570256</strong>.
+                If you prefer bank wire transfer or contributing hardware (such as laptops) directly, please connect with us at <strong>info@nexjyoti.org</strong> or via phone at <strong> (+91) 9572570256</strong>.
               </p>
             </div>
           </div>

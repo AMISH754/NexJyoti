@@ -314,7 +314,7 @@ export default function Programs() {
         <div className="container cta-inner animate-on-scroll">
           <div className="cta-text">
             <h2>Partner With Us for Local Transformation</h2>
-            <p>Whether you want to sponsor a digital lab, fund vocational classes, or volunteer your talent, your support creates generational change.</p>
+            <p>Whether you want to help equip our classroom centers, fund vocational classes, or volunteer your talent, your support creates generational change.</p>
           </div>
           <div className="cta-actions">
             <Link to="/donate" className="btn btn-primary btn-lg" id="ctaDonate">Support Programs</Link>

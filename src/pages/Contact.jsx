@@ -70,7 +70,7 @@ export default function Contact() {
           <span className="section-subtitle">Connect With Us</span>
           <h1>We are Here to Listen</h1>
           <p className="lead" style={{ maxWidth: "700px", margin: "0 auto" }}>
-            Have questions about our transparency, digital school setups, or how to sponsor a vocational lab? Drop us a line!
+            Have questions about our transparency, our classroom centers, or how to support our programs? Drop us a line!
           </p>
         </div>
       </section>
