@@ -93,7 +93,7 @@ export default function Programs() {
         "Confidence building and public speaking workshops"
       ],
       ctaText: "Volunteer for Holistic Camps",
-      ctaLink: "/donate#volunteer",
+      ctaLink: "/register",
       statNum: "100+",
       statLabel: "Daily Attendees",
       statDesc: "Children actively attending Sanskar Varga and character building sessions.",

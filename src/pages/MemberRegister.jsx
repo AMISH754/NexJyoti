@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
+import { saveRegistration } from "../utils/hubApply";
 import { db } from "../firebase";
 import SEOHead from "../components/SEOHead";
 import LocationFields from "../components/LocationFields";
@@ -463,12 +464,12 @@ export default function MemberRegister() {
       cleanData.location = [cleanData.city.trim(), cleanData.state].filter(Boolean).join(", ");
       // The description only counts if the answer is still "Yes" (it may have been changed after typing).
       if (cleanData.hasPreviousAssociation !== "Yes") cleanData.previousAssociationDesc = "";
-      await addDoc(collection(db, "registrations"), {
+      // Firestore and the NexJyoti Hub both get it; either one saving it is enough.
+      await saveRegistration(() => addDoc(collection(db, "registrations"), {
         ...cleanData, type: "member", status: "pending", submittedAt: new Date().toISOString(),
-      });
+      }), "member", cleanData);
       go(S.SUCCESS);
     } catch (err) {
-      console.error("Firestore submission error:", err);
       setSubmitError(`Submission failed: ${err?.message || "Please try again or contact us directly."}`);
     } finally {
       setSubmitting(false);

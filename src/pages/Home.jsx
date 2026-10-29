@@ -625,7 +625,7 @@ export default function Home() {
           </div>
           <div className="cta-actions">
             <Link to="/donate" className="btn btn-primary btn-lg" id="ctaDonate">Donate Now</Link>
-            <Link to="/donate#volunteer" className="btn btn-outline btn-lg" id="ctaVolunteer">Volunteer With Us</Link>
+            <Link to="/register" className="btn btn-outline btn-lg" id="ctaVolunteer">Volunteer With Us</Link>
           </div>
         </div>
       </section>

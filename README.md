@@ -123,7 +123,14 @@ d:\ngo\
     VITE_EMAILJS_SERVICE_ID=your_emailjs_service_id
     VITE_EMAILJS_ACCEPTANCE_TEMPLATE_ID=your_acceptance_template_id
     VITE_EMAILJS_REJECTION_TEMPLATE_ID=your_rejection_template_id
+
+    # Optional: where the registration forms also send to the NexJyoti Hub (defaults to the live Hub)
+    VITE_HUB_APPLY_URL=https://saflssmkcsrwahexntkx.supabase.co/functions/v1/apply
     ```
+
+    The volunteer and member registration forms save to Firestore **and** send to the NexJyoti Hub
+    (`src/utils/hubApply.js`): volunteers to the Hub's access requests, members to its donors & partners CRM.
+    A registration counts as submitted if either one saves it.
 
 ---
 

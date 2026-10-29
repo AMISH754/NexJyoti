@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import SEOHead from "../components/SEOHead";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function Donate() {
+  const navigate = useNavigate();
   // Donation states
   const [preset, setPreset] = useState("1000");
   const [customAmount, setCustomAmount] = useState("1000");
@@ -11,13 +13,6 @@ export default function Donate() {
   const [donationSuccess, setDonationSuccess] = useState(false);
   const [donationLoading, setDonationLoading] = useState(false);
   const [donationError, setDonationError] = useState("");
-
-  // Volunteer states
-  const [volInfo, setVolInfo] = useState({ name: "", email: "", role: "", message: "", botField: "" });
-  const [volSuccess, setVolSuccess] = useState(false);
-  const [volError, setVolError] = useState("");
-  const [volLoading, setVolLoading] = useState(false);
-  const [volLoadTime] = useState(Date.now());
 
   useEffect(() => {
     // Scroll animations observer
@@ -35,18 +30,11 @@ export default function Donate() {
 
     document.querySelectorAll(".animate-on-scroll").forEach((el) => scrollObserver.observe(el));
 
-    // Handle hash routing to volunteer section
-    if (window.location.hash === "#volunteer") {
-      const el = document.getElementById("volunteerSection");
-      if (el) {
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: "smooth" });
-        }, 150);
-      }
-    }
+    // Old links to the volunteer section (/donate#volunteer) go to the registration page.
+    if (window.location.hash === "#volunteer") navigate("/register", { replace: true });
 
     return () => scrollObserver.disconnect();
-  }, []);
+  }, [navigate]);
 
   // Preset click handler
   const handlePresetSelect = (value) => {
@@ -116,38 +104,6 @@ export default function Donate() {
       setDonationError("We couldn't record your pledge. Please try again, or email info@nexjyoti.org.");
     } finally {
       setDonationLoading(false);
-    }
-  };
-
-  // Submit Volunteer Signup
-  const handleVolunteerSubmit = async (e) => {
-    e.preventDefault();
-
-    // Anti-Bot Protection:
-    // 1. Honeypot check: If invisible botField is filled, silently ignore
-    // 2. Speed check: If filled in less than 700ms (automated script), ignore
-    if (volInfo.botField || (Date.now() - volLoadTime < 700)) {
-      setVolSuccess(true);
-      return;
-    }
-
-    setVolError("");
-    setVolLoading(true);
-    try {
-      await addDoc(collection(db, "volunteers"), {
-        name: volInfo.name.trim(),
-        email: volInfo.email.trim(),
-        role: volInfo.role,
-        message: volInfo.message ? volInfo.message.trim() : "",
-        createdAt: new Date().toISOString(),
-        status: "pending",
-      });
-      setVolSuccess(true);
-    } catch (err) {
-      console.error("Error saving volunteer application:", err);
-      setVolError("We couldn't submit your application. Please try again, or email info@nexjyoti.org.");
-    } finally {
-      setVolLoading(false);
     }
   };
 
@@ -381,106 +337,15 @@ export default function Donate() {
             </div>
           </div>
 
-          {/* Right Form */}
-          <div className="card form-card animate-on-scroll delay-1" id="volunteerFormCard">
-            {volSuccess ? (
-              <div className="alert alert-success" style={{ padding: "32px 16px", textAlign: "center", borderRadius: "var(--radius-md)" }}>
-                <h4 style={{ color: "#065f46", marginBottom: "8px", fontWeight: 700 }}>Application Submitted!</h4>
-                <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
-                  Thank you for applying, <strong>{volInfo.name}</strong>. Our volunteer coordinator will reach out to you at <strong>{volInfo.email}</strong> to schedule an onboarding call soon.
-                </p>
-                <button className="btn btn-outline-blue mt-24" onClick={() => { setVolSuccess(false); setVolInfo({ name: "", email: "", role: "", message: "" }); }}>
-                  Submit Another Application
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleVolunteerSubmit}>
-                <h3 style={{ marginBottom: "1.5rem", color: "var(--primary-dark)" }}>Volunteer Sign-Up</h3>
-
-                {/* Invisible Honeypot Spam Trap */}
-                <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
-                  <label htmlFor="vol_website_hp">Leave this field blank</label>
-                  <input
-                    type="text"
-                    id="vol_website_hp"
-                    name="vol_website_hp"
-                    tabIndex="-1"
-                    autoComplete="off"
-                    value={volInfo.botField}
-                    onChange={(e) => setVolInfo({ ...volInfo, botField: e.target.value })}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="vol-name">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="vol-name"
-                    placeholder="E.g., Rohan Mehra"
-                    value={volInfo.name}
-                    onChange={(e) => setVolInfo({ ...volInfo, name: e.target.value })}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="vol-email">Email Address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="vol-email"
-                    placeholder="E.g., rohan@gmail.com"
-                    value={volInfo.email}
-                    onChange={(e) => setVolInfo({ ...volInfo, email: e.target.value })}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="vol-role">Preferred Area of Impact</label>
-                  <select
-                    className="form-control"
-                    id="vol-role"
-                    value={volInfo.role}
-                    onChange={(e) => setVolInfo({ ...volInfo, role: e.target.value })}
-                    required
-                    style={{
-                      appearance: "none",
-                      backgroundImage: "linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%)",
-                      backgroundPosition: "calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px)",
-                      backgroundSize: "5px 5px, 5px 5px",
-                      backgroundRepeat: "no-repeat"
-                    }}
-                  >
-                    <option value="" disabled>Select an area</option>
-                    <option value="teaching">Teaching (Computer Skills)</option>
-                    <option value="mentoring">Vocational Career Mentoring</option>
-                    <option value="healthcare">Health Camps Coordination</option>
-                    <option value="pr">Public Relations & Writing</option>
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="vol-message">Briefly tell us why you want to join (Optional)</label>
-                  <textarea
-                    className="form-control"
-                    id="vol-message"
-                    rows="4"
-                    placeholder="Share your experience or motivation..."
-                    value={volInfo.message}
-                    onChange={(e) => setVolInfo({ ...volInfo, message: e.target.value })}
-                  ></textarea>
-                </div>
-
-                {volError && (
-                  <p role="alert" style={{ color: "#b91c1c", fontSize: "0.9rem", marginBottom: "12px" }}>{volError}</p>
-                )}
-                <button type="submit" className="btn btn-secondary w-full" id="btnSubmitVolunteer" disabled={volLoading} style={{ justifyContent: "center", width: "100%", opacity: volLoading ? 0.7 : 1 }}>
-                  {volLoading ? "Submitting Application..." : "Submit Volunteer Application"}
-                </button>
-              </form>
-            )}
+          {/* Right: one place to apply */}
+          <div className="card form-card animate-on-scroll delay-1" id="volunteerFormCard" style={{ textAlign: "center", display: "flex", flexDirection: "column", justifyContent: "center", gap: "1rem" }}>
+            <h3 style={{ margin: 0, color: "var(--primary-dark)" }}>Apply to volunteer</h3>
+            <p style={{ margin: 0, color: "var(--text-muted)" }}>
+              Tell us about yourself, the areas you'd like to help with and when you're free. It takes about five minutes, and our team will get back to you.
+            </p>
+            <Link to="/register" className="btn btn-secondary" id="btnVolunteerRegister" style={{ justifyContent: "center" }}>
+              Volunteer Application
+            </Link>
           </div>
         </div>
       </section>

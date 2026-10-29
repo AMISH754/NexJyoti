@@ -4,7 +4,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "", botField: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", subject: "", message: "", botField: "" });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -46,6 +46,7 @@ export default function Contact() {
       await addDoc(collection(db, "contacts"), {
         name: formData.name.trim(),
         email: formData.email.trim(),
+        phone: formData.phone.trim(),
         subject: formData.subject.trim(),
         message: formData.message.trim(),
         createdAt: new Date().toISOString(),
@@ -125,7 +126,7 @@ export default function Contact() {
                 <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.6 }}>
                   Thank you, <strong>{formData.name}</strong>, for reaching out. A representative from NexJyoti will get back to you at <strong>{formData.email}</strong> within 24-48 business hours.
                 </p>
-                <button className="btn btn-outline-blue mt-24" onClick={() => { setSubmitted(false); setFormData({ name: "", email: "", subject: "", message: "" }); }}>
+                <button className="btn btn-outline-blue mt-24" onClick={() => { setSubmitted(false); setFormData({ name: "", email: "", phone: "", subject: "", message: "" }); }}>
                   Send Another Message
                 </button>
               </div>
@@ -170,6 +171,23 @@ export default function Contact() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label" htmlFor="contactPhone">Phone Number <span style={{ fontWeight: 400, color: "var(--text-muted)" }}>(optional, so we can call you back)</span></label>
+                  <input
+                    type="tel"
+                    className="form-control"
+                    id="contactPhone"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="E.g., 98765 43210"
+                    pattern="[+0-9 ()-]{10,16}"
+                    title="10 digits, or with +91"
+                    maxLength={16}
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   />
                 </div>
 
