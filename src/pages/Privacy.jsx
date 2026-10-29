@@ -10,6 +10,7 @@ const SECTIONS = [
   ["sharing-of-information", "Sharing of Information"],
   ["cookies-and-website-analytics", "Cookies & Website Analytics"],
   ["external-links", "External Links"],
+  ["nexjyoti-hub", "NexJyoti Hub App and Google Sign-In"],
   ["childrens-privacy", "Children’s Privacy"],
   ["policy-updates", "Policy Updates"],
   ["contact-us", "Contact Us"],
@@ -176,9 +177,58 @@ export default function Privacy() {
                 </p>
               </div>
 
+              <div className="legal-section" id="nexjyoti-hub">
+                <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
+                  <span className="legal-num">7.</span> NexJyoti Hub App and Google Sign-In
+                </h3>
+                <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  NexJyoti Hub (hub.nexjyoti.org and its Android app) is our internal workspace for staff and
+                  volunteers: team chat, tasks, the calendar, the help desk and the organisation directory. Only
+                  people on our member register can use it.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>What we receive from Google.</strong> When you sign in with Google, we receive only your
+                  name, email address and profile photo. We do not receive your Google password, and the Hub does not
+                  access your Gmail, Drive, contacts or any other Google data.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>How we use it.</strong> We use this information only to:
+                </p>
+                <ul style={{ paddingLeft: "20px", marginTop: "8px", display: "grid", gap: "8px", listStyle: "disc" }}>
+                  <li style={{ fontSize: "0.95rem" }}>Confirm that you are a NexJyoti member and sign you in</li>
+                  <li style={{ fontSize: "0.95rem" }}>Show your name and photo to other members in chat, tasks and the directory</li>
+                  <li style={{ fontSize: "0.95rem" }}>Send you the notifications you choose in the app’s settings</li>
+                </ul>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>What else the Hub stores.</strong> The messages, files, tasks, events and availability you
+                  add; your notification settings; a notification address for your phone and the app version it runs;
+                  and error reports when something in the app breaks, so we can fix it.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>Who can see it.</strong> Other members see what is shared in the spaces and conversations
+                  they belong to. Private conversations and meetings are visible only to the people in them.
+                  Information is never sold, never used for advertising, and never shared outside NexJyoti, except
+                  with the services that run the Hub: Supabase (database and files) and Google
+                  Firebase (website hosting and phone notifications).
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  The Hub’s use of information received from Google APIs adheres to the{" "}
+                  <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary)", fontWeight: "600" }}>
+                    Google API Services User Data Policy
+                  </a>, including the Limited Use requirements.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>Leaving or deleting your account.</strong> When you leave NexJyoti, your access to the Hub is
+                  removed. To have your Hub account and personal information deleted, email{" "}
+                  <a href="mailto:info@nexjyoti.org" style={{ color: "var(--primary)", fontWeight: "600" }}>info@nexjyoti.org</a>.
+                  We may keep records we are required to keep by law. You can also remove the Hub’s access at any time
+                  from your Google Account (Security → Your connections to third-party apps & services).
+                </p>
+              </div>
+
               <div className="legal-section" id="childrens-privacy">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span className="legal-num">7.</span> Children’s Privacy
+                  <span className="legal-num">8.</span> Children’s Privacy
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   Protecting children's dignity and privacy is extremely important to us. Any student-related
@@ -193,7 +243,7 @@ export default function Privacy() {
 
               <div className="legal-section" id="policy-updates">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span className="legal-num">8.</span> Policy Updates
+                  <span className="legal-num">9.</span> Policy Updates
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   NexJyoti Education Foundation may update this Privacy Policy periodically to reflect organizational,
@@ -204,7 +254,7 @@ export default function Privacy() {
 
               <div className="legal-section" id="contact-us">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span className="legal-num">9.</span> Contact Us
+                  <span className="legal-num">10.</span> Contact Us
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   For questions, concerns, or requests related to this Privacy Policy, please contact:
@@ -231,7 +281,7 @@ export default function Privacy() {
             </div>
 
             <div style={{ marginTop: "3rem", textAlign: "center", fontSize: "0.85rem", color: "var(--text-muted)" }}>
-              Last Updated: May 2026
+              Last Updated: October 2026
             </div>
 
           </div>
