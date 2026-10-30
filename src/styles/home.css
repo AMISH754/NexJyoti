@@ -357,6 +357,13 @@ body.dark .prog-card-highlight {
   box-shadow: var(--shadow-lg);
 }
 
+/* On narrow screens the photo is cropped to a tall shape; keep its left side (children at the laptop) in frame. */
+@media (max-width: 768px) {
+  .why-img-wrap img.focus-left {
+    object-position: 20% top;
+  }
+}
+
 .why-badge-float {
   position: absolute;
   bottom: -20px;

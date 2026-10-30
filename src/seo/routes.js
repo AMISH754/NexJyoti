@@ -32,7 +32,7 @@ export const ROUTES = [
   {
     path: "/about",
     name: "About Us",
-    description: "Learn about NexJyoti Education Foundation's mission to break the cycle of poverty through education, founded in 2021 in Jharkhand, and meet our leadership team.",
+    description: "Learn about NexJyoti's mission to break the chain of generational poverty through education, founded in 2021 in Jharkhand, and meet our leadership team.",
     sources: ["src/pages/About.jsx", "src/components/TeamCard.jsx"],
   },
   {

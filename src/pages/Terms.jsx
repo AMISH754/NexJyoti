@@ -1,5 +1,22 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import SEOHead from "../components/SEOHead";
+import { LegalIcon, LegalTabs, LegalToc } from "../components/LegalPage";
+
+// [id, title] of each numbered section, for the "On this page" list.
+const SECTIONS = [
+  ["about-the-organization", "About the Organization"],
+  ["use-of-website", "Use of Website"],
+  ["intellectual-property", "Intellectual Property"],
+  ["donations-and-contributions", "Donations & Contributions"],
+  ["external-links", "External Links"],
+  ["accuracy-of-information", "Accuracy of Information"],
+  ["limitation-of-liability", "Limitation of Liability"],
+  ["privacy", "Privacy"],
+  ["changes-to-terms", "Changes to Terms"],
+  ["governing-jurisdiction", "Governing Jurisdiction"],
+  ["contact-us", "Contact Us"],
+];
 
 export default function Terms() {
   useEffect(() => {
@@ -22,28 +39,30 @@ export default function Terms() {
   }, []);
 
   return (
-    <div>
+    <div className="legal-page legal-page--terms">
       <SEOHead path="/terms" />
 
       {/* Hero Header */}
-      <section className="about-hero" id="termsHero">
+      <section className="about-hero legal-hero" id="termsHero">
         <div className="container animate-on-scroll">
-          <span className="section-subtitle">Legal & Policies</span>
+          <span className="legal-hero-icon"><LegalIcon name="document" size={30} /></span>
+          <span className="section-subtitle">Website Terms of Use</span>
           <h1>Terms & Conditions</h1>
           <p className="lead" style={{ maxWidth: "700px", margin: "0 auto" }}>
             Please read these terms and conditions carefully before using our website or services.
           </p>
+          <LegalTabs />
         </div>
       </section>
 
       {/* Main Content Section */}
       <section className="section bg-white" id="termsContentSection" style={{ padding: "60px 0 90px" }}>
         <div className="container-narrow">
-          <div className="card form-card animate-on-scroll" style={{ padding: "40px", borderRadius: "var(--radius-lg)" }}>
+          <div className="card form-card legal-card animate-on-scroll" style={{ padding: "40px", borderRadius: "var(--radius-lg)" }}>
             
             <div style={{ marginBottom: "2rem" }}>
               <h2 style={{ fontSize: "1.8rem", color: "var(--primary-dark)", textAlign: "left" }}>
-                NexJyoti Education Foundation
+                Agreement to These Terms
               </h2>
               <div className="divider divider-left"></div>
               <p className="mt-24" style={{ fontSize: "1.05rem", lineHeight: 1.7, color: "var(--text-body)" }}>
@@ -54,15 +73,16 @@ export default function Terms() {
               <p className="mt-12" style={{ fontWeight: "600", color: "var(--primary)" }}>
                 If you do not agree with any part of these terms, you are advised not to use this website.
               </p>
+              <LegalToc sections={SECTIONS} />
             </div>
 
             <hr style={{ border: "0", borderTop: "1px solid var(--border)", margin: "2rem 0" }} />
 
             <div style={{ display: "grid", gap: "2rem" }}>
               
-              <div>
+              <div className="legal-section" id="about-the-organization">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>1.</span> About the Organization
+                  <span className="legal-num">1.</span> About the Organization
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   NexJyoti Education Foundation is a social impact and educational organization committed to
@@ -71,9 +91,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="use-of-website">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>2.</span> Use of Website
+                  <span className="legal-num">2.</span> Use of Website
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   Users may access and use this website for lawful, informational, educational, or charitable
@@ -92,9 +112,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="intellectual-property">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>3.</span> Intellectual Property
+                  <span className="legal-num">3.</span> Intellectual Property
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   All content available on this website, including text, graphics, logos, photographs, reports, designs,
@@ -111,9 +131,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="donations-and-contributions">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>4.</span> Donations & Contributions
+                  <span className="legal-num">4.</span> Donations & Contributions
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   All donations made to NexJyoti Education Foundation are voluntary and used to support the
@@ -130,9 +150,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="external-links">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>5.</span> External Links
+                  <span className="legal-num">5.</span> External Links
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   This website may contain links to third-party websites or platforms for informational or convenience
@@ -145,9 +165,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="accuracy-of-information">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>6.</span> Accuracy of Information
+                  <span className="legal-num">6.</span> Accuracy of Information
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   We strive to maintain accurate, updated, and reliable information on our website. However,
@@ -159,9 +179,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="limitation-of-liability">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>7.</span> Limitation of Liability
+                  <span className="legal-num">7.</span> Limitation of Liability
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   NexJyoti Education Foundation shall not be held liable for any direct, indirect, incidental, or
@@ -173,19 +193,19 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="privacy">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>8.</span> Privacy
+                  <span className="legal-num">8.</span> Privacy
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  Use of this website is also governed by our Privacy Policy, which explains how personal
+                  Use of this website is also governed by our <Link to="/privacy">Privacy Policy</Link>, which explains how personal
                   information is collected, used, and protected.
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="changes-to-terms">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>9.</span> Changes to Terms
+                  <span className="legal-num">9.</span> Changes to Terms
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   NexJyoti Education Foundation reserves the right to modify or update these Terms & Conditions at
@@ -197,9 +217,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="governing-jurisdiction">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>10.</span> Governing Jurisdiction
+                  <span className="legal-num">10.</span> Governing Jurisdiction
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   These Terms & Conditions shall be governed in accordance with the applicable laws of India. Any
@@ -208,9 +228,9 @@ export default function Terms() {
                 </p>
               </div>
 
-              <div>
+              <div className="legal-section" id="contact-us">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span style={{ color: "var(--gold)" }}>11.</span> Contact Us
+                  <span className="legal-num">11.</span> Contact Us
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   For any questions regarding these Terms & Conditions, please contact:
@@ -220,7 +240,7 @@ export default function Terms() {
                   padding: "16px 20px", 
                   background: "var(--off-white)", 
                   borderRadius: "var(--radius-md)",
-                  borderLeft: "4px solid var(--gold)" 
+                  borderLeft: "4px solid var(--legal-accent)" 
                 }}>
                   <strong style={{ display: "block", color: "var(--primary-dark)", marginBottom: "4px" }}>
                     NexJyoti Education Foundation
