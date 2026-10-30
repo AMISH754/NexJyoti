@@ -10,7 +10,7 @@ const SECTIONS = [
   ["sharing-of-information", "Sharing of Information"],
   ["cookies-and-website-analytics", "Cookies & Website Analytics"],
   ["external-links", "External Links"],
-  ["nexjyoti-hub", "NexJyoti Hub App and Google Sign-In"],
+  ["nexjyoti-hub", "NexJyoti Hub App, Registrations and Sign-In"],
   ["childrens-privacy", "Children’s Privacy"],
   ["policy-updates", "Policy Updates"],
   ["contact-us", "Contact Us"],
@@ -88,7 +88,7 @@ export default function Privacy() {
                 <ul style={{ paddingLeft: "20px", marginTop: "8px", display: "grid", gap: "8px", listStyle: "disc" }}>
                   <li style={{ fontSize: "0.95rem" }}>Personal information such as name, email address, phone number, and mailing address</li>
                   <li style={{ fontSize: "0.95rem" }}>Donation and transaction details</li>
-                  <li style={{ fontSize: "0.95rem" }}>Volunteer or partnership application information</li>
+                  <li style={{ fontSize: "0.95rem" }}>Volunteer, membership or partnership registration details, including date of birth, blood group, city, qualifications, areas of interest and availability</li>
                   <li style={{ fontSize: "0.95rem" }}>Educational or program-related information shared during registrations</li>
                   <li style={{ fontSize: "0.95rem" }}>Website usage information including browser type, IP address, and pages visited</li>
                 </ul>
@@ -179,37 +179,57 @@ export default function Privacy() {
 
               <div className="legal-section" id="nexjyoti-hub">
                 <h3 style={{ fontSize: "1.25rem", color: "var(--primary-dark)", marginBottom: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
-                  <span className="legal-num">7.</span> NexJyoti Hub App and Google Sign-In
+                  <span className="legal-num">7.</span> NexJyoti Hub App, Registrations and Sign-In
                 </h3>
                 <p style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   NexJyoti Hub (hub.nexjyoti.org and its Android app) is our internal workspace for staff and
-                  volunteers: team chat, tasks, the calendar, the help desk and the organisation directory. Only
-                  people on our member register can use it.
+                  volunteers: team chat, tasks and projects, the calendar, the help desk, the intranet and the
+                  organisation directory. Only people on our member register can use it.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  <strong>What we receive from Google.</strong> When you sign in with Google, we receive only your
-                  name, email address and profile photo. We do not receive your Google password, and the Hub does not
-                  access your Gmail, Drive, contacts or any other Google data.
+                  <strong>Registrations from this website.</strong> When you submit the volunteer or membership
+                  registration form, your answers are saved in our website database and also sent to the Hub. A
+                  volunteer registration is reviewed there by the relevant team lead or coordinator; if it is
+                  accepted, your member profile is created and you are invited to the Hub. A membership registration
+                  is kept with our supporter (donor) records, which only authorised staff can see. We email you to
+                  confirm we have received it. To stop automated abuse, we keep a scrambled (one-way hashed) form of
+                  your device’s network address for up to two days. You do not need to verify your email to register.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  <strong>How we use it.</strong> We use this information only to:
+                  <strong>Signing in.</strong> You sign in with Google, or with a one-time code we email to your
+                  address. With Google, we receive only your name, email address and profile photo. We do not receive
+                  your Google password, the Hub has no Hub password of its own, and it does not access your Gmail,
+                  Drive, contacts or any other Google data.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>What the Hub stores.</strong>
                 </p>
                 <ul style={{ paddingLeft: "20px", marginTop: "8px", display: "grid", gap: "8px", listStyle: "disc" }}>
-                  <li style={{ fontSize: "0.95rem" }}>Confirm that you are a NexJyoti member and sign you in</li>
-                  <li style={{ fontSize: "0.95rem" }}>Show your name and photo to other members in chat, tasks and the directory</li>
-                  <li style={{ fontSize: "0.95rem" }}>Send you the notifications you choose in the app’s settings</li>
+                  <li style={{ fontSize: "0.95rem" }}>Your directory entry: name, member ID, email, phone, team, role, manager, city, skills and joining date</li>
+                  <li style={{ fontSize: "0.95rem" }}>Private details, if given: date of birth, blood group, address and emergency contact. Only you and the administrators who manage your record can see them. We do not ask for Aadhaar, PAN or bank details in the Hub.</li>
+                  <li style={{ fontSize: "0.95rem" }}>The messages, files, tasks, projects, events and availability you add, and your notification settings</li>
+                  <li style={{ fontSize: "0.95rem" }}>Letters issued to you (such as a welcome or appointment letter), which are also emailed to you</li>
+                  <li style={{ fontSize: "0.95rem" }}>When you use the Hub: the first and last time on each day, and whether on the web or the Android app. Only the Hub’s administrators and you can see this, it never includes what you read or type, and it is deleted after 180 days.</li>
+                  <li style={{ fontSize: "0.95rem" }}>A notification address for your phone and the app version it runs, and error reports when something in the app breaks, so we can fix it</li>
                 </ul>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  <strong>What else the Hub stores.</strong> The messages, files, tasks, events and availability you
-                  add; your notification settings; a notification address for your phone and the app version it runs;
-                  and error reports when something in the app breaks, so we can fix it.
+                  <strong>How we use it.</strong> To confirm you are a NexJyoti member and sign you in; to show your
+                  name and photo to other members in chat, tasks and the directory; to organise our work and
+                  volunteering; to send you invitations, sign-in codes, letters and the notifications you choose; and
+                  to keep the Hub secure and working.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   <strong>Who can see it.</strong> Other members see what is shared in the spaces and conversations
-                  they belong to. Private conversations and meetings are visible only to the people in them.
-                  Information is never sold, never used for advertising, and never shared outside NexJyoti, except
-                  with the services that run the Hub: Supabase (database and files) and Google
-                  Firebase (website hosting and phone notifications).
+                  they belong to. Private conversations, private teams and meetings are visible only to the people in
+                  them. Information is never sold, never used for advertising, and never shared outside NexJyoti,
+                  except with the services that run the Hub: Supabase (database and files, stored in Mumbai, India),
+                  Google Firebase (website hosting and phone notifications) and Google Workspace (sending our emails).
+                  If a member shares a Canva design link, its preview loads from Canva only when you choose to open it.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>Security and backups.</strong> Access to every piece of information is controlled by rules
+                  in the database itself, data is encrypted in transit and at rest, and we keep encrypted backups so it
+                  can be recovered.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   The Hub’s use of information received from Google APIs adheres to the{" "}
@@ -218,11 +238,13 @@ export default function Privacy() {
                   </a>, including the Limited Use requirements.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  <strong>Leaving or deleting your account.</strong> When you leave NexJyoti, your access to the Hub is
-                  removed. To have your Hub account and personal information deleted, email{" "}
+                  <strong>Your choices, leaving and deleting.</strong> You can see and update your profile, private
+                  details and notification settings in the Hub at any time. When you leave NexJyoti, your access to the
+                  Hub is removed. To get a copy of your information, correct it, or have your Hub account and personal
+                  information deleted, email{" "}
                   <a href="mailto:info@nexjyoti.org" style={{ color: "var(--primary)", fontWeight: "600" }}>info@nexjyoti.org</a>.
                   We may keep records we are required to keep by law. You can also remove the Hub’s access at any time
-                  from your Google Account (Security → Your connections to third-party apps & services).
+                  from your Google Account (Security → Your connections to third-party apps &amp; services).
                 </p>
               </div>
 
