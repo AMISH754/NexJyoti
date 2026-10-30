@@ -245,7 +245,7 @@ export default function Programs() {
           <div className="container">
             <div className="story-grid" style={{ alignItems: "center" }}>
 
-              {/* Left Column: Details (alternate layouts can be visually interesting, but standard story-grid handles stack nicely on mobile) */}
+              {/* Left Column: Details */}
               <div className="animate-on-scroll">
                 <span className="section-label" style={{ textAlign: "left", display: "block", padding: 0 }}>
                   {prog.badge}
