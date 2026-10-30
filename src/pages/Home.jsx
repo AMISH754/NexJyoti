@@ -323,7 +323,7 @@ export default function Home() {
               Transforming Lives Since 2021
             </div>
             <h1 className="animate-on-scroll delay-1">
-              Breaking the Cycle of Poverty<br />
+              Breaking the Chain of Generational Poverty<br />
               <span className="hero-highlight">Through Education</span>
             </h1>
             <p className="hero-subtitle animate-on-scroll delay-2">
@@ -347,7 +347,7 @@ export default function Home() {
                 <span className="hc-lbl">Children Educated</span>
               </div>
               <div className="hero-stat-card hc2">
-                <span className="hc-num">100+</span>
+                <span className="hc-num">600+</span>
                 <span className="hc-lbl">Girls Empowered</span>
               </div>
               <div className="hero-stat-card hc3">
@@ -380,7 +380,7 @@ export default function Home() {
               <span className="stat-label">Centers</span>
             </div>
             <div className="stat-block animate-on-scroll delay-3">
-              <CountUp target={100} suffix="+" trigger={statsVisible} />
+              <CountUp target={600} suffix="+" trigger={statsVisible} />
               <span className="stat-label">Girls Empowered</span>
             </div>
           </div>
@@ -476,7 +476,7 @@ export default function Home() {
           <div className="why-grid">
             <div className="why-visual animate-on-scroll">
               <div className="why-img-wrap">
-                <img src="/assets/images/why-us.png" alt="Students learning at NexJyoti center" />
+                <img src="/assets/images/why-us.jpg" alt="Children studying at a NexJyoti classroom center" className="focus-left" />
                 <div className="why-badge-float">
                   <div>
                     <strong>Est. 2021</strong>
