@@ -16,6 +16,10 @@
         "destination": "/verify.html"
       },
       {
+        "source": "/careers/**",
+        "destination": "/careers.html"
+      },
+      {
         "source": "/admin",
         "destination": "/spa.html"
       },

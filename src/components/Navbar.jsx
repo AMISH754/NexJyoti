@@ -79,6 +79,11 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/careers" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
+                Careers
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
                 Contact
               </NavLink>
@@ -121,6 +126,9 @@ export default function Navbar() {
         </NavLink>
         <NavLink to="/donate" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
           Get Involved
+        </NavLink>
+        <NavLink to="/careers" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
+          Careers
         </NavLink>
         <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
           Contact

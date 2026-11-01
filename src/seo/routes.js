@@ -60,6 +60,12 @@ export const ROUTES = [
     sources: ["src/pages/Contact.jsx"],
   },
   {
+    path: "/careers",
+    name: "Careers",
+    description: "Work with NexJyoti Education Foundation in Jharkhand: open staff roles and paid or unpaid internships in education, outreach and media. Apply online today.",
+    sources: ["src/pages/Careers.jsx"],
+  },
+  {
     path: "/annual-report",
     name: "Annual Report",
     description: "Read NexJyoti Education Foundation's annual report on our impact, programme outcomes and finances in Jharkhand, published for full transparency as an 80G NGO.",

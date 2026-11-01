@@ -196,6 +196,14 @@ export default function Privacy() {
                   your device’s network address for up to two days. You do not need to verify your email to register.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>Job and internship applications.</strong> When you apply for a role on our careers page, your
+                  answers, résumé and photo (if you add one) go to the Hub, where only our HR team and leadership can see
+                  them. They are kept in private storage in India and used only to consider you for this and similar
+                  roles. We email you to confirm we have received your application. We do not ask for Aadhaar, PAN or
+                  bank details when you apply. If you are not selected, we delete your application within 12 months,
+                  or sooner if you ask us at info@nexjyoti.org.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   <strong>Signing in.</strong> You sign in with Google, or with a one-time code we email to your
                   address. With Google, we receive only your name, email address and profile photo. We do not receive
                   your Google password, the Hub has no Hub password of its own, and it does not access your Gmail,
