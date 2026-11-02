@@ -7,6 +7,9 @@ import "../styles/register.css";
 import "../styles/careers.css";
 
 const DOC_TYPES = "application/pdf,image/jpeg,image/png,image/webp";
+// UIDAI's own videos (the "Aadhaar UIDAI" YouTube channel): a masked Aadhaar from the website, and from the Aadhaar app.
+const AADHAAR_VIDEO = "https://www.youtube.com/watch?v=rSCp1FUtGXI";
+const AADHAAR_APP_VIDEO = "https://www.youtube.com/shorts/jNaqPc8-eeA";
 const BLOOD = ["", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 /* nexjyoti.org/careers/joining/<token>: after accepting an offer, the new hire sends their joining documents to the
@@ -175,9 +178,10 @@ function JoiningForm({ token, joining, onDone }) {
 
       <h3 className="careers-subhead">Your ID</h3>
       {paid ? (
-        <p className="reg-hint">Please send your <strong>masked Aadhaar</strong>: download it from <a href="https://myaadhaar.uidai.gov.in" target="_blank" rel="noreferrer noopener">myaadhaar.uidai.gov.in</a> (choose “masked Aadhaar”), so only the last 4 digits show. We never keep your full Aadhaar number.</p>
+        <p className="reg-hint">Please send your <strong>masked Aadhaar</strong>: download it from <a href="https://myaadhaar.uidai.gov.in" target="_blank" rel="noreferrer noopener">myaadhaar.uidai.gov.in</a> (choose “masked Aadhaar”), so only the last 4 digits show. We never keep your full Aadhaar number.
+          {" "}UIDAI’s own videos show how: <a href={AADHAAR_VIDEO} target="_blank" rel="noreferrer noopener">on the website</a> or <a href={AADHAAR_APP_VIDEO} target="_blank" rel="noreferrer noopener">in the Aadhaar app</a>.</p>
       ) : (
-        <Field label="Which ID are you sending?" required>
+        <Field label="Which ID are you sending?" required hint={f.id_kind === "aadhaar" ? <>Please send the masked Aadhaar, so only the last 4 digits show. <a href={AADHAAR_VIDEO} target="_blank" rel="noreferrer noopener">UIDAI’s video shows how</a>.</> : null}>
           <select className="reg-input" value={f.id_kind} onChange={set("id_kind")}>{Object.entries(ID_KINDS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
         </Field>
       )}
