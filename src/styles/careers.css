@@ -130,3 +130,21 @@
 /* Joining documents form */
 .careers-subhead { margin: 22px 0 6px; font-size: 1.05rem; color: var(--text-dark); }
 .careers-form .offer-banner { margin: 0 0 12px; }
+
+/* Aadhaar Secure QR */
+.careers-qr { margin: 6px 0 14px; padding: 14px 16px; border: 1px dashed var(--primary, #2A62B5); border-radius: var(--radius-md, 12px); background: var(--primary-glow, rgba(42, 98, 181, .06)); }
+.careers-qr-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; }
+.careers-qr-tag { font-size: .78rem; padding: 2px 8px; border-radius: 99px; background: rgba(16, 185, 129, .14); color: #047857; }
+.careers-qr-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.careers-qr-upload { position: relative; overflow: hidden; cursor: pointer; }
+.careers-qr-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.careers-qr-video { display: block; width: 100%; max-width: 420px; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: #000; margin-top: 8px; }
+.careers-qr-ok { color: #047857; font-weight: 600; margin: 4px 0; }
+.careers-qr .link-btn { background: none; border: 0; color: var(--primary, #2A62B5); cursor: pointer; text-decoration: underline; font: inherit; padding: 0 0 0 6px; }
+
+/* Checks shown while typing */
+.careers-live { margin: 6px 0 0; font-size: .85rem; }
+.careers-live.ok { color: #047857; }
+.careers-live.bad { color: #dc2626; }
+.careers-live.warn { color: #b45309; }
+.careers-live.wait { color: var(--text-light, #6b7280); }

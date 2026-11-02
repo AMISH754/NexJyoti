@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import SEOHead from "../components/SEOHead";
 import { ID_KINDS, MAX_PHOTO, MAX_RESUME, fetchJoining, formatDate, sendJoining, shrinkPhoto } from "../utils/careers";
+import { readAadhaarQr, scanCamera } from "../utils/aadhaarQr";
 import { Field } from "./Careers";
 import "../styles/register.css";
 import "../styles/careers.css";
@@ -16,11 +17,99 @@ const BLOOD = ["", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
  * NexJyoti Hub. Everyone: the Gmail for the Hub, date of birth, address, an emergency contact, a photo and a photo ID.
  * Paid roles: masked Aadhaar, PAN and the bank account for their pay. The token in the link is the only key, so the
  * page is kept out of search engines; the files go to the Hub's private storage. */
+/* Checks shown while they type: the PAN's shape (a personal PAN's 4th letter is P, its 5th the first letter of the
+ * surname), the IFSC against Razorpay's free public list of bank branches (only the code is sent), and the account
+ * number typed twice. Nothing here asks the government; it catches typos before they reach payroll. */
+const PAN_RE = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+function panCheck(raw, name) {
+  const pan = raw.replace(/\s/g, "").toUpperCase();
+  if (pan.length < 10) return null;
+  if (!PAN_RE.test(pan)) return { kind: "bad", text: "A PAN is 5 letters, 4 numbers and a letter, like ABCDE1234F." };
+  if (pan[3] !== "P") return { kind: "bad", text: "This isn’t a personal PAN: its 4th letter should be P. Please check your PAN card." };
+  const surnames = String(name || "").toUpperCase().replace(/[^A-Z\s]/g, " ").split(/\s+/).filter(Boolean).slice(1);
+  if (surnames.length && !surnames.some((w) => w[0] === pan[4])) {
+    return { kind: "warn", text: `The 5th letter of a PAN is usually the first letter of your surname (${surnames[surnames.length - 1][0]}), but this one has ${pan[4]}. Please double-check it.` };
+  }
+  return { kind: "ok", text: "✓ Looks like a valid personal PAN" };
+}
+
+function useIfsc(raw) {
+  const [info, setInfo] = useState(null); // { kind, text, bank }
+  const ifsc = raw.replace(/\s/g, "").toUpperCase();
+  useEffect(() => {
+    if (ifsc.length < 11) { setInfo(null); return undefined; }
+    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) { setInfo({ kind: "bad", text: "An IFSC is 4 letters, a zero, then 6 letters or numbers, like SBIN0001234." }); return undefined; }
+    let alive = true;
+    setInfo({ kind: "wait", text: "Checking…" });
+    fetch(`https://ifsc.razorpay.com/${ifsc}`)
+      .then(async (res) => {
+        if (!alive) return;
+        if (res.status === 404) { setInfo({ kind: "bad", text: "We couldn’t find this IFSC. Please check it on your passbook or cheque." }); return; }
+        const b = await res.json();
+        setInfo({ kind: "ok", text: `✓ ${b.BANK}, ${b.BRANCH} branch${b.CITY ? `, ${b.CITY}` : ""}`, bank: `${b.BANK}, ${b.BRANCH}` });
+      })
+      .catch(() => alive && setInfo(null));
+    return () => { alive = false; };
+  }, [ifsc]);
+  return info;
+}
+
+const Live = ({ check }) => (check ? <p className={`careers-live ${check.kind}`} aria-live="polite">{check.text}</p> : null);
+
+/* Scanning the Secure QR on the Aadhaar (optional): UIDAI signs it, so the Hub can check the card is genuine. */
+function AadhaarQr({ value, onChange }) {
+  const [camera, setCamera] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const video = useRef(null);
+  useEffect(() => {
+    if (!camera || !video.current) return undefined;
+    return scanCamera(video.current, (digits) => { setCamera(false); setError(""); onChange(digits); }, (e) => { setCamera(false); setError(e.message); });
+  }, [camera]); // eslint-disable-line react-hooks/exhaustive-deps
+  const upload = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setBusy(true); setError("");
+    try {
+      const { digits, old } = await readAadhaarQr(file);
+      if (digits) onChange(digits);
+      else setError(old ? "This Aadhaar has the older QR code, which isn’t signed. That’s fine: just send the ID above." : "We couldn’t find the QR code in this picture. Try a sharper, closer photo of just the big QR code.");
+    } catch { setError("We couldn’t read this picture. Try another photo."); } finally { setBusy(false); }
+  };
+  return (
+    <div className="careers-qr">
+      <div className="careers-qr-head">
+        <strong>Verify your Aadhaar with UIDAI’s QR code</strong> <span className="careers-qr-tag">Optional · recommended</span>
+      </div>
+      {value ? (
+        <p className="careers-qr-ok">✓ QR code read. We’ll check UIDAI’s signature when you send. <button type="button" className="link-btn" onClick={() => onChange("")}>Remove</button></p>
+      ) : (
+        <>
+          <p className="reg-hint">The big QR code on your Aadhaar card, e-Aadhaar or masked Aadhaar is signed by UIDAI. Scanning it lets us confirm your Aadhaar is genuine, so we don’t need to check it by hand. It holds only the last 4 digits of your Aadhaar number.</p>
+          {camera && <video ref={video} className="careers-qr-video" playsInline muted />}
+          <div className="careers-qr-actions">
+            {camera
+              ? <button type="button" className="reg-btn-back" onClick={() => setCamera(false)}>Stop camera</button>
+              : <button type="button" className="reg-btn-back" onClick={() => { setError(""); setCamera(true); }}>📷 Scan with camera</button>}
+            <label className="reg-btn-back careers-qr-upload">
+              <input type="file" accept="image/*" onChange={upload} />
+              {busy ? "Reading…" : "Upload a photo or screenshot of the QR"}
+            </label>
+          </div>
+          {camera && <p className="reg-hint">Hold the QR code steady and close, filling most of the box. On a PDF, open it on another screen and zoom into the QR code.</p>}
+        </>
+      )}
+      {error && <p className="reg-error" role="alert">{error}</p>}
+    </div>
+  );
+}
+
 export default function CareerJoining() {
   const { token } = useParams();
   const [joining, setJoining] = useState(null);
   const [error, setError] = useState("");
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(null); // { aadhaar } once sent
 
   useEffect(() => {
     if (!token) { setError("This link has no joining documents in it."); return undefined; }
@@ -50,6 +139,7 @@ export default function CareerJoining() {
             <div className="reg-success animate-reg-in" aria-live="polite">
               <div className="reg-success-icon-wrap"><span className="reg-success-check">✓</span></div>
               <h2>Thank you, {joining.name.split(/\s+/)[0]}!</h2>
+              {done.aadhaar === "verified" && <p className="careers-qr-ok">✓ Your Aadhaar was verified with UIDAI’s signature.</p>}
               <p>Your joining documents have reached our HR team. We’ll check them and then email you how to sign in to the <strong>NexJyoti Hub</strong>, our team app.</p>
               <div className="reg-success-org">— NexJyoti Education Foundation</div>
             </div>
@@ -58,7 +148,7 @@ export default function CareerJoining() {
           ) : expired ? (
             <div className="offer-banner warn">This link expired on {formatDate(joining.expires_on)}. Please write to <a href="mailto:info@nexjyoti.org">info@nexjyoti.org</a> for a new one.</div>
           ) : (
-            <JoiningForm token={token} joining={joining} onDone={() => setDone(true)} />
+            <JoiningForm token={token} joining={joining} onDone={(r) => setDone(r || {})} />
           )}
           <p className="reg-landing-note"><Link to="/careers">NexJyoti careers</Link></p>
         </div>
@@ -88,11 +178,20 @@ function JoiningForm({ token, joining, onDone }) {
     id_kind: paid ? "aadhaar" : "aadhaar", id_last4: "", pan: "", account_holder: joining.name || "", account_number: "", account_number_again: "", ifsc: "", bank_name: "",
   });
   const [files, setFiles] = useState({});
+  const [qr, setQr] = useState(""); // the digits of the Aadhaar's Secure QR, if they scanned it
   const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState({});
   const [busy, setBusy] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const set = (k) => (e) => { setF((x) => ({ ...x, [k]: e.target.value })); if (errors[k]) setErrors((x) => ({ ...x, [k]: "" })); };
+  const pan = panCheck(f.pan, joining.name);
+  const ifsc = useIfsc(f.ifsc);
+  useEffect(() => { if (ifsc?.bank && !f.bank_name.trim()) setF((x) => ({ ...x, bank_name: ifsc.bank })); }, [ifsc?.bank]); // eslint-disable-line react-hooks/exhaustive-deps
+  const accountA = f.account_number.replace(/\s/g, "");
+  const accountB = f.account_number_again.replace(/\s/g, "");
+  const account = !accountB ? null : accountA === accountB ? (/^\d{9,18}$/.test(accountA) ? { kind: "ok", text: "✓ The account numbers match" } : null)
+    : accountA.startsWith(accountB) ? null : { kind: "bad", text: "The two account numbers don’t match." };
+  const last4 = /\D/.test(f.id_last4) && (paid || f.id_kind === "aadhaar") ? { kind: "bad", text: "The last 4 digits of an Aadhaar are numbers." } : null;
 
   const pick = (kind) => async (e) => {
     const file = e.target.files?.[0] || null;
@@ -120,12 +219,12 @@ function JoiningForm({ token, joining, onDone }) {
     if (!files.photo && !again) e.photo = "Please add a photo of yourself.";
     if (!files.id && !again) e.id = "Please add your ID.";
     if (paid) {
-      if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(v("pan").replace(/\s/g, "").toUpperCase())) e.pan = "Please check your PAN: like ABCDE1234F.";
+      if (!pan || pan.kind === "bad") e.pan = pan?.text || "Please check your PAN: like ABCDE1234F.";
       if (!files.pan && !again) e.pan_file = "Please add your PAN card.";
       if (!v("account_holder")) e.account_holder = "Please enter the name on the account.";
       if (!/^\d{9,18}$/.test(v("account_number").replace(/\s/g, ""))) e.account_number = "Please check the account number.";
       else if (v("account_number").replace(/\s/g, "") !== v("account_number_again").replace(/\s/g, "")) e.account_number_again = "The two account numbers don’t match.";
-      if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(v("ifsc").replace(/\s/g, "").toUpperCase())) e.ifsc = "Please check the IFSC: 11 characters, like SBIN0001234.";
+      if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(v("ifsc").replace(/\s/g, "").toUpperCase()) || ifsc?.kind === "bad") e.ifsc = ifsc?.kind === "bad" ? ifsc.text : "Please check the IFSC: 11 characters, like SBIN0001234.";
       if (!files.bank && !again) e.bank = "Please add a passbook page or cancelled cheque.";
     }
     if (!consent) e.consent = "Please agree so we can keep your documents.";
@@ -141,9 +240,10 @@ function JoiningForm({ token, joining, onDone }) {
     form.append("token", token);
     for (const [k, v] of Object.entries(f)) form.append(k, v.trim());
     if (paid) form.set("id_kind", "aadhaar");
+    if (qr && (paid || f.id_kind === "aadhaar")) form.append("aadhaar_qr", qr);
     for (const [k, file] of Object.entries(files)) form.append(k, file, file.name || `${k}.jpg`);
     setBusy(true);
-    try { await sendJoining(form); onDone(); } catch (e) { setSubmitError(e.message); } finally { setBusy(false); }
+    try { onDone(await sendJoining(form)); } catch (e) { setSubmitError(e.message); } finally { setBusy(false); }
   };
 
   return (
@@ -186,21 +286,22 @@ function JoiningForm({ token, joining, onDone }) {
         </Field>
       )}
       <div className="careers-grid">
-        <Field label="Last 4 characters of the ID number" required error={errors.id_last4}><input className="reg-input" value={f.id_last4} onChange={set("id_last4")} maxLength={4} inputMode={paid || f.id_kind === "aadhaar" ? "numeric" : "text"} /></Field>
+        <Field label="Last 4 characters of the ID number" required error={errors.id_last4}><input className="reg-input" value={f.id_last4} onChange={set("id_last4")} maxLength={4} inputMode={paid || f.id_kind === "aadhaar" ? "numeric" : "text"} />{!errors.id_last4 && <Live check={last4} />}</Field>
         <FilePick label={paid ? "Masked Aadhaar" : "The ID"} required={!again} error={errors.id} hint="A PDF, or a clear photo of the front." file={files.id} accept={DOC_TYPES} onPick={pick("id")} />
       </div>
+      {(paid || f.id_kind === "aadhaar") && <AadhaarQr value={qr} onChange={setQr} />}
 
       {paid && (
         <>
           <h3 className="careers-subhead">PAN and bank account for your pay</h3>
           <div className="careers-grid">
-            <Field label="PAN" required error={errors.pan}><input className="reg-input" value={f.pan} onChange={set("pan")} maxLength={12} placeholder="ABCDE1234F" style={{ textTransform: "uppercase" }} /></Field>
+            <Field label="PAN" required error={errors.pan}><input className="reg-input" value={f.pan} onChange={set("pan")} maxLength={12} placeholder="ABCDE1234F" style={{ textTransform: "uppercase" }} />{!errors.pan && <Live check={pan} />}</Field>
             <FilePick label="PAN card" required={!again} error={errors.pan_file} hint="A PDF, or a clear photo." file={files.pan} accept={DOC_TYPES} onPick={pick("pan")} />
             <Field label="Name on the account" required error={errors.account_holder}><input className="reg-input" value={f.account_holder} onChange={set("account_holder")} maxLength={120} /></Field>
             <Field label="Bank and branch"><input className="reg-input" value={f.bank_name} onChange={set("bank_name")} maxLength={120} placeholder="e.g. SBI, Ratu Road" /></Field>
             <Field label="Account number" required error={errors.account_number}><input className="reg-input" value={f.account_number} onChange={set("account_number")} inputMode="numeric" maxLength={22} autoComplete="off" /></Field>
-            <Field label="Account number again" required error={errors.account_number_again}><input className="reg-input" value={f.account_number_again} onChange={set("account_number_again")} inputMode="numeric" maxLength={22} autoComplete="off" onPaste={(e) => e.preventDefault()} /></Field>
-            <Field label="IFSC" required error={errors.ifsc}><input className="reg-input" value={f.ifsc} onChange={set("ifsc")} maxLength={11} placeholder="SBIN0001234" style={{ textTransform: "uppercase" }} /></Field>
+            <Field label="Account number again" required error={errors.account_number_again}><input className="reg-input" value={f.account_number_again} onChange={set("account_number_again")} inputMode="numeric" maxLength={22} autoComplete="off" onPaste={(e) => e.preventDefault()} />{!errors.account_number_again && <Live check={account} />}</Field>
+            <Field label="IFSC" required error={errors.ifsc}><input className="reg-input" value={f.ifsc} onChange={set("ifsc")} maxLength={11} placeholder="SBIN0001234" style={{ textTransform: "uppercase" }} />{!errors.ifsc && <Live check={ifsc} />}</Field>
             <FilePick label="Passbook page or cancelled cheque" required={!again} error={errors.bank} hint="Showing your name, account number and IFSC." file={files.bank} accept={DOC_TYPES} onPick={pick("bank")} />
           </div>
         </>

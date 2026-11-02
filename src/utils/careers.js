@@ -99,7 +99,7 @@ export async function sendJoining(form) {
     const res = await fetch(CAREERS_URL, { method: "POST", body: form, signal: controller.signal });
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body.error || "Could not send your documents. Please try again.");
-    return body.result;
+    return { result: body.result, aadhaar: body.aadhaar || null };
   } catch (e) {
     if (e.name === "AbortError") throw new Error("This is taking too long. Please check your connection and try again.");
     throw e;

@@ -209,7 +209,10 @@ export default function Privacy() {
                   For paid roles we also ask for your masked Aadhaar, PAN and the bank account your pay goes to. We keep
                   only the last 4 characters of an ID number as text, never a full Aadhaar number. Your documents stay
                   in the Hub’s private storage, which only our HR team and leadership can open, and are used for your
-                  employment, pay and the records the law requires us to keep.
+                  employment, pay and the records the law requires us to keep. If you choose to scan the signed QR
+                  code on your Aadhaar, we check UIDAI’s digital signature and keep what it shows (name, date of birth,
+                  gender, the last 4 digits, state, pincode and the photo) to confirm your Aadhaar is genuine. To check
+                  your IFSC, only that bank code is looked up in Razorpay’s public list of bank branches.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   <strong>Signing in.</strong> You sign in with Google, or with a one-time code we email to your
