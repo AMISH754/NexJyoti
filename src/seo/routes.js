@@ -60,6 +60,13 @@ export const ROUTES = [
     sources: ["src/pages/Contact.jsx"],
   },
   {
+    path: "/careers/joining",
+    name: "Your Joining Documents",
+    robots: "utility",
+    description: "Send your joining documents to NexJyoti Education Foundation: your photo, ID and, for paid roles, PAN and bank details, through a private, confidential link.",
+    sources: ["src/pages/CareerJoining.jsx"],
+  },
+  {
     path: "/careers/offer",
     name: "Your Offer Letter",
     robots: "utility",

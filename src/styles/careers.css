@@ -126,3 +126,7 @@
 }
 .offer-title { font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--text-dark); margin: 0 0 16px; text-align: center; }
 .careers-jd ul { list-style: disc; }
+
+/* Joining documents form */
+.careers-subhead { margin: 22px 0 6px; font-size: 1.05rem; color: var(--text-dark); }
+.careers-form .offer-banner { margin: 0 0 12px; }

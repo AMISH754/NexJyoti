@@ -41,12 +41,13 @@ export async function sendApplication(form) {
   }
 }
 
-/* A photo made smaller on the phone first (longest side 900px, JPEG), so it uploads fast and fits the 1 MB limit. */
-export async function shrinkPhoto(file) {
+/* A photo made smaller on the phone first (longest side 900px, JPEG), so it uploads fast and fits the 1 MB limit.
+ * Documents (an ID card or passbook photo) keep more detail: longest side 1600px. */
+export async function shrinkPhoto(file, longest = 900) {
   if (!file.type.startsWith("image/")) return file;
   try {
     const bitmap = await createImageBitmap(file);
-    const scale = Math.min(1, 900 / Math.max(bitmap.width, bitmap.height));
+    const scale = Math.min(1, longest / Math.max(bitmap.width, bitmap.height));
     const canvas = document.createElement("canvas");
     canvas.width = Math.round(bitmap.width * scale);
     canvas.height = Math.round(bitmap.height * scale);
@@ -81,3 +82,30 @@ export async function answerOffer(token, { accept, name, note }) {
   if (!res.ok) throw new Error(body.error || "Could not save your answer. Please try again.");
   return body.result;
 }
+
+/* Joining documents for /careers/joining/<token>: who, which role, what to send. Throws with a message to show. */
+export async function fetchJoining(token) {
+  const res = await fetch(`${CAREERS_URL}?joining=${encodeURIComponent(token)}`, { headers: { accept: "application/json" }, cache: "no-store" });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || "Could not open this page");
+  return body.joining;
+}
+
+/* Sends the joining documents (a FormData with action=joining, the token, the details and the files). */
+export async function sendJoining(form) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 90000);
+  try {
+    const res = await fetch(CAREERS_URL, { method: "POST", body: form, signal: controller.signal });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(body.error || "Could not send your documents. Please try again.");
+    return body.result;
+  } catch (e) {
+    if (e.name === "AbortError") throw new Error("This is taking too long. Please check your connection and try again.");
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+export const ID_KINDS = { aadhaar: "Aadhaar (masked)", voter: "Voter ID", driving: "Driving licence", pan: "PAN card", passport: "Passport" };

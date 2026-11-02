@@ -301,7 +301,7 @@ function ApplyForm({ opening }) {
   );
 }
 
-const Field = ({ label, required, hint, error, children }) => (
+export const Field = ({ label, required, hint, error, children }) => (
   <div className={`reg-field ${error ? "reg-field-error" : ""}`}>
     <label className="reg-label">{label}{required && <span className="reg-required"> *</span>}</label>
     {hint && <p className="reg-hint">{hint}</p>}
