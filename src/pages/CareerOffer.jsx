@@ -58,7 +58,9 @@ export default function CareerOffer() {
             <>
               <OfferStatus offer={offer} expired={expired} />
               <article className="offer-sheet">
-                <header className="offer-head"><img src="/assets/letterhead/header.png" alt={head.name} /></header>
+                <img className="offer-watermark" src="/assets/letterhead/a4-watermark.png" alt="" />
+                <header className="offer-head"><img src="/assets/letterhead/a4-header.png" alt={head.name} /></header>
+                <div className="offer-content">
                 <div className="offer-meta"><span>{formatDate(offer.issued_on)}</span></div>
                 <div className="offer-to"><strong>{offer.candidate}</strong>{offer.candidate_city && <span>{offer.candidate_city}</span>}</div>
                 <p className="offer-subject"><strong>Subject:</strong> {offer.subject}</p>
@@ -75,7 +77,8 @@ export default function CareerOffer() {
                 {offer.status === "accepted" && (
                   <div className="offer-accepted">Accepted on {formatDate(offer.responded_on)}{offer.response_name ? ` by ${offer.response_name}` : ""}</div>
                 )}
-                <footer className="offer-foot"><img src="/assets/letterhead/footer.png" alt={[head.address, head.phone, head.email, head.website].filter(Boolean).join(" · ")} /></footer>
+                </div>
+                <footer className="offer-foot"><img src="/assets/letterhead/a4-footer.png" alt={[head.address, head.phone, head.email, head.website].filter(Boolean).join(" · ")} /></footer>
               </article>
 
               <div className="offer-actions no-print">

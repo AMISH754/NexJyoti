@@ -81,23 +81,30 @@
 .offer-banner { padding: 14px 18px; border-radius: var(--radius-md); background: var(--primary-glow); color: var(--text-dark); margin-bottom: 18px; font-weight: 500; }
 .offer-banner.ok { background: rgba(16, 185, 129, .12); }
 .offer-banner.warn { background: rgba(217, 119, 6, .12); }
-.offer-sheet { background: #fff; color: #1f2937; border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow-md); padding: 44px 52px 0; overflow: hidden; font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; line-height: 1.7; }
-.offer-head { margin: -44px -52px 18px; }
+/* The A4 letterhead (cut from the letterhead PDF): header and footer edge to edge, the faint logo where it is on the
+ * page, the text in the blank area between. The sheet keeps A4's shape and grows for a long letter; sizes follow its
+ * width (cqw). */
+.offer-sheet { position: relative; width: 100%; aspect-ratio: 210 / 297; display: flex; flex-direction: column; overflow: hidden; container-type: inline-size;
+  background: #fff; color: #1f2937; border: 1px solid var(--border); border-radius: 4px; box-shadow: var(--shadow-md);
+  font-family: Georgia, 'Times New Roman', serif; font-size: clamp(12px, 1.95cqw, 15.5px); line-height: 1.65; }
+.offer-head, .offer-foot { position: relative; z-index: 1; flex: none; }
 .offer-head img, .offer-foot img { display: block; width: 100%; height: auto; }
-.offer-meta { display: flex; justify-content: flex-end; font-size: .9rem; color: #4b5563; }
-.offer-to { display: flex; flex-direction: column; margin: 8px 0 14px; }
-.offer-to span { font-size: .9rem; color: #6b7280; }
-.offer-subject { margin: 0 0 14px; }
-.offer-body h3 { font-size: 1.05rem; margin: 16px 0 6px; }
-.offer-body p { margin: 0 0 12px; }
-.offer-body ul { margin: 0 0 12px; padding-left: 22px; }
-.offer-sign-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 18px; }
+.offer-foot { margin-top: auto; }
+.offer-watermark { position: absolute; left: 26.1%; top: 31.3%; width: 47.9%; height: auto; mix-blend-mode: multiply; pointer-events: none; z-index: 0; }
+.offer-content { position: relative; z-index: 1; flex: 1; padding: 2.5cqw 9.5cqw 4cqw; }
+.offer-meta { display: flex; justify-content: flex-end; font-size: .87em; color: #4b5563; font-family: 'Inter', Arial, sans-serif; }
+.offer-to { display: flex; flex-direction: column; margin: .5em 0 1em; }
+.offer-to span { font-size: .87em; color: #6b7280; }
+.offer-subject { margin: 0 0 1em; }
+.offer-body h3 { font-size: 1.05em; margin: 1em 0 .4em; }
+.offer-body p { margin: 0 0 .8em; }
+.offer-body ul { margin: 0 0 .8em; padding-left: 1.4em; list-style: disc; }
+.offer-sign-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 1.4em; }
 .offer-sign { display: flex; flex-direction: column; }
-.offer-seal { width: 120px; height: 120px; flex: none; transform: rotate(-8deg); }
-.offer-sign img { height: 56px; width: auto; align-self: flex-start; margin-bottom: 4px; }
-.offer-sign span { font-size: .92rem; color: #4b5563; }
-.offer-accepted { margin-top: 18px; padding: 10px 14px; border: 2px solid var(--green); border-radius: 8px; color: var(--green-dark); font-family: 'Inter', sans-serif; font-weight: 600; display: inline-block; }
-.offer-foot { margin: 28px -52px 0; }
+.offer-sign img { height: 3.6em; width: auto; align-self: flex-start; margin-bottom: 4px; }
+.offer-sign span { font-size: .9em; color: #4b5563; }
+.offer-seal { width: 16cqw; height: 16cqw; flex: none; transform: rotate(-8deg); }
+.offer-accepted { margin-top: 1.2em; padding: .6em .9em; border: 2px solid var(--green); border-radius: 8px; color: var(--green-dark); font-family: 'Inter', sans-serif; font-weight: 600; display: inline-block; font-size: .9em; }
 .offer-actions { display: flex; justify-content: center; margin: 16px 0; }
 .offer-answer { margin-top: 8px; }
 .offer-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -106,19 +113,16 @@
 .offer-choice button.on.decline { border-color: #ef4444; background: rgba(239, 68, 68, .06); color: #b91c1c; }
 
 @media (max-width: 700px) {
-  .offer-sheet { padding: 24px 18px 0; font-size: .95rem; }
-  .offer-head { margin: -24px -18px 14px; }
-  .offer-foot { margin: 24px -18px 0; }
-  .offer-seal { width: 88px; height: 88px; }
   .offer-title { font-size: 1.25rem; }
 }
 @media print {
   .no-print, nav.navbar, .nav-drawer, footer[role="contentinfo"], .back-to-top { display: none !important; }
   .offer-page, .offer-page .register-container { background: #fff !important; padding: 0 !important; }
   main { padding-top: 0 !important; }
-  .offer-sheet { box-shadow: none; border: 0; border-radius: 0; padding: 0 12mm; }
-  .offer-head { margin: 0 -12mm 18px; }
-  .offer-foot { margin: 28px -12mm 0; }
+  @page { size: A4; margin: 0; }
+  .offer-sheet { width: 210mm; min-height: 297mm; aspect-ratio: auto; box-shadow: none; border: 0; border-radius: 0; font-size: 11.5pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .offer-content { padding: 4mm 20mm 8mm; }
+  .offer-seal { width: 32mm; height: 32mm; }
 }
 .offer-title { font-family: 'Outfit', sans-serif; font-size: 1.5rem; color: var(--text-dark); margin: 0 0 16px; text-align: center; }
-.offer-body ul, .careers-jd ul { list-style: disc; }
+.careers-jd ul { list-style: disc; }
