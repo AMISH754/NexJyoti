@@ -61,3 +61,23 @@ export async function shrinkPhoto(file) {
 export const formatDate = (ymd) => (ymd
   ? new Date(`${ymd}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
   : "");
+
+/* An offer letter for /careers/offer/<token>, or throws with a message to show. */
+export async function fetchOffer(token) {
+  const res = await fetch(`${CAREERS_URL}?offer=${encodeURIComponent(token)}`, { headers: { accept: "application/json" }, cache: "no-store" });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || "Could not load the offer");
+  return body.offer;
+}
+
+/* The candidate's answer: accept (with their typed name) or decline. Resolves to "accepted" or "declined". */
+export async function answerOffer(token, { accept, name, note }) {
+  const res = await fetch(CAREERS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "respond", token, accept, name, note }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || "Could not save your answer. Please try again.");
+  return body.result;
+}

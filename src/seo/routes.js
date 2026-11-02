@@ -60,6 +60,13 @@ export const ROUTES = [
     sources: ["src/pages/Contact.jsx"],
   },
   {
+    path: "/careers/offer",
+    name: "Your Offer Letter",
+    robots: "utility",
+    description: "Your offer letter from NexJyoti Education Foundation: read the role, its terms and start date, then accept or decline it, and print or save a copy as a PDF.",
+    sources: ["src/pages/CareerOffer.jsx"],
+  },
+  {
     path: "/careers",
     name: "Careers",
     description: "Work with NexJyoti Education Foundation in Jharkhand: open staff roles and paid or unpaid internships in education, outreach and media. Apply online today.",

@@ -144,7 +144,7 @@ const Fact = ({ label, value }) => (
 
 /* The job description: the Hub's Markdown subset (## headings, - bullets, **bold**, paragraphs), as React elements
  * (never as HTML). */
-function JobText({ text }) {
+export function JobText({ text }) {
   const blocks = [];
   let list = null;
   for (const raw of String(text || "").split("\n")) {
