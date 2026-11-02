@@ -58,28 +58,24 @@ export default function CareerOffer() {
             <>
               <OfferStatus offer={offer} expired={expired} />
               <article className="offer-sheet">
-                <header className="offer-head">
-                  <img src="/assets/images/logo.jpg" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
-                  <div>
-                    <strong>{head.name}</strong>
-                    {head.tagline && <span>{head.tagline}</span>}
-                    {head.registration && <span className="offer-reg">{head.registration}</span>}
-                  </div>
-                </header>
+                <header className="offer-head"><img src="/assets/letterhead/header.png" alt={head.name} /></header>
                 <div className="offer-meta"><span>{formatDate(offer.issued_on)}</span></div>
                 <div className="offer-to"><strong>{offer.candidate}</strong>{offer.candidate_city && <span>{offer.candidate_city}</span>}</div>
                 <p className="offer-subject"><strong>Subject:</strong> {offer.subject}</p>
                 <div className="offer-body"><JobText text={offer.body} /></div>
-                <div className="offer-sign">
-                  {offer.signature && <img src={offer.signature} alt="Signature" />}
-                  {offer.signer && <strong>{offer.signer.name}</strong>}
-                  {offer.signer?.title && <span>{offer.signer.title}</span>}
-                  <span>{head.name}</span>
+                <div className="offer-sign-row">
+                  <div className="offer-sign">
+                    {offer.signature && <img src={offer.signature} alt="Signature" />}
+                    {offer.signer && <strong>{offer.signer.name}</strong>}
+                    {offer.signer?.title && <span>{offer.signer.title}</span>}
+                    <span>{head.name}</span>
+                  </div>
+                  <img className="offer-seal" src="/assets/letterhead/seal.png" alt={`Seal of ${head.name}`} />
                 </div>
                 {offer.status === "accepted" && (
                   <div className="offer-accepted">Accepted on {formatDate(offer.responded_on)}{offer.response_name ? ` by ${offer.response_name}` : ""}</div>
                 )}
-                <footer className="offer-foot">{[head.address, head.phone, head.email, head.website].filter(Boolean).join(" · ")}</footer>
+                <footer className="offer-foot"><img src="/assets/letterhead/footer.png" alt={[head.address, head.phone, head.email, head.website].filter(Boolean).join(" · ")} /></footer>
               </article>
 
               <div className="offer-actions no-print">
