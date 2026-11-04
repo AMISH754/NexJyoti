@@ -196,6 +196,25 @@ export default function Privacy() {
                   your device’s network address for up to two days. You do not need to verify your email to register.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>Job and internship applications.</strong> When you apply for a role on our careers page, your
+                  answers, résumé and photo (if you add one) go to the Hub, where only our HR team and leadership can see
+                  them. They are kept in private storage in India and used only to consider you for this and similar
+                  roles. We email you to confirm we have received your application. We do not ask for Aadhaar, PAN or
+                  bank details when you apply. If you are not selected, we delete your application within 12 months,
+                  or sooner if you ask us at info@nexjyoti.org.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  <strong>Joining documents.</strong> Only after you accept an offer do we ask, through a private link
+                  that works for 14 days, for your photo, date of birth, address, an emergency contact and one photo ID.
+                  For paid roles we also ask for your masked Aadhaar, PAN and the bank account your pay goes to. We keep
+                  only the last 4 characters of an ID number as text, never a full Aadhaar number. Your documents stay
+                  in the Hub’s private storage, which only our HR team and leadership can open, and are used for your
+                  employment, pay and the records the law requires us to keep. If you choose to scan the signed QR
+                  code on your Aadhaar, we check UIDAI’s digital signature and keep what it shows (name, date of birth,
+                  gender, the last 4 digits, state, pincode and the photo) to confirm your Aadhaar is genuine. To check
+                  your IFSC, only that bank code is looked up in Razorpay’s public list of bank branches.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
                   <strong>Signing in.</strong> You sign in with Google, or with a one-time code we email to your
                   address. With Google, we receive only your name, email address and profile photo. We do not receive
                   your Google password, the Hub has no Hub password of its own, and it does not access your Gmail,
@@ -206,7 +225,7 @@ export default function Privacy() {
                 </p>
                 <ul style={{ paddingLeft: "20px", marginTop: "8px", display: "grid", gap: "8px", listStyle: "disc" }}>
                   <li style={{ fontSize: "0.95rem" }}>Your directory entry: name, member ID, email, phone, team, role, manager, city, skills and joining date</li>
-                  <li style={{ fontSize: "0.95rem" }}>Private details, if given: date of birth, blood group, address and emergency contact. Only you and the administrators who manage your record can see them. We do not ask for Aadhaar, PAN or bank details in the Hub.</li>
+                  <li style={{ fontSize: "0.95rem" }}>Private details, if given: date of birth, blood group, address and emergency contact. Only you and the administrators who manage your record can see them. Joining documents (ID, PAN and bank details, for paid roles) are kept separately and only HR and leadership can see them.</li>
                   <li style={{ fontSize: "0.95rem" }}>The messages, files, tasks, projects, events and availability you add, and your notification settings</li>
                   <li style={{ fontSize: "0.95rem" }}>Letters issued to you (such as a welcome or appointment letter), which are also emailed to you</li>
                   <li style={{ fontSize: "0.95rem" }}>When you use the Hub: the first and last time on each day, and whether on the web or the Android app. Only the Hub’s administrators and you can see this, it never includes what you read or type, and it is deleted after 180 days.</li>

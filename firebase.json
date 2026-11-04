@@ -16,6 +16,18 @@
         "destination": "/verify.html"
       },
       {
+        "source": "/careers/joining/**",
+        "destination": "/careers/joining.html"
+      },
+      {
+        "source": "/careers/offer/**",
+        "destination": "/careers/offer.html"
+      },
+      {
+        "source": "/careers/**",
+        "destination": "/careers.html"
+      },
+      {
         "source": "/admin",
         "destination": "/spa.html"
       },

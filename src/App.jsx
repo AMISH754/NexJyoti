@@ -22,6 +22,9 @@ import Register from "./pages/Register";
 import VolunteerRegister from "./pages/VolunteerRegister";
 import MemberRegister from "./pages/MemberRegister";
 import Gallery from "./pages/Gallery";
+import Careers from "./pages/Careers";
+import CareerOffer from "./pages/CareerOffer";
+import CareerJoining from "./pages/CareerJoining";
 
 // Admin Pages
 import AdminLogin from "./pages/AdminLogin";
@@ -69,6 +72,12 @@ export default function App() {
           <Route path="/volunteer-register" element={<VolunteerRegister />} />
           <Route path="/member-register" element={<MemberRegister />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/careers/offer" element={<CareerOffer />} />
+          <Route path="/careers/offer/:token" element={<CareerOffer />} />
+          <Route path="/careers/joining" element={<CareerJoining />} />
+          <Route path="/careers/joining/:token" element={<CareerJoining />} />
+          <Route path="/careers/:slug" element={<Careers />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
