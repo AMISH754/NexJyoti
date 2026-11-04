@@ -8,7 +8,8 @@ import "../styles/careers.css";
 
 /* nexjyoti.org/careers/offer/<token>: the offer letter made in the NexJyoti Hub, on the letterhead, signed. The candidate
  * accepts (typing their full name) or declines, and can print it or save it as a PDF. The token in the link is the
- * only key, so the page is kept out of search engines. */
+ * only key, so the page is kept out of search engines. A corrected letter says what it replaces and what changed; the
+ * letter it replaced shows only a way to the new one. */
 export default function CareerOffer() {
   const { token } = useParams();
   const [offer, setOffer] = useState(null);
@@ -54,6 +55,13 @@ export default function CareerOffer() {
             </div>
           ) : !offer ? (
             <div className="careers-loading" aria-live="polite"><span className="reg-spinner careers-spinner" /> Opening your offer…</div>
+          ) : offer.status === "replaced" ? (
+            <div className="careers-empty">
+              <h2 className="reg-section-title">This letter has been corrected</h2>
+              <p>We’ve sent you a corrected letter that replaces this one.{offer.replaced_by ? " Please read it, and answer there." : " Please open the link in our latest email to you."}</p>
+              {offer.replaced_by && <a className="reg-btn-submit reg-btn-submit-blue offer-next" href={`/careers/offer/${offer.replaced_by}`}>Read the corrected letter</a>}
+              <p>Questions? Write to <a href="mailto:info@nexjyoti.org">info@nexjyoti.org</a>.</p>
+            </div>
           ) : (
             <>
               <OfferStatus offer={offer} expired={expired} />
@@ -64,6 +72,7 @@ export default function CareerOffer() {
                 <div className="offer-meta"><span>{formatDate(offer.issued_on)}</span></div>
                 <div className="offer-to"><strong>{offer.candidate}</strong>{offer.candidate_city && <span>{offer.candidate_city}</span>}</div>
                 <p className="offer-subject"><strong>Subject:</strong> {offer.subject}</p>
+                {offer.correction && <p className="offer-replaces">{offer.correction.replaces_on ? `This letter replaces our letter dated ${formatDate(offer.correction.replaces_on)}.` : "This letter replaces our earlier letter."}</p>}
                 <div className="offer-body"><JobText text={offer.body} /></div>
                 <div className="offer-sign-row">
                   <div className="offer-sign">
@@ -134,9 +143,27 @@ export default function CareerOffer() {
 }
 
 function OfferStatus({ offer, expired }) {
-  if (offer.status === "accepted") return <div className="offer-banner ok no-print">🎉 You’ve accepted this offer. Welcome to NexJyoti! We’ll email you about your joining documents next.</div>;
+  const again = offer.correction?.accepted_before; // they had accepted an earlier letter
+  if (offer.status === "accepted") {
+    return (
+      <div className="offer-banner ok no-print">
+        {again
+          ? "🎉 You’ve accepted this corrected letter. Thank you! Any joining documents you’ve sent stay with us, and we’ll email you if we need anything else."
+          : "🎉 You’ve accepted this offer. Welcome to NexJyoti! We’ll email you about your joining documents next."}
+      </div>
+    );
+  }
   if (offer.status === "declined") return <div className="offer-banner no-print">You declined this offer. Thank you for letting us know, and we wish you the very best.</div>;
   if (offer.status === "withdrawn") return <div className="offer-banner warn no-print">This offer has been withdrawn. Please write to info@nexjyoti.org if you have questions.</div>;
   if (expired) return <div className="offer-banner warn no-print">This offer expired on {formatDate(offer.expires_on)}. Please write to info@nexjyoti.org if you’d still like to talk.</div>;
+  if (offer.correction) {
+    return (
+      <div className="offer-banner warn no-print offer-corrected">
+        <strong>We’ve corrected your offer letter.</strong>
+        {offer.correction.note && <p className="offer-changed"><span>What changed</span>{offer.correction.note}</p>}
+        {again && <p>You had accepted the earlier letter, so please read this one and accept it again. Any joining documents you’ve sent stay with us; you don’t need to send them again.</p>}
+      </div>
+    );
+  }
   return null;
 }

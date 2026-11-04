@@ -96,6 +96,11 @@
 .offer-to { display: flex; flex-direction: column; margin: .5em 0 1em; }
 .offer-to span { font-size: .87em; color: #6b7280; }
 .offer-subject { margin: 0 0 1em; }
+.offer-replaces { margin: -.5em 0 1em; font-size: .92em; font-style: italic; color: #4b5563; }
+.offer-corrected p { margin: 8px 0 0; }
+.offer-changed { white-space: pre-line; }
+.offer-changed span { display: block; font-size: .8em; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; opacity: .7; }
+.careers-empty .offer-next { display: inline-block; width: auto; margin-top: 16px; color: #fff; text-decoration: none; }
 .offer-body h3 { font-size: 1.05em; margin: 1em 0 .4em; }
 .offer-body p { margin: 0 0 .8em; }
 .offer-body ul { margin: 0 0 .8em; padding-left: 1.4em; list-style: disc; }
