@@ -232,7 +232,17 @@ export default function Privacy() {
                   can be recovered.
                 </p>
                 <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  The Hub’s use of information received from Google APIs adheres to the{" "}
+                  <strong>NexJyoti GeoCam.</strong> Our Android camera app uses your phone’s camera and location to
+                  put a small map, the address, and the date and time on each photo. Anyone can use it without
+                  signing in: those photos are saved only on your phone, and nothing is sent to us. Our staff,
+                  volunteers and members can sign in with their Hub account; their NexJyoti ID is then added to the
+                  stamp, and the photos they choose to send go to NexJyoti’s Google Drive with where and when they
+                  were taken: an event’s photos into that event’s folder, and a class’s photos also into that classroom
+                  in the Hub, where only the people who can see the classroom see them. GeoCam has no ads and collects
+                  nothing else.
+                </p>
+                <p className="mt-12" style={{ fontSize: "0.95rem", lineHeight: 1.6 }}>
+                  The Hub’s and GeoCam’s use of information received from Google APIs adheres to the{" "}
                   <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary)", fontWeight: "600" }}>
                     Google API Services User Data Policy
                   </a>, including the Limited Use requirements.
@@ -303,7 +313,7 @@ export default function Privacy() {
             </div>
 
             <div style={{ marginTop: "3rem", textAlign: "center", fontSize: "0.85rem", color: "var(--text-muted)" }}>
-              Last Updated: October 2026
+              Last Updated: November 2026
             </div>
 
           </div>
